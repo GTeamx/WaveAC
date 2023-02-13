@@ -1,0 +1,14 @@
+name: Wave
+version: '${project.version}'
+main: com.xiii.wave.Wave
+api-version: 1.19
+prefix: WAVE
+authors: [ XIII___ ]
+description: Wave Anti-Cheat solution
+commands:
+  alerts:
+    # Permission managed in the AlertsCommand class to use unknown-message from Spigot config file.
+    usage: /alerts
+  wave:
+    # Permission managed in the WaveCommand class to use unknown-message from Spigot config file.
+    usage: /wave
