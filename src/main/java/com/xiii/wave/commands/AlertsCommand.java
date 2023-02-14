@@ -1,5 +1,7 @@
 package com.xiii.wave.commands;
 
+import com.github.retrooper.packetevents.protocol.player.User;
+import com.xiii.wave.Wave;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
 import org.bukkit.Bukkit;
@@ -8,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+
 public final class AlertsCommand implements CommandExecutor {
 
     @Override
@@ -15,29 +18,32 @@ public final class AlertsCommand implements CommandExecutor {
 
         if(command.getName().equalsIgnoreCase("alerts")) {
 
-            // TODO: Switch permission to be custom from config file
-            if(sender.hasPermission("Wave.commands.alerts")) {
+            if(sender.hasPermission(Wave.INSTANCE.configUtils.getString("config", "permissions.alerts-command", "Wave.commands.alerts"))) {
 
-                // TODO: Toggle alerts & test.
-                final PlayerData data = Data.getPlayerData(Bukkit.getPlayer("?"));
+                final PlayerData data = Data.getPlayerData((Player) sender);
 
-                if(data.alertsList.contains((Player) sender)) {
+                if(data.alertsState) {
 
-                    // TODO: Get prefix from config
-                    sender.sendMessage("%prefix% Alerts output §cdisabled");
-                    data.alertsList.remove((Player) sender);
+                    sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "prefix", "§f[§b§lWave§f]") + " Alerts output §cdisabled");
+                    data.alertsState = false;
 
                 } else {
 
-                    sender.sendMessage("%prefix% Alerts output §aenabled");
-                    data.alertsList.add((Player) sender);
+                    sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "prefix", "§f[§b§lWave§f]") + " Alerts output §aenabled");
+                    data.alertsState = true;
 
                 }
 
-            } else sender.sendMessage(Bukkit.spigot().getConfig().getString("messages.unknown-command"));
+            } else {
+
+                if(Wave.INSTANCE.configUtils.getString("config", "permissions.wave-nopermission-message", "unknown-command").equalsIgnoreCase("unknown-command")) sender.sendMessage(Bukkit.spigot().getConfig().getString("messages.unknown-command"));
+                else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "permissions.wave-nopermission-message", Bukkit.spigot().getConfig().getString("messages.unknown-command")));
+
+            }
 
         }
 
         return true;
+
     }
 }

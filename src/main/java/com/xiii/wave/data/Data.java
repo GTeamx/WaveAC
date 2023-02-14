@@ -1,5 +1,6 @@
 package com.xiii.wave.data;
 
+import com.github.retrooper.packetevents.protocol.player.User;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -13,8 +14,14 @@ public class Data {
 
     public static PlayerData getPlayerData(Player player) {
 
-        for(PlayerData data : playerData) {
-            if(data.player.getUniqueId().equals(player.getUniqueId())) return data;
+        if(player == null) return null;
+
+        for(int i = 0; i < playerData.size(); i++) {
+
+            PlayerData data = playerData.get(i);
+
+            if(data.getUuid() == player.getUniqueId()) return data;
+
         }
 
         return null;
@@ -24,7 +31,9 @@ public class Data {
     public static void clearPlayerData(Player player) {
 
         for(PlayerData data : playerData) {
-            if(data.player.getUniqueId().equals(player.getUniqueId())) playerData.remove(getPlayerData(player));
+
+            if(data.getUuid().equals(player.getUniqueId())) playerData.remove(getPlayerData(player));
+
         }
 
     }

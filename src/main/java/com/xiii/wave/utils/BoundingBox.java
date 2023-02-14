@@ -129,7 +129,7 @@ public final class BoundingBox {
     }
 
 
-    public boolean checkBlocks(final Predicate<Material> predicate) {
+    public boolean checkBlocks(final Predicate<Material> predicate, final boolean allMatch) {
         final int first = (int) Math.floor(this.minX);
         final int second = (int) Math.ceil(this.maxX);
         final int third = (int) Math.floor(this.minY);
@@ -149,8 +149,8 @@ public final class BoundingBox {
             }
         }
 
-
-        return list.stream().allMatch(block -> predicate.test(block.getType()));
+        if(allMatch) return list.stream().allMatch(block -> predicate.test(block.getType()));
+        else return list.stream().anyMatch(block -> predicate.test(block.getType()));
     }
 
     public double getCenterX() {

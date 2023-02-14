@@ -1,12 +1,12 @@
 package com.xiii.wave;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.xiii.wave.commands.AlertsCommand;
 import com.xiii.wave.commands.WaveCommand;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.listener.PacketListener;
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.settings.PacketEventsSettings;
-import io.github.retrooper.packetevents.utils.server.ServerVersion;
+import com.xiii.wave.utils.ConfigUtils;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,17 +16,17 @@ public final class Wave extends JavaPlugin {
 
     public static Wave INSTANCE;
     public PacketListener packetListener;
+    public ConfigUtils configUtils;
 
     // PacketEvents
     @Override
     public void onLoad() {
-        PacketEvents.create(this);
-        PacketEventsSettings settings = PacketEvents.get().getSettings();
-        settings
-                .fallbackServerVersion(ServerVersion.v_1_7_10)
-                .compatInjector(false)
-                .checkForUpdates(false);
-        PacketEvents.get().load();
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        //Are all listeners read only?
+        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
+                .checkForUpdates(false)
+                .bStats(false);
+        PacketEvents.getAPI().load();
     }
 
     @Override
@@ -35,16 +35,18 @@ public final class Wave extends JavaPlugin {
         // Init base
         INSTANCE = this;
         packetListener = new PacketListener();
-        Data.registerPlayerData(Bukkit.getPlayer("?"));
+        configUtils = new ConfigUtils(this);
 
         // Startup
         Bukkit.getLogger().log(Level.INFO, "[Wave] Starting up...");
         Bukkit.getLogger().log(Level.INFO, "[Wave] Packet listener initialization...");
-        PacketEvents.get().init();
-        PacketEvents.get().registerListener(packetListener);
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketListener());
+        PacketEvents.getAPI().init();
         Bukkit.getLogger().log(Level.INFO, "[Wave] Commands initialization...");
         Bukkit.getPluginCommand("alerts").setExecutor(new AlertsCommand());
         Bukkit.getPluginCommand("wave").setExecutor(new WaveCommand());
+        Bukkit.getLogger().log(Level.INFO, "[Wave] Reading configuration files...");
+        configUtils.reloadConfigs();
         Bukkit.getLogger().log(Level.INFO, "[Wave] Anti-Cheat loaded. Thank you for using Wave.");
     }
 
@@ -52,10 +54,10 @@ public final class Wave extends JavaPlugin {
     public void onDisable() {
 
         // Unload
-        PacketEvents.get().terminate();
+        PacketEvents.getAPI().terminate();
         Bukkit.getScheduler().cancelTasks(this);
         Data.clearData();
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Anti-Cheat unloaded. See ya next time!");
+        Bukkit.getLogger().log(Level.INFO, "[Wave] Anti-Cheat unloaded. Goodbye!");
 
     }
 }

@@ -1,17 +1,21 @@
 package com.xiii.wave.exempt;
 
 import com.xiii.wave.data.PlayerData;
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import lombok.Getter;
-import org.bukkit.GameMode;
 
 import java.util.function.Function;
 
 @Getter
 public enum ExemptType {
 
-    LIQUID(data -> data.touchingLiquid);
+    AIR(data -> data.touchingAir),
+    CLIMB(data -> data.touchingClimbableAt || data.touchingClimbableUnder),
+    LOW_BLOCK(data -> data.touchingLowBlock),
+    //FLY(data -> data.getPlayer().getClientVersion().isRelease()),
+    LIQUID(data -> data.touchingLiquidAt || data.touchingLiquidUnder),
+
+    RESPAWN(data -> System.currentTimeMillis() - data.lastRespawn <= 1000L),
+    DAMAGE(data -> System.currentTimeMillis() - data.lastDamageTaken <= 600L);
 
     private final Function<PlayerData, Boolean> exception;
 

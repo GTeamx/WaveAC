@@ -9,6 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface CheckInfo {
 
+    boolean checkEnabled() default true;
+
     String checkName() default "UNKNOWN";
     String checkDescription() default "No description.";
     CheckCategory checkCategory() default CheckCategory.COMBAT;

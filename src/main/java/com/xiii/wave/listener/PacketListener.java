@@ -1,41 +1,51 @@
 package com.xiii.wave.listener;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
+import com.github.retrooper.packetevents.event.UserConnectEvent;
+import com.github.retrooper.packetevents.event.UserDisconnectEvent;
+import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
+import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.User;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 import com.xiii.wave.Wave;
 import com.xiii.wave.checks.Check;
 import com.xiii.wave.checks.Packets;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
 import com.xiii.wave.utils.BoundingBox;
-import io.github.retrooper.packetevents.event.PacketListenerAbstract;
-import io.github.retrooper.packetevents.event.PacketListenerPriority;
-import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
-import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
-import io.github.retrooper.packetevents.packettype.PacketType;
-import io.github.retrooper.packetevents.packetwrappers.WrappedPacket;
-import io.github.retrooper.packetevents.packetwrappers.play.in.flying.WrappedPacketInFlying;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.material.Ladder;
 import org.bukkit.material.Stairs;
 import org.bukkit.material.Step;
+import org.bukkit.material.Vine;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
-public class PacketListener extends PacketListenerAbstract {
+public final class PacketListener extends SimplePacketListenerAbstract {
 
     public PacketListener() { super(PacketListenerPriority.NORMAL); }
 
     @Override
     public synchronized void onPacketPlayReceive(PacketPlayReceiveEvent event) {
 
-        if(event.getPlayer() != null && Data.getPlayerData(event.getPlayer()) != null) {
+        if(event.getUser() != null && Data.getPlayerData((Player) event.getUser()) != null) {
 
-            final PlayerData data = Data.getPlayerData(event.getPlayer());
+            final PlayerData data = Data.getPlayerData((Player) event.getUser());
 
-            for(final Check check : data.checkManager.checkList) {
+            for(final Check check : data.getCheckManager().checkList) {
 
                 check.data = data;
 
@@ -43,23 +53,22 @@ public class PacketListener extends PacketListenerAbstract {
 
                     if(method.isAnnotationPresent(Packets.class)) {
 
-                        final byte[] packets = method.getAnnotation(Packets.class).packets();
+                        final PacketType.Play.Client[] packets = method.getAnnotation(Packets.class).playClient();
                         final Type[] parameters = method.getGenericParameterTypes();
 
-                        for(final byte packetByte : packets) {
+                        for(final PacketType.Play.Client packetByte : packets) {
 
-                            if(packetByte == event.getPacketId()) {
+                            if(packetByte == event.getPacketType()) {
 
                                 try {
 
                                     for(final Type type : parameters) {
 
                                         if(type.getTypeName().equals(PacketPlayReceiveEvent.class.getTypeName())) method.invoke(check, event);
-                                        if(type.getTypeName().equals(WrappedPacket.class.getTypeName())) method.invoke(check, new WrappedPacket(event.getNMSPacket()));
 
                                     }
 
-                                } catch (final IllegalAccessException | InvocationTargetException e) {
+                                } catch(final IllegalAccessException | InvocationTargetException e) {
                                     e.printStackTrace();
                                 }
 
@@ -73,31 +82,32 @@ public class PacketListener extends PacketListenerAbstract {
 
             }
 
-            if (event.getPacketId() == PacketType.Play.Client.POSITION || event.getPacketId() == PacketType.Play.Client.POSITION_LOOK || event.getPacketId() == PacketType.Play.Client.FLYING) {
+            if (event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION_AND_ROTATION || event.getPacketType() == PacketType.Play.Client.PLAYER_POSITION || event.getPacketType() == PacketType.Play.Client.PLAYER_FLYING) {
 
-                WrappedPacketInFlying wrappedPacketInFlying = new WrappedPacketInFlying(event.getNMSPacket());
-                Location from = new Location(event.getPlayer().getWorld(), wrappedPacketInFlying.getPosition().getX(), wrappedPacketInFlying.getPosition().getY(), wrappedPacketInFlying.getPosition().getZ());
+                assert event.getUser() != null;
+                WrapperPlayClientPlayerFlying wrappedPacketInFlying = new WrapperPlayClientPlayerFlying(event);
+                Location from = new Location(((Player) event.getUser()).getWorld(), wrappedPacketInFlying.getLocation().getX(), wrappedPacketInFlying.getLocation().getY(), wrappedPacketInFlying.getLocation().getZ());
 
-                if (wrappedPacketInFlying.isRotating()) {
+                if (wrappedPacketInFlying.hasRotationChanged()) {
 
-                    from.setYaw(wrappedPacketInFlying.getYaw());
-                    from.setPitch(wrappedPacketInFlying.getPitch());
+                    from.setYaw(wrappedPacketInFlying.getLocation().getYaw());
+                    from.setPitch(wrappedPacketInFlying.getLocation().getPitch());
 
                 } else {
 
-                    from.setYaw(event.getPlayer().getLocation().getYaw());
-                    from.setPitch(event.getPlayer().getLocation().getPitch());
+                    from.setYaw(((Player) event.getUser()).getLocation().getYaw());
+                    from.setPitch(((Player) event.getUser()).getLocation().getPitch());
 
                 }
 
                 // TODO: Do teleport handler
 
-                final BoundingBox boundingBox = new BoundingBox(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getY(), event.getPlayer().getLocation().getZ(), event.getPlayer().getLocation().getWorld());
+                final BoundingBox boundingBox = new BoundingBox(((Player) event.getUser()).getLocation().getX(), ((Player) event.getUser()).getLocation().getY(), ((Player) event.getUser()).getLocation().getZ(), ((Player) event.getUser()).getLocation().getWorld());
 
                 data.boundingBox.set(boundingBox);
                 data.boundingBoxes.add(boundingBox);
 
-                handleCollisions(boundingBox, Data.getPlayerData(event.getPlayer()));
+                handleCollisions(boundingBox, Data.getPlayerData((Player) event.getUser()));
 
                 data.playerGround = wrappedPacketInFlying.isOnGround();
                 data.serverGround = from.clone().getY() % 0.015625 == 0.0;
@@ -106,27 +116,44 @@ public class PacketListener extends PacketListenerAbstract {
                 data.sFrom = data.sTo;
                 data.sTo = from;
 
-                if(from == null) from = data.to;
+                if(data.from == null) data.from = data.to;
 
                 data.lastMotionX = data.motionX;
                 data.lastMotionY = data.motionY;
                 data.lastMotionZ = data.motionZ;
                 data.lastDeltaPitch = data.deltaPitch;
                 data.lastDeltaYaw = data.deltaYaw;
-                data.deltaPitch = data.to.getPitch() - from.getPitch();
-                float to180 = data.to.getYaw() - from.getYaw();
+                data.deltaPitch = data.to.getPitch() - data.from.getPitch();
+                float to180 = data.to.getYaw() - data.from.getYaw();
 
                 if ((to180 %= 360.0f) >= 180.0f) to180 -= 360.0f;
                 if (to180 < -180.0f) to180 += 360.0f;
 
                 data.deltaYaw = to180;
-                data.motionX = data.to.getX() - from.getX();
-                data.motionY = data.to.getY() - from.getY();
-                data.motionZ = data.to.getZ() - from.getZ();
+                data.motionX = data.to.getX() - data.from.getX();
+                data.motionY = data.to.getY() - data.from.getY();
+                data.motionZ = data.to.getZ() - data.from.getZ();
 
                 // TODO: Do cinematic handler
-                // TODO: Handle slime, teleport, animation ???, flying, death, respawn ect...
+                // TODO: Handle slime, teleport
 
+            }
+
+            // ClientBrandListener
+            if(event.getPacketType() == PacketType.Play.Client.PLUGIN_MESSAGE) {
+
+                final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + '&' + "[0-9A-FK-OR]");
+                final WrapperPlayClientPluginMessage wrappedPacketInCustomPayload = new WrapperPlayClientPluginMessage(event);
+                final String brand = ChatColor.stripColor(STRIP_COLOR_PATTERN.matcher(new String(wrappedPacketInCustomPayload.getData(), StandardCharsets.UTF_8).substring(1)).replaceAll(""));
+
+                data.clientBrand = brand;
+                data.clientVersion = PacketEvents.getAPI().getPlayerManager().getClientVersion(event.getUser()).name().replaceAll("_", ".").substring(2);
+
+                for (Player p : Bukkit.getOnlinePlayers()) {
+
+                    if (p.hasPermission(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) event.getUser(), "permissions.brand-alerts", "Wave.alerts.brand"))) p.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", data.getPlayer(), "prefix", "§f[§b§lWave§f]") + " §b" + event.getUser().getName() + " §fhas joined using §b" + data.clientBrand + " §fin §b" + data.clientVersion);
+
+                }
             }
 
         }
@@ -136,43 +163,39 @@ public class PacketListener extends PacketListenerAbstract {
     @Override
     public synchronized void onPacketPlaySend(PacketPlaySendEvent event) {
 
-        if(event.getPlayer() != null) {
+        if(event.getUser() != null) {
 
-            // onJoin
-            if(event.getPacketId() == PacketType.Play.Server.LOGIN) {
+            PlayerData data = Data.getPlayerData((Player) event.getUser());
 
-                Data.registerPlayerData(event.getPlayer());
+            if(data != null) {
 
-            }
+                for(final Check check : data.getCheckManager().checkList) {
 
-            PlayerData data = Data.getPlayerData(event.getPlayer());
+                    check.data = data;
 
-            for(final Check check : data.checkManager.checkList) {
+                    for(final Method method : check.getClass().getMethods()) {
 
-                check.data = data;
+                        if(method.isAnnotationPresent(Packets.class)) {
 
-                for(final Method method : check.getClass().getMethods()) {
+                            final PacketType.Play.Server[] packets = method.getAnnotation(Packets.class).playServer();
+                            final Type[] parameters = method.getGenericParameterTypes();
 
-                    if(method.isAnnotationPresent(Packets.class)) {
+                            for(final PacketType.Play.Server packetByte : packets) {
 
-                        final byte[] packets = method.getAnnotation(Packets.class).packets();
-                        final Type[] parameters = method.getGenericParameterTypes();
+                                if(packetByte == event.getPacketType()) {
 
-                        for(final byte packetByte : packets) {
+                                    try {
 
-                            if(packetByte == event.getPacketId()) {
+                                        for(final Type type : parameters) {
 
-                                try {
+                                            if(type.getTypeName().equals(PacketPlaySendEvent.class.getTypeName())) method.invoke(check, event);
 
-                                    for(final Type type : parameters) {
+                                        }
 
-                                        if(type.getTypeName().equals(PacketPlaySendEvent.class.getTypeName())) method.invoke(check, event);
-                                        if(type.getTypeName().equals(WrappedPacket.class.getTypeName())) method.invoke(check, new WrappedPacket(event.getNMSPacket()));
-
+                                    } catch(final IllegalAccessException | InvocationTargetException e) {
+                                        e.printStackTrace();
                                     }
 
-                                } catch (final IllegalAccessException | InvocationTargetException e) {
-                                    e.printStackTrace();
                                 }
 
                             }
@@ -185,14 +208,19 @@ public class PacketListener extends PacketListenerAbstract {
 
             }
 
-            // onQuit
-            if(event.getPacketId() == PacketType.Play.Server.KICK_DISCONNECT) {
+            // onRespawn
+            if(event.getPacketType() == PacketType.Play.Server.RESPAWN) {
 
-                // TODO: Test it
-                Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> {
-                   Bukkit.broadcastMessage("KICK_DISCONNECT: " + event.getPlayer());
-                });
-                Data.clearPlayerData(event.getPlayer());
+                data.lastRespawn = System.currentTimeMillis();
+
+            }
+
+            // onDamage
+            if(event.getPacketType() == PacketType.Play.Server.ENTITY_VELOCITY) {
+
+                WrapperPlayServerEntityVelocity wrappedPacketOutEntityVelocity = new WrapperPlayServerEntityVelocity(event);
+
+                if(wrappedPacketOutEntityVelocity.getEntityId() == event.getUser().getEntityId()) data.lastDamageTaken = System.currentTimeMillis();
 
             }
 
@@ -200,24 +228,48 @@ public class PacketListener extends PacketListenerAbstract {
 
     }
 
+    @Override
+    public void onUserConnect(UserConnectEvent event) {
+
+        Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("CONNECTION: " + event.getUser()));
+
+        Data.registerPlayerData((Player) event.getUser());
+
+    }
+
+    @Override
+    public void onUserDisconnect(UserDisconnectEvent event) {
+
+        Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("DISCONNECT: " + event.getUser()));
+
+        Data.clearPlayerData((Player) event.getUser());
+
+    }
+
     /*
-     * Credits to Frequency, taken from their PositionManager class, including their Observable and BoundingBox class.
+     * Credits to Frequency, taken from their PositionManager class, including their Observable and BoundingBox classes.
      */
 
     private synchronized void handleCollisions(final BoundingBox boundingBox, final PlayerData data) {
-
+        
+        // Blocks under
         boundingBox.expand(0.5, 0.07, 0.5).move(0.0, -0.55, 0.0);
 
-        final boolean touchingAir = boundingBox.checkBlocks(material -> material == Material.AIR);
-        final boolean touchingLiquid = boundingBox.checkBlocks(material -> material == Material.WATER || material == Material.LAVA);
-        final boolean touchingLowBlock = boundingBox.checkBlocks(material -> material.getData() == Stairs.class || material.getData() == Step.class);
-        final boolean touchingClimbable = boundingBox.checkBlocks(material -> material.getData() == Ladder.class);
-        final boolean touchingIllegalBlock = boundingBox.checkBlocks(material -> material == Material.LILY_PAD || material == Material.BREWING_STAND);
+        final boolean touchingAir = boundingBox.checkBlocks(material -> material == Material.AIR, true);
+        data.touchingLiquidUnder = boundingBox.checkBlocks(material -> material.toString().contains("WATER") || material.toString().contains("LAVA"), false);
+        data.touchingLowBlock = boundingBox.checkBlocks(material -> material.getData() == Stairs.class || material.getData() == Step.class, false);
+        data.touchingClimbableUnder = boundingBox.checkBlocks(material -> material.getData() == Ladder.class || material.getData() == Vine.class, false);
+        final boolean touchingIllegalBlock = boundingBox.checkBlocks(material -> material == Material.BREWING_STAND, false);
 
         data.touchingAir = (touchingAir && !touchingIllegalBlock);
-        data.touchingLiquid = (touchingLiquid);
-        data.touchingLowBlock = (touchingLowBlock);
-        data.touchingClimable = (touchingClimbable);
+        
+        // Blocks at
+        boundingBox.expand(-0.5, 0.0, -0.5).move(0.0, 1, 0.0);
+        
+        data.touchingLiquidAt = boundingBox.checkBlocks(material -> material.toString().contains("WATER") || material.toString().contains("LAVA"), false);
+        data.touchingClimbableAt = boundingBox.checkBlocks(material -> material.getData() == Ladder.class || material.getData() == Vine.class, false);
+        
+        
 
     }
 

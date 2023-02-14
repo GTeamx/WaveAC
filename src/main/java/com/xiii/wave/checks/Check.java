@@ -1,8 +1,11 @@
 package com.xiii.wave.checks;
 
+import com.github.retrooper.packetevents.event.CancellableEvent;
+import com.github.retrooper.packetevents.protocol.player.User;
+import com.xiii.wave.Wave;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
-import io.github.retrooper.packetevents.event.eventtypes.CancellableEvent;
+import com.xiii.wave.exempt.ExemptType;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -12,6 +15,8 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class Check {
+
+    public boolean checkEnabled;
 
     public String checkName;
     public String checkDescription;
@@ -29,49 +34,61 @@ public class Check {
     public double addBuffer;
     public double currentBuffer;
 
-    public static PlayerData data;
+    public PlayerData data;
 
-    public void flag(CancellableEvent packet, Object values) {
+    public boolean isExempt(final ExemptType exemptType) {
+        return data.getExempt().isExempt(exemptType);
+    }
 
-        // Update buffers
-        currentBuffer += addBuffer;
+    public boolean isExempt(final ExemptType... type) {
+        return data.getExempt().isExempt(type);
+    }
 
-        // Trigger alert
-        if(currentBuffer > maxBuffer || maxBuffer == 0) {
+    public void flag(final CancellableEvent packet, final Object values) {
 
-            if(packet != null) packet.setCancelled(true);
+        if(checkEnabled) {
 
-            final CheckInfo checkInfo = this.getClass().getAnnotation(CheckInfo.class);
-            final String hoverText = "§f* " + checkInfo.checkDescription() + "\n" + "\n" + "§f* §b" + values + "\n" + "§f* §b" + currentBuffer + "§f/§b" + maxBuffer;
-            final String chatPrefix = "§f[§bWave§f] ";
-            final PlayerData alertsData = Data.getPlayerData(Bukkit.getPlayer("?"));
-            // TODO: Get prefix from config file
-            //final String prefix = Vengeance.instance.configUtils.getStringFromConfig("config", "prefix","§4§lVengeance §8»§f");
+            // Update buffers
+            currentBuffer += addBuffer;
 
-            addFlag(checkName);
+            // Trigger alert
+            if(currentBuffer > maxBuffer || maxBuffer == 0) {
 
-            assert alertsData != null;
-            for (final Player p : alertsData.alertsList) {
+                if(packet != null) packet.setCancelled(true);
 
-                final TextComponent alertMessage;
-                if(checkState.equals(CheckState.EXPERIMENTAL)) {
+                final CheckInfo checkInfo = this.getClass().getAnnotation(CheckInfo.class);
+                final String hoverText = "§f* " + checkInfo.checkDescription() + "\n" + "\n" + "§f* " + values + "\n" + "§f* §b" + currentBuffer + "§f/§b" + maxBuffer;
 
-                    alertMessage = new TextComponent(chatPrefix + " §b" + data.player.getName() + " §7flagged §b△" + checkName + " §7(§bx" + getFlags(data.player.getName(), checkName) + "§7)");
+                addFlag(checkName);
 
-                } else {
+                for(final Player p : Bukkit.getOnlinePlayers()) {
 
-                    alertMessage = new TextComponent(chatPrefix + " §b" + data.player.getName() + " §7flagged §b" + checkName + " §7(§bx" + getFlags(data.player.getName(), checkName) + "§7)");
+                    if(Data.getPlayerData(p).alertsState) {
 
+                        final TextComponent alertMessage;
+                        if(checkState.equals(CheckState.EXPERIMENTAL)) {
+
+                            alertMessage = new TextComponent(Wave.INSTANCE.configUtils.getStringConverted("config", data.getPlayer(), "prefix", "§f[§b§lWave§f]") + " §b" + data.player.getName() + " §7flagged §b△" + checkName + " §7(§bx" + getFlags(data.player.getName(), checkName) + "§7)");
+
+                        } else {
+
+                            alertMessage = new TextComponent(Wave.INSTANCE.configUtils.getStringConverted("config", data.getPlayer(), "prefix", "§f[§b§lWave§f]") + " §b" + data.player.getName() + " §7flagged §b" + checkName + " §7(§bx" + getFlags(data.player.getName(), checkName) + "§7)");
+
+                        }
+
+                        alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
+                        p.spigot().sendMessage(alertMessage);
+
+                    }
                 }
-                alertMessage.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(hoverText).create()));
-                p.spigot().sendMessage(alertMessage);
+
             }
 
         }
 
     }
 
-    private void addFlag(String check) {
+    private void addFlag(final String check) {
 
         HashMap<String, Integer> currentFlags = data.flagList.get(data.player.getName());
 
@@ -81,7 +98,7 @@ public class Check {
 
     }
 
-    private int getFlags(String flagName, String flagType) {
+    private int getFlags(final String flagName, final String flagType) {
 
         if(data.flagList.get(flagName) == null) return 0;
         return data.flagList.get(flagName).getOrDefault(flagType, 0);

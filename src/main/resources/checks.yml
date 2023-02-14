@@ -1,0 +1,47 @@
+#This is the configuration file for Wave b0001 (config.yml)
+#To reset this file, delete it from the Wave's folder and restart your server.
+
+config-version: b0001-checks
+# This won't have any visual impact, this is only for the plugin, changing it will only break things.
+
+Fly A:
+# Changing this will break the check, so don't change it.
+
+  check-enabled: true
+  # This is a simple way to allow checks to run or not.
+  check-name: Fly A
+  # This will be displayed on the alerts message. WARNING: Be aware changing this can corrupt this file!
+  check-description: Checks for vanilla gravity modifications.
+  # This will be displayed when hovering the alert, at the first line.
+  check-can-ban: false
+  # This will allow or not the check to automatically ban the player when they reach the maximum violations count.
+  check-can-kick: false
+  # This will allow or not the check to automatically kick the player when they reach the maximum violations count.
+  check-is-silent: false
+  # This will cancel/block the player's action whenever they flag a check, this also cancels packets.
+  check-punish-vl: 30
+  # The maximum violation count before any punishment is applied to the player.
+  check-buffer-max: 1
+  # WARNING: Be aware changing this can result in slower or less precise detections!
+  check-buffer-add: 1
+  # WARNING: Be aware changing this can result in slower or less precise detections!
+  check-buffer-remove: 1
+  # WARNING: Be aware changing this can result in slower or less precise detections!
+
+VPN:
+# Changing this will break the check, so don't change it.
+
+  check-enabled: true
+  # This is a simple way to allow checks to run or not.
+  check-name: VPN
+  # This will be displayed on the alerts message. WARNING: Be aware changing this can corrupt this file!
+  check-description: VPN/Proxy
+  # This will be displayed when hovering the alert, at the first line.
+  check-can-ban: false
+  # This will allow or not the check to automatically ban the player when they reach the maximum violations count.
+  check-can-kick: true
+  # This will allow or not the check to automatically kick the player when they reach the maximum violations count.
+  check-is-silent: true
+  # This will cancel/block the player's action whenever they flag a check, this also cancels packets.
+  check-punish-vl: 0
+  # The maximum violation count before any punishment is applied to the player.
