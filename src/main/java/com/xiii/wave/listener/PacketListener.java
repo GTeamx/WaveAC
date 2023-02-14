@@ -243,7 +243,6 @@ public final class PacketListener extends SimplePacketListenerAbstract {
         Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("DISCONNECT: " + event.getUser()));
 
         Data.clearPlayerData((Player) event.getUser());
-
     }
 
     /*
