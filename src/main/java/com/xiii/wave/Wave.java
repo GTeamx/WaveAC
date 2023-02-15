@@ -64,9 +64,8 @@ public final class Wave extends JavaPlugin {
         (this.alertManager = new AlertManager()).initialize();
 
         new ViolationTask(this).runTaskTimerAsynchronously(this,
-                Config.Setting.CHECK_SETTINGS_VIOLATION_RESET_INTERVAL.getLong() * 1200L,
-                Config.Setting.CHECK_SETTINGS_VIOLATION_RESET_INTERVAL.getLong() * 1200L);
-        // TODO: idk fix this shit
+                Config.Setting.CHECKS_VL_CLEAR_RATE.getLong() * 1200L,
+                Config.Setting.CHECKS_VL_CLEAR_RATE.getLong() * 1200L);
 
         //We're most likely going to be using transactions - ping pongs, So we need to do this for ViaVersion
         System.setProperty("com.viaversion.handlePingsAsInvAcknowledgements", "true");
@@ -75,11 +74,11 @@ public final class Wave extends JavaPlugin {
         try {
 
             MiscUtils.initializeClasses(
-                    "me.nik.anticheatbase.utils.fastmath.FastMath",
-                    "me.nik.anticheatbase.utils.fastmath.NumbersUtils",
-                    "me.nik.anticheatbase.utils.fastmath.FastMathLiteralArrays",
+                    "com.xiii.wave.utils.fastmath.FastMath",
+                    "com.xiii.wave.utils.fastmath.NumbersUtils",
+                    "com.xiii.wave.utils.fastmath.FastMathLiteralArrays",
                     //"me.nik.anticheatbase.utils.minecraft.MathHelper",
-                    "me.nik.anticheatbase.utils.CollisionUtils",
+                    "com.xiii.wave.utils.CollisionUtils",
                     "com.xiii.wave.utils.MoveUtils"
             );
 

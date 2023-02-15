@@ -2,6 +2,10 @@ package com.xiii.wave.managers.profile;
 
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.xiii.wave.Wave;
+import com.xiii.wave.checks.CheckHolder;
+import com.xiii.wave.enums.Permissions;
+import com.xiii.wave.exempt.Exempt;
+import com.xiii.wave.files.Config;
 import com.xiii.wave.managers.threads.ProfileThread;
 import com.xiii.wave.playerdata.data.impl.*;
 import com.xiii.wave.processors.Packet;
@@ -25,14 +29,14 @@ public class Profile {
     //-------------------------------------------
 
     //--------------------------------------
-    //private final CheckHolder checkHolder;
+    private final CheckHolder checkHolder;
     //--------------------------------------
 
     //--------------------------------------
     private final String version;
     private final ClientVersion clientVersion;
     private String client = "Unknown";
-    //private final boolean bypass;
+    private final boolean bypass;
     //--------------------------------------
 
     //------------------------------------------
@@ -42,7 +46,7 @@ public class Profile {
     //------------------------------------------
 
     //---------------------------
-    //private final Exempt exempt;
+    private final Exempt exempt;
     //---------------------------
 
     public Profile(Player player) {
@@ -58,7 +62,7 @@ public class Profile {
         this.clientVersion = VersionUtils.getClientVersion(player);
 
         //Bypass
-        //this.bypass = !Config.Setting.DISABLE_BYPASS_PERMISSION.getBoolean() && player.hasPermission(Permissions.BYPASS.getPermission());
+        this.bypass = !Config.Setting.DISABLE_BYPASS_PERMISSION.getBoolean() && player.hasPermission(Permissions.BYPASS.getPermission());
 
         //Data
         this.actionData = new ActionData(this);
@@ -71,21 +75,21 @@ public class Profile {
         this.vehicleData = new VehicleData();
 
         //Check Holder
-        //this.checkHolder = new CheckHolder(this);
+        this.checkHolder = new CheckHolder(this);
 
         //Exempt
-        //this.exempt = new Exempt(this);
+        this.exempt = new Exempt(this);
 
         //Thread
         this.profileThread = Wave.getInstance().getThreadManager().getAvailableProfileThread();
 
         //Initialize Checks
-        //reloadChecks();
+        reloadChecks();
     }
 
-    //public boolean isBypassing() {
-    //    return bypass;
-    //}
+    public boolean isBypassing() {
+        return bypass;
+    }
 
     public void handle(Packet packet) {
 
@@ -100,11 +104,9 @@ public class Profile {
         this.velocityData.process(packet);
         this.vehicleData.process(packet);
 
-        //if (skip(packet.getTimeStamp())) return;
+        this.exempt.handleExempts(packet.getTimeStamp());
 
-        //this.exempt.handleExempts(packet.getTimeStamp());
-
-        //this.checkHolder.runChecks(packet);
+        this.checkHolder.runChecks(packet);
     }
 
     public void kick(String reason) {
@@ -138,9 +140,9 @@ public class Profile {
         return this.uuid;
     }
 
-    //public void reloadChecks() {
-    //    this.checkHolder.registerAll();
-    //}
+    public void reloadChecks() {
+        this.checkHolder.registerAll();
+    }
 
     public void handleTick(long currentTime) {
         //Handle the tick here
@@ -176,13 +178,13 @@ public class Profile {
         return vehicleData;
     }
 
-    //public CheckHolder getCheckHolder() {
-    //    return checkHolder;
-    //}
+    public CheckHolder getCheckHolder() {
+        return checkHolder;
+    }
 
-    //public Exempt isExempt() {
-    //    return exempt;
-    //}
+    public Exempt isExempt() {
+        return exempt;
+    }
 
     public ProfileThread getProfileThread() {
         return profileThread;

@@ -97,9 +97,9 @@ public class JsonBuilder {
      */
     public void sendMessage(Player player) {
 
-        WrapperPlayServerChatMessage chat = new WrapperPlayServerChatMessage((PacketSendEvent) null);
+        WrapperPlayServerChatMessage chat = new WrapperPlayServerChatMessage();
 
-        chat.setMessage(WrappedChatComponent.fromJson(json));
+        chat.setMessage(ChatComp.fromJson(json));
 
         chat.sendPacket(player);
     }

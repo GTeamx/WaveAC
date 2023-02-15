@@ -3,7 +3,9 @@ package com.xiii.wave.listener;
 import com.xiii.wave.Wave;
 import com.xiii.wave.api.events.WaveViolationEvent;
 import com.xiii.wave.enums.MsgType;
+import com.xiii.wave.files.Config;
 import com.xiii.wave.managers.profile.Profile;
+import com.xiii.wave.utils.JsonBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,7 +81,7 @@ public class ViolationListener implements Listener {
 
                 jsonBuilder.sendMessage(this.plugin.getAlertManager().getPlayersWithAlerts());
 
-                if (!Config.Setting.CHECK_SETTINGS_ALERT_CONSOLE.getBoolean()) break alerts;
+                if (!Config.Setting.CONSOLE_ALERT.getBoolean()) break alerts;
 
                 Bukkit.getConsoleSender().sendMessage(alertMessage);
             }

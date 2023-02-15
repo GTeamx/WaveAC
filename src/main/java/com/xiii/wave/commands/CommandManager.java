@@ -2,6 +2,7 @@ package com.xiii.wave.commands;
 
 import com.xiii.wave.Wave;
 import com.xiii.wave.commands.subcommands.AlertsCommand;
+import com.xiii.wave.commands.subcommands.VPNCommand;
 import com.xiii.wave.enums.MsgType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -19,6 +20,7 @@ public class CommandManager implements TabExecutor {
 
     public CommandManager(Wave plugin) {
         this.subCommands.add(new AlertsCommand(plugin));
+        this.subCommands.add(new VPNCommand(plugin));
     }
 
     @Override
@@ -72,7 +74,7 @@ public class CommandManager implements TabExecutor {
         this.subCommands.stream()
                 .filter(subCommand -> sender.hasPermission(subCommand.getPermission()))
                 .forEach(subCommand ->
-                        sender.sendMessage(ChatColor.RED + subCommand.getSyntax() + ChatColor.DARK_GRAY + " - "
+                        sender.sendMessage(ChatColor.AQUA + subCommand.getSyntax() + ChatColor.DARK_GRAY + " - "
                                 + ChatColor.GRAY + subCommand.getDescription()));
 
         sender.sendMessage("");

@@ -1,5 +1,6 @@
 package com.xiii.wave.checks.types;
 
+import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.processors.Packet;
 

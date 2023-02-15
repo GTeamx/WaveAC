@@ -34,7 +34,7 @@ public class AlertsCommand extends SubCommand {
 
     @Override
     protected String getPermission() {
-        return Permissions.MAIN_COMMAND_ALERTS.getPermission();
+        return Permissions.ALERTS_COMMAND.getPermission();
     }
 
     @Override

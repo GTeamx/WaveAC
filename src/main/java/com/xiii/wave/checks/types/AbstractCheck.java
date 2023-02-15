@@ -47,7 +47,7 @@ public abstract class AbstractCheck {
         final String checkName = this.checkName.toLowerCase();
         final String checkType = type.toLowerCase().replace(" ", "_");
 
-        this.enabledSetback = !Config.Setting.GHOST_MODE.getBoolean()
+        this.enabledSetback = !Config.Setting.SILENT_MODE.getBoolean()
                 && (check == CheckType.SPEED || check == CheckType.FLY || check == CheckType.MOTION);
 
         this.enabled = type.isEmpty()

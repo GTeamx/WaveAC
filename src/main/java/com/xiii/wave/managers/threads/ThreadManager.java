@@ -3,6 +3,7 @@ package com.xiii.wave.managers.threads;
 import com.xiii.wave.Wave;
 import com.xiii.wave.managers.Initializer;
 import com.xiii.wave.managers.profile.Profile;
+import com.xiii.wave.utils.ChatUtils;
 import com.xiii.wave.utils.MiscUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -58,7 +59,7 @@ public class ThreadManager implements Listener, Initializer {
         //Throw an exception if the profile thread is null, Which should be impossible.
         if (profileThread == null) {
 
-            Wave.log(Level.SEVERE, "Encountered a null profile thread, please restart the server.");
+            ChatUtils.log(Level.SEVERE, "Encountered a null profile thread, please restart the server.");
         }
 
         //Return the available thread and increment the profile count

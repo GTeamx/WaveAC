@@ -2,16 +2,16 @@ package com.xiii.wave.enums;
 
 import com.xiii.wave.Wave;
 import com.xiii.wave.utils.ChatUtils;
+import org.bukkit.Bukkit;
 
 import java.util.List;
 
 public enum MsgType {
-    // TODO: Change it all to the config
-    PREFIX(Wave.getInstance().getConfigUtils().getString("config", "prefix", "§f[§b§lWave§f]")),
-    NO_PERMISSION(PREFIX.getMessage() + " " + Wave.getInstance().getConfigUtils().getString("config", "permissions.wave-nopermission-message", "unknown-command")),
-    CONSOLE_COMMANDS(PREFIX.getMessage() + ChatUtils.format(Anticheat.getInstance().getThemeManager().getTheme().getString("console_commands"))),
-    ALERT_MESSAGE(PREFIX.getMessage() + ChatUtils.format(Anticheat.getInstance().getThemeManager().getTheme().getString("alert_message"))),
-    ALERT_HOVER(stringFromList(Anticheat.getInstance().getThemeManager().getTheme().getConfig().getStringList("alert_hover")));
+    PREFIX(Wave.getInstance().getConfiguration().getString("prefix")),
+    NO_PERMISSION(Wave.getInstance().getConfiguration().getString("messages.no-permission")),
+    CONSOLE_COMMANDS(PREFIX.getMessage() + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.console-command"))),
+    ALERT_MESSAGE(PREFIX.getMessage() + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.alert-message"))),
+    ALERT_HOVER(stringFromList(Wave.getInstance().getConfiguration().getStringList("messages.alert-hover")));
 
     private final String message;
 

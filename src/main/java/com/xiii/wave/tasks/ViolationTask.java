@@ -1,6 +1,7 @@
 package com.xiii.wave.tasks;
 
 import com.xiii.wave.Wave;
+import com.xiii.wave.checks.types.Check;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ViolationTask extends BukkitRunnable {

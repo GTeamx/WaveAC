@@ -3,6 +3,7 @@ package com.xiii.wave.files;
 import com.xiii.wave.Wave;
 import com.xiii.wave.files.commentedfiles.CommentedFileConfiguration;
 import com.xiii.wave.managers.Initializer;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.List;
@@ -12,15 +13,8 @@ import java.util.stream.Stream;
 public class Config implements Initializer {
 
     private static final String[] HEADER = new String[]{
-            "+----------------------------------------------------------------------------------------------+",
-            "|                                                                                              |",
-            "|                                          Anticheat                                           |",
-            "|                                                                                              |",
-            "|                          Website: https://www.youranticheatwebsite.com                       |",
-            "|                                                                                              |",
-            "|                                         Author: Nik                                          |",
-            "|                                                                                              |",
-            "+----------------------------------------------------------------------------------------------+"
+            "#This is the configuration file for Wave b0001 (config.yml)",
+            "#To reset this file, delete it from the Wave's folder and restart your server."
     };
 
     private final Wave plugin;
@@ -69,24 +63,46 @@ public class Config implements Initializer {
     }
 
     public enum Setting {
-        SERVER_NAME("server_name", "Server", "The server name that will be shown in Player Logs"),
 
-        THEME("theme", "default", "The theme that the anticheat is going to use"),
+        CONFIG_VERSION("config-version", "b0001-config", "This won't have any visual impact, this is only for the plugin, changing it will only break things."),
 
-        TOGGLE_ALERTS_ON_JOIN("toggle_alerts_on_join", true, "Should we enable alerts for admins when they join?"),
+        PREFIX("prefix", "§f[§b§lWave§f]", "This prefix will be used everywhere, including alerts, commands ect..."),
 
-        DISABLE_BYPASS_PERMISSION("disable_bypass_permission", true, "Should we disable the bypass permission?", "Disable this for some perfomance gain"),
+        // Bukkit.spigot().getConfig().getString("messages.unknown-command")
+        MESSAGES("messages", "", "Messages used across Wave"),
+        CONSOLE_ALERT("messages.console-alert", false, "Send alerts to console"),
+        CONSOLE_COMMAND("message.console-command", "Sorry, this Wave's command can only be executed by a player.", "Message sent to console when trying to execute players only commands (of Wave) from console."),
+        NO_PERMISSION("messages.no-permission", Bukkit.spigot().getConfig().getString("messages.unknown-command"), "By putting \"unknown-command\" this will use the unknown-command message from the spigot.yml configuration file."),
+        ALERT_MESSAGE("message.alert-message", "&b%player% &7flagged &b%check% &7(§fx§b%vl%§7)", "Alert message that you will see whenever an alert is sent"),
+        ALERT_HOVER("messages.alert-hover", "", "Hover message displayed when hovering an alert"),
+        ALERT_HOVER_1("messages.alert-hover", "- '&7Description:&r'", ""),
+        ALERT_HOVER_2("messages.alert-hover", "- '%description%'", ""),
+        ALERT_HOVER_3("messages.alert-hover", "", ""),
+        ALERT_HOVER_4("messages.alert-hover", "- '&7Information:&r'", ""),
+        ALERT_HOVER_5("messages.alert-hover", "- '%information%'", ""),
+        ALERT_HOVER_6("messages.alert-hover", "", ""),
+        ALERT_HOVER_7("messages.alert-hover", "- '&7TPS: &r%tps%'", ""),
+        ALERT_HOVER_8("messages.alert-hover", "", ""),
+        ALERT_HOVER_9("messages.alert-hover", "- '&fClick to teleport'", ""),
 
-        GHOST_MODE("ghost_mode", true, "Should we enable the Ghost Mode?", "If enabled the Anticheat will use Setbacks for movement related checks"),
+        VPN_KEY("vpn-checker-key", "XXXXXX-XXXXXX-XXXXXX-XXXXXX", "You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.", "If you wish to disable the VPN checker you can simply put 'DISABLED'."),
 
-        CHECK_SETTINGS("check_settings", "", "Check Settings"),
-        CHECK_SETTINGS_ALERT_CONSOLE("check_settings.alert_console", false, "Should we also send alerts in console?"),
-        CHECK_SETTINGS_VIOLATION_RESET_INTERVAL("check_settings.violation_reset_interval", 5, "How often should we clear the player violations? (In minutes)"),
+        PERMISSIONS("permissions", "", "Permissions used across Wave"),
+        PERMISSIONS_ALERTS("permissions.wave-alerts-command", "Wave.commands.alerts", ""),
+        PERMISSIONS_ALERTS_BRAND("permissions.alerts-brand", "Wave.alerts.brand", ""),
+        PERMISSIONS_MAIN("permissions.wave-main-command", "Wave.commands.main", ""),
+        PERMISSIONS_VERSION("permissions.wave-version-command", "Wave.commands.version", ""),
+        PERMISSIONS_BRAND("permissions.wave-commands-brand", "Wave.commands.brand", ""),
+        PERMISSIONS_PLAYERVERSION("permissions.wave-commands-playerversion", "Wave.commands.playerversion", ""),
+        PERMISSIONS_VPN("permissions.wave-vpn-command", "Wave.commands.vpn", ""),
+        DISABLE_BYPASS_PERMISSION("permissions.disable-bypass-permission", true, "Should we disable the bypass permission?", "This permission allows player with it to be fully exempt from Wave."),
+        PERMISSIONS_BYPASS("permissions.wave-bypass", "Wave.bypass", ""),
+        PERMISSIONS_AUTO_ALERTS("permissions.wave-auto-alerts", "Wave.alerts.auto", ""),
 
-        LOGS("logs", "", "Log Settings"),
-        LOGS_ENABLED("logs.enabled", true, "Should we enable logging?"),
-        LOGS_TYPE("logs.type", "YAML", "What type of Database should we use for logging?"),
-        LOGS_CLEAR_DAYS("logs.clear_days", 5, "Logs older than this value of Days will be cleared");
+        CHECKS("checks", "", "Checks configuration used across every checks"),
+        CHECKS_VL_CLEAR_RATE("checks.violations-clear-rate", 5, "Every how many minutes should we clear all violations (in minutes)"),
+        SILENT_MODE("checks.silent-mode", true, "Should we setback the player when they flag a movement check ?"),
+        TOGGLE_ALERTS_ON_JOIN("checks.toggle-alerts-on-join", true, "Should we enable alerts for admins when they join?");
 
         private final String key;
         private final Object defaultValue;

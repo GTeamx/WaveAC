@@ -1,24 +1,51 @@
 package com.xiii.wave.exempt;
 
-import com.xiii.wave.data.PlayerData;
-import lombok.RequiredArgsConstructor;
+import com.xiii.wave.managers.profile.Profile;
+import com.xiii.wave.playerdata.data.impl.MovementData;
 
-import java.util.Arrays;
-import java.util.function.Function;
+public class Exempt {
 
-@RequiredArgsConstructor
-public final class Exempt {
+    private final Profile profile;
 
-    private final PlayerData data;
-
-    public boolean isExempt(final ExemptType exemptType) {
-        return exemptType.getException().apply(data);
+    public Exempt(Profile profile) {
+        this.profile = profile;
     }
 
-    public boolean isExempt(final ExemptType... exemptTypes) { return Arrays.stream(exemptTypes).anyMatch(this::isExempt); }
+    private boolean movement, velocity, jesus, elytra, vehicle, autoclicker, aim;
 
-    public boolean isExempt(final Function<PlayerData, Boolean> exception) {
-        return exception.apply(data);
+    public void handleExempts(long timeStamp) {
+
+        MovementData movementData = profile.getMovementData();
+
+        //Example
+        this.movement = movementData.getDeltaXZ() == 0D && movementData.getDeltaY() == 0D;
     }
 
+    public boolean movement() {
+        return this.movement;
+    }
+
+    public boolean velocity() {
+        return this.velocity;
+    }
+
+    public boolean jesus() {
+        return this.jesus;
+    }
+
+    public boolean autoclicker() {
+        return this.autoclicker;
+    }
+
+    public boolean aim() {
+        return this.aim;
+    }
+
+    public boolean elytra() {
+        return this.elytra;
+    }
+
+    public boolean vehicle() {
+        return this.vehicle;
+    }
 }
