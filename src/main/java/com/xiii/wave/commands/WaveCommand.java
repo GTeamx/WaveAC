@@ -1,6 +1,5 @@
 package com.xiii.wave.commands;
 
-import com.github.retrooper.packetevents.protocol.player.User;
 import com.xiii.wave.Wave;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
@@ -61,9 +60,9 @@ public final class WaveCommand implements CommandExecutor {
 
                             if(data.clientBrand != null && target != null && data != null) {
 
-                                sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " Client brand of player §3" + target.getName() + " is §9" + data.clientBrand);
+                                sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " Client brand of player §3" + target.getName() + " is §9" + data.clientBrand);
 
-                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
+                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
 
                         } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
 
@@ -87,9 +86,9 @@ public final class WaveCommand implements CommandExecutor {
 
                             if(data.clientVersion != null && target != null && data != null) {
 
-                                sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " Client version of player §3" + target.getName() + " is §9" + data.clientVersion);
+                                sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " Client version of player §3" + target.getName() + " is §9" + data.clientVersion);
 
-                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
+                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
 
                         } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
 
@@ -120,11 +119,11 @@ public final class WaveCommand implements CommandExecutor {
 
                                 if(httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("vpn")) {
 
-                                    sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " §cVPN/Proxy detected for §3" + target.getName() + " §crisk level is §9" + riskLevel);
+                                    sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " §cVPN/Proxy detected for §3" + target.getName() + " §crisk level is §9" + riskLevel);
 
-                                } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " §aNo VPN/Proxy were detected for §3" + target.getName() + " §arisk level is §9" + riskLevel);
+                                } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " §aNo VPN/Proxy were detected for §3" + target.getName() + " §arisk level is §9" + riskLevel);
 
-                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) target, "prefix", "§f[§b§lWave§f]") + " §cError! VPN checker is disabled.");
+                            } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", target, "prefix", "§f[§b§lWave§f]") + " §cError! VPN checker is disabled.");
 
                         } else sender.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) sender, "prefix", "§f[§b§lWave§f]") + " §cError! Player isn't valid.");
 

@@ -1,9 +1,8 @@
 package com.xiii.wave.data;
 
-import com.github.retrooper.packetevents.protocol.player.User;
-import com.xiii.wave.checks.CheckManager;
-import com.xiii.wave.checks.PredictionEngine;
+import com.xiii.wave.OLD.CheckManager;
 import com.xiii.wave.exempt.Exempt;
+import com.xiii.wave.processors.PredictionEngine;
 import com.xiii.wave.utils.BoundingBox;
 import com.xiii.wave.utils.Observable;
 import com.xiii.wave.utils.SampleList;

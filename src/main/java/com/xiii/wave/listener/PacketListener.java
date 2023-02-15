@@ -3,18 +3,16 @@ package com.xiii.wave.listener;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
-import com.github.retrooper.packetevents.event.UserConnectEvent;
 import com.github.retrooper.packetevents.event.UserDisconnectEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerFlying;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 import com.xiii.wave.Wave;
-import com.xiii.wave.checks.Check;
-import com.xiii.wave.checks.Packets;
+import com.xiii.wave.OLD.Check;
+import com.xiii.wave.OLD.Packets;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
 import com.xiii.wave.utils.BoundingBox;
@@ -41,9 +39,9 @@ public final class PacketListener extends SimplePacketListenerAbstract {
     @Override
     public synchronized void onPacketPlayReceive(PacketPlayReceiveEvent event) {
 
-        if(event.getUser() != null && Data.getPlayerData((Player) event.getUser()) != null) {
+        if(event.getUser() != null && Data.getPlayerData(Bukkit.getPlayer(event.getUser().getName())) != null) {
 
-            final PlayerData data = Data.getPlayerData((Player) event.getUser());
+            final PlayerData data = Data.getPlayerData(Bukkit.getPlayer(event.getUser().getName()));
 
             for(final Check check : data.getCheckManager().checkList) {
 
@@ -86,7 +84,7 @@ public final class PacketListener extends SimplePacketListenerAbstract {
 
                 assert event.getUser() != null;
                 WrapperPlayClientPlayerFlying wrappedPacketInFlying = new WrapperPlayClientPlayerFlying(event);
-                Location from = new Location(((Player) event.getUser()).getWorld(), wrappedPacketInFlying.getLocation().getX(), wrappedPacketInFlying.getLocation().getY(), wrappedPacketInFlying.getLocation().getZ());
+                Location from = new Location((Bukkit.getPlayer(event.getUser().getName())).getWorld(), wrappedPacketInFlying.getLocation().getX(), wrappedPacketInFlying.getLocation().getY(), wrappedPacketInFlying.getLocation().getZ());
 
                 if (wrappedPacketInFlying.hasRotationChanged()) {
 
@@ -95,19 +93,19 @@ public final class PacketListener extends SimplePacketListenerAbstract {
 
                 } else {
 
-                    from.setYaw(((Player) event.getUser()).getLocation().getYaw());
-                    from.setPitch(((Player) event.getUser()).getLocation().getPitch());
+                    from.setYaw((Bukkit.getPlayer(event.getUser().getName())).getLocation().getYaw());
+                    from.setPitch((Bukkit.getPlayer(event.getUser().getName())).getLocation().getPitch());
 
                 }
 
                 // TODO: Do teleport handler
 
-                final BoundingBox boundingBox = new BoundingBox(((Player) event.getUser()).getLocation().getX(), ((Player) event.getUser()).getLocation().getY(), ((Player) event.getUser()).getLocation().getZ(), ((Player) event.getUser()).getLocation().getWorld());
+                final BoundingBox boundingBox = new BoundingBox((Bukkit.getPlayer(event.getUser().getName())).getLocation().getX(), (Bukkit.getPlayer(event.getUser().getName())).getLocation().getY(), (Bukkit.getPlayer(event.getUser().getName())).getLocation().getZ(), (Bukkit.getPlayer(event.getUser().getName())).getLocation().getWorld());
 
                 data.boundingBox.set(boundingBox);
                 data.boundingBoxes.add(boundingBox);
 
-                handleCollisions(boundingBox, Data.getPlayerData((Player) event.getUser()));
+                handleCollisions(boundingBox, Data.getPlayerData(Bukkit.getPlayer(event.getUser().getName())));
 
                 data.playerGround = wrappedPacketInFlying.isOnGround();
                 data.serverGround = from.clone().getY() % 0.015625 == 0.0;
@@ -151,7 +149,7 @@ public final class PacketListener extends SimplePacketListenerAbstract {
 
                 for (Player p : Bukkit.getOnlinePlayers()) {
 
-                    if (p.hasPermission(Wave.INSTANCE.configUtils.getStringConverted("config", (Player) event.getUser(), "permissions.brand-alerts", "Wave.alerts.brand"))) p.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", data.getPlayer(), "prefix", "§f[§b§lWave§f]") + " §b" + event.getUser().getName() + " §fhas joined using §b" + data.clientBrand + " §fin §b" + data.clientVersion);
+                    if (p.hasPermission(Wave.INSTANCE.configUtils.getStringConverted("config", Bukkit.getPlayer(event.getUser().getName()), "permissions.brand-alerts", "Wave.alerts.brand"))) p.sendMessage(Wave.INSTANCE.configUtils.getStringConverted("config", data.getPlayer(), "prefix", "§f[§b§lWave§f]") + " §b" + event.getUser().getName() + " §fhas joined using §b" + data.clientBrand + " §fin §b" + data.clientVersion);
 
                 }
             }
@@ -165,7 +163,20 @@ public final class PacketListener extends SimplePacketListenerAbstract {
 
         if(event.getUser() != null) {
 
-            PlayerData data = Data.getPlayerData((Player) event.getUser());
+            if(event.getPacketType() == PacketType.Play.Server.JOIN_GAME) {
+
+                Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("CONNECTION: " + event.getUser().getName() + " " + event.getUser().getUUID()));
+
+                Bukkit.getScheduler().runTaskLater(Wave.INSTANCE, () -> {
+                    Player player = Bukkit.getServer().getPlayer(event.getUser().getName());
+                    Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("PLAYER: " + player));
+
+                    Data.registerPlayerData(player);
+                }, 1);
+
+            }
+
+            PlayerData data = Data.getPlayerData(Bukkit.getPlayer(event.getUser().getName()));
 
             if(data != null) {
 
@@ -229,20 +240,11 @@ public final class PacketListener extends SimplePacketListenerAbstract {
     }
 
     @Override
-    public void onUserConnect(UserConnectEvent event) {
-
-        Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("CONNECTION: " + event.getUser()));
-
-        Data.registerPlayerData((Player) event.getUser());
-
-    }
-
-    @Override
     public void onUserDisconnect(UserDisconnectEvent event) {
 
-        Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("DISCONNECT: " + event.getUser()));
+        Bukkit.getScheduler().runTask(Wave.INSTANCE, () -> Bukkit.broadcastMessage("DISCONNECT: " + event.getUser().getUUID()));
 
-        Data.clearPlayerData((Player) event.getUser());
+        Data.clearPlayerData(Bukkit.getPlayer(event.getUser().getUUID()));
     }
 
     /*

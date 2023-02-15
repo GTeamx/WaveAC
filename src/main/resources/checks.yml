@@ -1,4 +1,4 @@
-#This is the configuration file for Wave b0001 (config.yml)
+#This is the configuration file for Wave b0001 (checks.yml)
 #To reset this file, delete it from the Wave's folder and restart your server.
 
 config-version: b0001-checks
@@ -13,6 +13,7 @@ Fly A:
   # This will be displayed on the alerts message. WARNING: Be aware changing this can corrupt this file!
   check-description: Checks for vanilla gravity modifications.
   # This will be displayed when hovering the alert, at the first line.
+
   check-can-ban: false
   # This will allow or not the check to automatically ban the player when they reach the maximum violations count.
   check-can-kick: false
@@ -21,6 +22,11 @@ Fly A:
   # This will cancel/block the player's action whenever they flag a check, this also cancels packets.
   check-punish-vl: 30
   # The maximum violation count before any punishment is applied to the player.
+
+  commands:
+    - kick %player% Unfair Advantage
+  # The commands executed whenever a player's violations count goes above the maximum punish-vl limit.
+
   check-buffer-max: 1
   # WARNING: Be aware changing this can result in slower or less precise detections!
   check-buffer-add: 1
@@ -37,6 +43,7 @@ VPN:
   # This will be displayed on the alerts message. WARNING: Be aware changing this can corrupt this file!
   check-description: VPN/Proxy
   # This will be displayed when hovering the alert, at the first line.
+
   check-can-ban: false
   # This will allow or not the check to automatically ban the player when they reach the maximum violations count.
   check-can-kick: true

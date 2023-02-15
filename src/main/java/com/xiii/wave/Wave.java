@@ -1,29 +1,49 @@
 package com.xiii.wave;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.xiii.wave.commands.AlertsCommand;
-import com.xiii.wave.commands.WaveCommand;
-import com.xiii.wave.data.Data;
-import com.xiii.wave.listener.PacketListener;
-import com.xiii.wave.utils.ConfigUtils;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.xiii.wave.commands.CommandManager;
+import com.xiii.wave.files.Checks;
+import com.xiii.wave.files.Config;
+import com.xiii.wave.files.commentedfiles.CommentedFileConfiguration;
+import com.xiii.wave.listener.ClientBrandListener;
+import com.xiii.wave.listener.ProfileListener;
+import com.xiii.wave.listener.ViolationListener;
+import com.xiii.wave.managers.AlertManager;
+import com.xiii.wave.managers.profile.ProfileManager;
+import com.xiii.wave.managers.threads.ThreadManager;
+import com.xiii.wave.nms.NmsManager;
+import com.xiii.wave.tasks.ViolationTask;
+import com.xiii.wave.utils.ChatUtils;
+import com.xiii.wave.utils.MiscUtils;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.logging.Level;
 
 public final class Wave extends JavaPlugin {
 
-    public static Wave INSTANCE;
-    public PacketListener packetListener;
-    public ConfigUtils configUtils;
+    private static Wave instance;
+
+    private Config configuration;
+    private Checks checks;
+
+    private ProfileManager profileManager;
+    private final NmsManager nmsManager = new NmsManager();
+    //private LogManager logManager;
+    private ThreadManager threadManager;
+
+    private AlertManager alertManager;
+    //private ThemeManager themeManager;
 
     // PacketEvents
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
+        PacketEvents.getAPI().getSettings().readOnlyListeners(false)
                 .checkForUpdates(false)
                 .bStats(false);
         PacketEvents.getAPI().load();
@@ -32,32 +52,118 @@ public final class Wave extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        // Init base
-        INSTANCE = this;
-        packetListener = new PacketListener();
-        configUtils = new ConfigUtils(this);
+        //Initialize
+        ChatUtils.log(Level.INFO, "[Wave] Initialization...");
+        instance = this;
+        (this.threadManager = new ThreadManager(this)).initialize();
+        (this.configuration = new Config(this)).initialize();
+        (this.checks = new Checks(this)).initialize();
+        (this.profileManager = new ProfileManager()).initialize();
+        //(this.themeManager = new ThemeManager(this)).initialize();
+        //(this.logManager = new LogManager(this)).initialize();
+        (this.alertManager = new AlertManager()).initialize();
+
+        new ViolationTask(this).runTaskTimerAsynchronously(this,
+                Config.Setting.CHECK_SETTINGS_VIOLATION_RESET_INTERVAL.getLong() * 1200L,
+                Config.Setting.CHECK_SETTINGS_VIOLATION_RESET_INTERVAL.getLong() * 1200L);
+        // TODO: idk fix this shit
+
+        //We're most likely going to be using transactions - ping pongs, So we need to do this for ViaVersion
+        System.setProperty("com.viaversion.handlePingsAsInvAcknowledgements", "true");
+
+        //Initialize static variables to make sure our threads won't get affected when they run for the first time.
+        try {
+
+            MiscUtils.initializeClasses(
+                    "me.nik.anticheatbase.utils.fastmath.FastMath",
+                    "me.nik.anticheatbase.utils.fastmath.NumbersUtils",
+                    "me.nik.anticheatbase.utils.fastmath.FastMathLiteralArrays",
+                    //"me.nik.anticheatbase.utils.minecraft.MathHelper",
+                    "me.nik.anticheatbase.utils.CollisionUtils",
+                    "com.xiii.wave.utils.MoveUtils"
+            );
+
+        } catch (ClassNotFoundException e) {
+
+            //Impossible unless we made a mistake
+            ChatUtils.log(Level.SEVERE, "An error occurred during initialization phase, please restart your server.");
+
+            e.printStackTrace();
+        }
 
         // Startup
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Starting up...");
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Packet listener initialization...");
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketListener());
+        ChatUtils.log(Level.INFO, "[Wave] Starting up...");
+        ChatUtils.log(Level.INFO, "[Wave] Listeners initialization...");
+
+        //Packet Listeners
+        Arrays.asList(
+                new com.xiii.wave.processors.listeners.PacketListener(this),
+                new ClientBrandListener(this)
+        ).forEach(packetListener -> PacketEvents.getAPI().getEventManager().registerListener((com.github.retrooper.packetevents.event.PacketListener) packetListener, PacketListenerPriority.LOWEST));
+
+        //Bukkit Listeners
+        Arrays.asList(
+                new ProfileListener(this),
+                new ViolationListener(this)
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+
         PacketEvents.getAPI().init();
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Commands initialization...");
-        Bukkit.getPluginCommand("alerts").setExecutor(new AlertsCommand());
-        Bukkit.getPluginCommand("wave").setExecutor(new WaveCommand());
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Reading configuration files...");
-        configUtils.reloadConfigs();
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Anti-Cheat loaded. Thank you for using Wave.");
+
+        ChatUtils.log(Level.INFO, "[Wave] Commands initialization...");
+
+        //Load Commands
+        getCommand("wave").setExecutor(new CommandManager(this));
+
+        ChatUtils.log(Level.INFO, "[Wave] Reading configuration files...");
+        ChatUtils.log(Level.INFO, "[Wave] Anti-Cheat loaded. Thank you for using Wave.");
     }
 
     @Override
     public void onDisable() {
 
-        // Unload
+        //Terminate PacketEvents
         PacketEvents.getAPI().terminate();
-        Bukkit.getScheduler().cancelTasks(this);
-        Data.clearData();
-        Bukkit.getLogger().log(Level.INFO, "[Wave] Anti-Cheat unloaded. Goodbye!");
 
+        //Cancel any bukkit tasks
+        Bukkit.getScheduler().cancelTasks(this);
+
+        //Shutdown all managers
+        this.configuration.shutdown();
+        this.checks.shutdown();
+        this.profileManager.shutdown();
+        this.alertManager.shutdown();
+        this.threadManager.shutdown();
+        //this.themeManager.shutdown();
+
+        ChatUtils.log(Level.INFO, "[Wave] Anti-Cheat unloaded. Goodbye!");
+
+    }
+
+    public static Wave getInstance() {
+        return instance;
+    }
+
+    public CommentedFileConfiguration getConfiguration() {
+        return this.configuration.getConfig();
+    }
+
+    public CommentedFileConfiguration getChecks() {
+        return this.checks.getConfig();
+    }
+
+    public ProfileManager getProfileManager() {
+        return profileManager;
+    }
+
+    public NmsManager getNmsManager() {
+        return nmsManager;
+    }
+
+    public ThreadManager getThreadManager() {
+        return threadManager;
+    }
+
+    public AlertManager getAlertManager() {
+        return alertManager;
     }
 }

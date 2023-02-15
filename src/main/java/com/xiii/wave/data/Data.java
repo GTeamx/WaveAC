@@ -1,6 +1,5 @@
 package com.xiii.wave.data;
 
-import com.github.retrooper.packetevents.protocol.player.User;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

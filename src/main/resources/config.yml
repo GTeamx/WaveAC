@@ -8,7 +8,7 @@ prefix: §f[§b§lWave§f]
 # This prefix will be used everywhere, including alerts, commands ect...
 
 vpn-checker-key: 5i311n-0a8784-536781-763242
-# You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 VPN check requests/day.
+# You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.
 # If you wish to disable the VPN checker you can simply put 'DISABLED'.
 
 permissions:
@@ -24,3 +24,10 @@ permissions:
   wave-nopermission-message: unknown-command
   # By putting "unknown-command" this will use the unknown-command message from the spigot.yml configuration file.
 
+checks:
+
+  violations-clear-rate: 5
+  # Every how many minutes should we clear all violations (in minutes)
+
+  silent-mode: true
+  # Should we setback the player when they flag a movement check ?

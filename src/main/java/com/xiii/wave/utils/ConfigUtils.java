@@ -1,7 +1,6 @@
 package com.xiii.wave.utils;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.player.User;
 import com.xiii.wave.Wave;
 import com.xiii.wave.data.Data;
 import com.xiii.wave.data.PlayerData;
