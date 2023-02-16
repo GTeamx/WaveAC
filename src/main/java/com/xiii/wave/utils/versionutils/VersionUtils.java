@@ -3,7 +3,11 @@ package com.xiii.wave.utils.versionutils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.xiii.wave.utils.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.logging.Level;
 
 public final class VersionUtils {
 
@@ -16,7 +20,21 @@ public final class VersionUtils {
     }
 
     public static ServerVersion getServerVersion() {
-        return PacketEvents.getAPI().getServerManager().getVersion();
+        String serverPackageName = Bukkit.getServer().getClass().getPackage().getName();
+
+        ServerVersion version;
+
+        try {
+
+            version = ServerVersion.valueOf(serverPackageName.substring(serverPackageName.lastIndexOf(".") + 1).trim());
+
+        } catch (IllegalArgumentException e) {
+
+            version = ServerVersion.V_1_8;
+        }
+
+        return version;
     }
+    // TODO: Fix getServerVersion
 
 }

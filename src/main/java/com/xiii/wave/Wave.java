@@ -38,12 +38,14 @@ public final class Wave extends JavaPlugin {
     private AlertManager alertManager;
     //private ThemeManager themeManager;
 
+    private ChatUtils chatUtils;
+
     // PacketEvents
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().readOnlyListeners(false)
+        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
                 .checkForUpdates(false)
                 .bStats(false);
         PacketEvents.getAPI().load();
@@ -53,8 +55,9 @@ public final class Wave extends JavaPlugin {
     public void onEnable() {
 
         //Initialize
-        ChatUtils.log(Level.INFO, "[Wave] Initialization...");
         instance = this;
+        ChatUtils.log(Level.INFO, "[Wave] Initialization...");
+        this.chatUtils = new ChatUtils(this);
         (this.threadManager = new ThreadManager(this)).initialize();
         (this.configuration = new Config(this)).initialize();
         (this.checks = new Checks(this)).initialize();
@@ -98,7 +101,7 @@ public final class Wave extends JavaPlugin {
         Arrays.asList(
                 new com.xiii.wave.processors.listeners.PacketListener(this),
                 new ClientBrandListener(this)
-        ).forEach(packetListener -> PacketEvents.getAPI().getEventManager().registerListener((com.github.retrooper.packetevents.event.PacketListener) packetListener, PacketListenerPriority.LOWEST));
+        ).forEach(packetListener -> PacketEvents.getAPI().getEventManager().registerListener(packetListener));
 
         //Bukkit Listeners
         Arrays.asList(
@@ -164,5 +167,9 @@ public final class Wave extends JavaPlugin {
 
     public AlertManager getAlertManager() {
         return alertManager;
+    }
+
+    public ChatUtils getChatUtils() {
+        return chatUtils;
     }
 }

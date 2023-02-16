@@ -1,11 +1,13 @@
 package com.xiii.wave.listener;
 
+import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage;
 import com.xiii.wave.Wave;
 import com.xiii.wave.api.events.WaveViolationEvent;
 import com.xiii.wave.enums.MsgType;
 import com.xiii.wave.files.Config;
 import com.xiii.wave.managers.profile.Profile;
-import com.xiii.wave.utils.JsonBuilder;
+import com.xiii.wave.utils.ChatUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -74,12 +76,9 @@ public class ViolationListener implements Listener {
                         .replace("%check%", check)
                         .replace("%vl%", String.valueOf(vl));
 
-                JsonBuilder jsonBuilder = new JsonBuilder(alertMessage)
-                        .setHoverEvent(JsonBuilder.HoverEventType.SHOW_TEXT, hoverMessage)
-                        .setClickEvent(JsonBuilder.ClickEventType.RUN_COMMAND, "/tp " + playerName)
-                        .buildText();
+                Component message = ChatUtils.deserialize("<hover:show_text:" + hoverMessage + ">" + "<click:run_command:/tp" + playerName + ">" + alertMessage + "</click>");
 
-                jsonBuilder.sendMessage(this.plugin.getAlertManager().getPlayersWithAlerts());
+                ChatUtils.sendMessage((ChatMessage) message, this.plugin.getAlertManager().getPlayersWithAlerts());
 
                 if (!Config.Setting.CONSOLE_ALERT.getBoolean()) break alerts;
 

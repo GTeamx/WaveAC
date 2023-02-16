@@ -8,6 +8,7 @@ public enum Permissions {
     BRAND_COMMAND(Wave.getInstance().getConfiguration().getString("permissions.wave-commands-brand")),
     VERSION_COMMAND(Wave.getInstance().getConfiguration().getString("permissions.wave-version-command")),
     ALERTS_COMMAND(Wave.getInstance().getConfiguration().getString("permissions.wave-alerts-command")),
+    AUTO_ALERTS(Wave.getInstance().getConfiguration().getString("permissions.wave-auto-alerts")),
     BYPASS(Wave.getInstance().getConfiguration().getString("permissions.wave-bypass"));
 
     private final String permission;

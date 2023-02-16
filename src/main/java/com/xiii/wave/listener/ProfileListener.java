@@ -1,6 +1,8 @@
 package com.xiii.wave.listener;
 
 import com.xiii.wave.Wave;
+import com.xiii.wave.enums.Permissions;
+import com.xiii.wave.files.Config;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,7 +25,10 @@ public class ProfileListener implements Listener {
 
         this.plugin.getProfileManager().createProfile(player);
 
-        // TODO: toggle alerts on join
+        if (Config.Setting.TOGGLE_ALERTS_ON_JOIN.getBoolean() && player.hasPermission(Permissions.AUTO_ALERTS.getPermission())) {
+
+            this.plugin.getAlertManager().addPlayerToAlerts(player.getUniqueId());
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
