@@ -1,7 +1,6 @@
 package com.xiii.wave;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.xiii.wave.commands.CommandManager;
 import com.xiii.wave.files.Checks;
 import com.xiii.wave.files.Config;
@@ -56,7 +55,7 @@ public final class Wave extends JavaPlugin {
 
         //Initialize
         instance = this;
-        ChatUtils.log(Level.INFO, "[Wave] Initialization...");
+        ChatUtils.log(Level.INFO, "Initialization...");
         this.chatUtils = new ChatUtils(this);
         (this.threadManager = new ThreadManager(this)).initialize();
         (this.configuration = new Config(this)).initialize();
@@ -94,8 +93,8 @@ public final class Wave extends JavaPlugin {
         }
 
         // Startup
-        ChatUtils.log(Level.INFO, "[Wave] Starting up...");
-        ChatUtils.log(Level.INFO, "[Wave] Listeners initialization...");
+        ChatUtils.log(Level.INFO, "Starting up...");
+        ChatUtils.log(Level.INFO, "Listeners initialization...");
 
         //Packet Listeners
         Arrays.asList(
@@ -111,13 +110,13 @@ public final class Wave extends JavaPlugin {
 
         PacketEvents.getAPI().init();
 
-        ChatUtils.log(Level.INFO, "[Wave] Commands initialization...");
+        ChatUtils.log(Level.INFO, "Commands initialization...");
 
         //Load Commands
         getCommand("wave").setExecutor(new CommandManager(this));
 
-        ChatUtils.log(Level.INFO, "[Wave] Reading configuration files...");
-        ChatUtils.log(Level.INFO, "[Wave] Anti-Cheat loaded. Thank you for using Wave.");
+        ChatUtils.log(Level.INFO, "Reading configuration files...");
+        ChatUtils.log(Level.INFO, "Anti-Cheat loaded. Thank you for using Wave.");
     }
 
     @Override
@@ -137,7 +136,7 @@ public final class Wave extends JavaPlugin {
         this.threadManager.shutdown();
         //this.themeManager.shutdown();
 
-        ChatUtils.log(Level.INFO, "[Wave] Anti-Cheat unloaded. Goodbye!");
+        ChatUtils.log(Level.INFO, "Anti-Cheat unloaded. Goodbye!");
 
     }
 

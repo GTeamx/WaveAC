@@ -3,17 +3,8 @@ package com.xiii.wave.listener;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
 import com.xiii.wave.Wave;
-import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.processors.Packet;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Pattern;
 
 public class ClientBrandListener extends SimplePacketListenerAbstract {
 

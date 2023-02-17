@@ -6,6 +6,7 @@ import com.xiii.wave.managers.Initializer;
 import org.bukkit.Bukkit;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -66,24 +67,25 @@ public class Config implements Initializer {
 
         CONFIG_VERSION("config-version", "b0001-config", "This won't have any visual impact, this is only for the plugin, changing it will only break things."),
 
-        PREFIX("prefix", "§f[§b§lWave§f]", "This prefix will be used everywhere, including alerts, commands ect..."),
+        PREFIX("prefix", "&f[&b&lWave&f]", "This prefix will be used everywhere, including alerts, commands ect..."),
 
         // Bukkit.spigot().getConfig().getString("messages.unknown-command")
         MESSAGES("messages", "", "Messages used across Wave"),
         CONSOLE_ALERT("messages.console-alert", false, "Send alerts to console"),
-        CONSOLE_COMMAND("message.console-command", "Sorry, this Wave's command can only be executed by a player.", "Message sent to console when trying to execute players only commands (of Wave) from console."),
+        CONSOLE_COMMAND("messages.console-command", "Sorry, this Wave's command can only be executed by a player.", "Message sent to console when trying to execute players only commands (of Wave) from console."),
         NO_PERMISSION("messages.no-permission", Bukkit.spigot().getConfig().getString("messages.unknown-command"), "By putting \"unknown-command\" this will use the unknown-command message from the spigot.yml configuration file."),
-        ALERT_MESSAGE("message.alert-message", "&b%player% &7flagged &b%check% &7(§fx§b%vl%§7)", "Alert message that you will see whenever an alert is sent"),
-        ALERT_HOVER("messages.alert-hover", "", "Hover message displayed when hovering an alert"),
-        ALERT_HOVER_1("messages.alert-hover", "- '&7Description:&r'", ""),
-        ALERT_HOVER_2("messages.alert-hover", "- '%description%'", ""),
-        ALERT_HOVER_3("messages.alert-hover", "", ""),
-        ALERT_HOVER_4("messages.alert-hover", "- '&7Information:&r'", ""),
-        ALERT_HOVER_5("messages.alert-hover", "- '%information%'", ""),
-        ALERT_HOVER_6("messages.alert-hover", "", ""),
-        ALERT_HOVER_7("messages.alert-hover", "- '&7TPS: &r%tps%'", ""),
-        ALERT_HOVER_8("messages.alert-hover", "", ""),
-        ALERT_HOVER_9("messages.alert-hover", "- '&fClick to teleport'", ""),
+        ALERT_MESSAGE("messages.alert-message", "&f%player% &7flagged &b%check% &fx%vl%", "Alert message that you will see whenever an alert is sent"),
+        ALERT_HOVER("messages.alert-hover", Arrays.asList(
+                "&7Description:&r",
+                "%description%",
+                "",
+                "&7Information:&r",
+                "%information%",
+                "",
+                "&7TPS: &r%tps%",
+                "",
+                "&fClick to teleport"
+        ), "Hover message displayed when hovering an alert"),
 
         VPN_KEY("vpn-checker-key", "XXXXXX-XXXXXX-XXXXXX-XXXXXX", "You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.", "If you wish to disable the VPN checker you can simply put 'DISABLED'."),
 

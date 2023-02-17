@@ -1,6 +1,7 @@
 package com.xiii.wave.files;
 
 import com.xiii.wave.Wave;
+import com.xiii.wave.enums.MsgType;
 import com.xiii.wave.files.commentedfiles.CommentedFileConfiguration;
 import com.xiii.wave.managers.Initializer;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -14,15 +15,8 @@ import java.util.stream.Stream;
 public class Checks implements Initializer {
 
     private static final String[] HEADER = new String[]{
-            "+----------------------------------------------------------------------------------------------+",
-            "|                                                                                              |",
-            "|                                          Anticheat                                           |",
-            "|                                                                                              |",
-            "|                          Website: https://www.youranticheatwebsite.com                       |",
-            "|                                                                                              |",
-            "|                                         Author: Nik                                          |",
-            "|                                                                                              |",
-            "+----------------------------------------------------------------------------------------------+"
+            "This is the configuration file for Wave b0001 (checks.yml)",
+            "To reset this file, delete it from the Wave's folder and restart your server."
     };
 
     private final JavaPlugin plugin;
@@ -73,8 +67,8 @@ public class Checks implements Initializer {
     public enum Setting {
         SPEED("speed", "", "Speed Check"),
         SPEED_A("speed.a", true, "Should we enable this module?"),
-        SPEED_MAX_VL("speed.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
-        SPEED_COMMANDS("speed.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        SPEED_MAX_VL("speed.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
+        SPEED_COMMANDS("speed.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 
         private final String key;
         private final Object defaultValue;

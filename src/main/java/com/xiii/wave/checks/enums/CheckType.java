@@ -21,6 +21,7 @@ public enum CheckType {
     INVENTORY("Inventory", CheckCategory.WORLD),
     INTERACT("Interact", CheckCategory.WORLD),
     FASTCLIMB("FastClimb", CheckCategory.MOVEMENT),
+    VPN("VPN/Proxy", CheckCategory.PACKET),
     HITBOX("Hitbox", CheckCategory.COMBAT);
 
     private final String checkName;

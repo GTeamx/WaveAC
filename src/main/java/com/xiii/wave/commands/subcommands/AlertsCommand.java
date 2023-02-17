@@ -56,13 +56,13 @@ public class AlertsCommand extends SubCommand {
 
             this.plugin.getAlertManager().removePlayerFromAlerts(uuid);
 
-            sender.sendMessage(MsgType.PREFIX.getMessage() + "Alerts output §cdisabled");
+            sender.sendMessage(MsgType.PREFIX.getMessage() + " Alerts output §cdisabled");
 
         } else {
 
             this.plugin.getAlertManager().addPlayerToAlerts(uuid);
 
-            sender.sendMessage(MsgType.PREFIX.getMessage() + "Alerts output §aenabled");
+            sender.sendMessage(MsgType.PREFIX.getMessage() + " Alerts output §aenabled");
         }
     }
 }

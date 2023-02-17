@@ -3,11 +3,8 @@ package com.xiii.wave.utils.versionutils;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
-import com.xiii.wave.utils.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.logging.Level;
 
 public final class VersionUtils {
 

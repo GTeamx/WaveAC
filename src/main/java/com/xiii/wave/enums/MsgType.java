@@ -2,15 +2,15 @@ package com.xiii.wave.enums;
 
 import com.xiii.wave.Wave;
 import com.xiii.wave.utils.ChatUtils;
-import org.bukkit.Bukkit;
 
 import java.util.List;
 
 public enum MsgType {
-    PREFIX(Wave.getInstance().getConfiguration().getString("prefix")),
-    NO_PERMISSION(Wave.getInstance().getConfiguration().getString("messages.no-permission")),
-    CONSOLE_COMMANDS(PREFIX.getMessage() + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.console-command"))),
-    ALERT_MESSAGE(PREFIX.getMessage() + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.alert-message"))),
+    // ChatUtils.format(Wave.getInstance().getConfiguration().getString("prefix"))
+    PREFIX(ChatUtils.format(Wave.getInstance().getConfiguration().getString("prefix"))),
+    NO_PERMISSION(ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.no-permission"))),
+    CONSOLE_COMMANDS(ChatUtils.format(PREFIX.getMessage()) + " " + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.console-command"))),
+    ALERT_MESSAGE(ChatUtils.format(PREFIX.getMessage()) + " " + ChatUtils.format(Wave.getInstance().getConfiguration().getString("messages.alert-message"))),
     ALERT_HOVER(stringFromList(Wave.getInstance().getConfiguration().getStringList("messages.alert-hover")));
 
     private final String message;

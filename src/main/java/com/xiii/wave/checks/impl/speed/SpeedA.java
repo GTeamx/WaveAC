@@ -5,8 +5,6 @@ import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.impl.MovementData;
 import com.xiii.wave.processors.Packet;
-import com.xiii.wave.utils.TaskUtils;
-import org.bukkit.Bukkit;
 
 public class SpeedA extends Check {
     public SpeedA(Profile profile) {
