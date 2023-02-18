@@ -28,28 +28,25 @@ public class ProfileListener implements Listener {
 
         this.plugin.getProfileManager().createProfile(player);
 
-        TaskUtils.taskLaterAsync(() -> {
+        final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
+        if (!vpnKey.equalsIgnoreCase("DISABLED")) {
 
-            final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
-            if (!vpnKey.equalsIgnoreCase("DISABLED")) {
+            final String httpResponse = HTTPUtils.readUrl("https://proxycheck.io/v2/" + e.getPlayer().getAddress().getHostName() + "?key=" + vpnKey + "&vpn=3");
+            //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
+            final String riskLevel = "Unknown";
+            // TODO: Fix riskLevel
 
-                final String httpResponse = HTTPUtils.readUrl("https://proxycheck.io/v2/" + e.getPlayer().getAddress().getHostName() + "?key=" + vpnKey + "&risk=1&vpn=1");
-                //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
-                final String riskLevel = "Unknown";
-                // TODO: Fix riskLevel
+            if (httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("\"vpn\": \"yes\"") || httpResponse.contains("\"WaveACVPNCheckResult\": \"REJECTED\"") || httpResponse.contains("blacklist") || httpResponse.contains("compromised")) {
 
-                if (httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("vpn")) {
-
-                    TaskUtils.task(() -> e.getPlayer().kickPlayer(MsgType.PREFIX.getMessage() + " §cVPN/Proxy"));
-
-                }
+                TaskUtils.task(() -> e.getPlayer().kickPlayer(MsgType.PREFIX.getMessage() + " §cVPN/Proxy"));
 
             }
-        }, 30L);
 
-        if (Config.Setting.TOGGLE_ALERTS_ON_JOIN.getBoolean() && player.hasPermission(Permissions.AUTO_ALERTS.getPermission())) {
+            if (Config.Setting.TOGGLE_ALERTS_ON_JOIN.getBoolean() && player.hasPermission(Permissions.AUTO_ALERTS.getPermission())) {
 
-            this.plugin.getAlertManager().addPlayerToAlerts(player.getUniqueId());
+                this.plugin.getAlertManager().addPlayerToAlerts(player.getUniqueId());
+                player.sendMessage(MsgType.PREFIX.getMessage() + " Alerts outptut §aenabled");
+            }
         }
     }
 

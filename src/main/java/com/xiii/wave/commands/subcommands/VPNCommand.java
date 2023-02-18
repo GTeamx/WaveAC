@@ -57,12 +57,12 @@ public class VPNCommand extends SubCommand {
             final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
             if(!vpnKey.equalsIgnoreCase("DISABLED")) {
 
-                final String httpResponse =  HTTPUtils.readUrl("https://proxycheck.io/v2/" + target.getAddress().getHostName() + "?key=" + vpnKey + "&risk=1&vpn=1");
+                final String httpResponse =  HTTPUtils.readUrl("https://proxycheck.io/v2/" + target.getAddress().getHostName() + "?key=" + vpnKey + "&vpn=3");
                 //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
                 final String riskLevel = "Unknown";
                 // TODO: Fix riskLevel
 
-                if(httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("vpn")) {
+                if(httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("\"vpn\": \"yes\"") || httpResponse.contains("\"WaveACVPNCheckResult\": \"REJECTED\"") || httpResponse.contains("blacklist") || httpResponse.contains("compromised")) {
 
                     sender.sendMessage(MsgType.PREFIX.getMessage() + " §cVPN/Proxy detected for §3" + target.getName() + " §crisk level is §9" + riskLevel);
 

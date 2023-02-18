@@ -4,6 +4,7 @@ import com.xiii.wave.Wave;
 import com.xiii.wave.api.events.WaveViolationEvent;
 import com.xiii.wave.checks.annotations.Development;
 import com.xiii.wave.checks.annotations.Experimental;
+import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.enums.CheckCategory;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.files.Config;
@@ -29,6 +30,7 @@ public abstract class AbstractCheck {
 
     private final String checkName, checkType, fullCheckName, description;
     private final boolean experimental;
+    private final boolean testing;
     private final CheckCategory checkCategory;
     private final boolean development;
     private int vl;
@@ -47,6 +49,8 @@ public abstract class AbstractCheck {
         final String checkName = this.checkName.toLowerCase();
         final String checkType = type.toLowerCase().replace(" ", "_");
 
+        this.testing = this.getClass().isAnnotationPresent(Testing.class);
+
         this.enabledSetback = !Config.Setting.SILENT_MODE.getBoolean()
                 && (check == CheckType.SPEED || check == CheckType.FLY || check == CheckType.MOTION);
 
@@ -59,7 +63,7 @@ public abstract class AbstractCheck {
         /*
         This is null inside GUI's
          */
-        if (profile != null) {
+        if (profile != null && !this.testing) {
             this.commands.addAll(
                     BetterStream.applyAndGet(config.getStringList(checkName + ".commands"),
                             command -> command.replace("%player%", profile.getPlayer().getName())

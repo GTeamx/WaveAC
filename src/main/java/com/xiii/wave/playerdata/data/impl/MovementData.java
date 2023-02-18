@@ -45,7 +45,8 @@ public class MovementData implements Data {
     private int flyTicks, serverGroundTicks, lastServerGroundTicks, nearGroundTicks, lastNearGroundTicks,
             lastUnloadedChunkTicks = 100,
             clientGroundTicks, lastNearWallTicks,
-            lastFrictionFactorUpdateTicks, lastNearEdgeTicks;
+            lastFrictionFactorUpdateTicks, lastNearEdgeTicks,
+            lastFlyingAbility = 10000;
 
     public MovementData(Profile profile) {
         this.profile = profile;
@@ -226,6 +227,10 @@ public class MovementData implements Data {
             this.lastFrictionFactor = this.frictionFactor;
         }
 
+        //Flying
+
+        this.lastFlyingAbility = nms.isFlying(p) ? 0 : this.lastFlyingAbility + 1;
+
         //Effects
 
         //this.effectsProcessor.process();
@@ -395,6 +400,10 @@ public class MovementData implements Data {
 
     public int getFlyTicks() {
         return flyTicks;
+    }
+
+    public int getLastFlyingAbility() {
+        return lastFlyingAbility;
     }
 
     public int getLastServerGroundTicks() {

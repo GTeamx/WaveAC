@@ -1,7 +1,7 @@
 package com.xiii.wave.checks;
 
 import com.xiii.wave.checks.annotations.Testing;
-import com.xiii.wave.checks.impl.speed.SpeedA;
+import com.xiii.wave.checks.impl.speed.FlyA;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.processors.Packet;
@@ -37,7 +37,7 @@ public class CheckHolder {
                 /*
                 Speed
                  */
-                new SpeedA(this.profile)
+                new FlyA(this.profile)
 
         );
 

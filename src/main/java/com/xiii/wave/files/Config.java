@@ -87,7 +87,7 @@ public class Config implements Initializer {
                 "&fClick to teleport"
         ), "Hover message displayed when hovering an alert"),
 
-        VPN_KEY("vpn-checker-key", "XXXXXX-XXXXXX-XXXXXX-XXXXXX", "You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.", "If you wish to disable the VPN checker you can simply put 'DISABLED'."),
+        VPN_KEY("vpn-checker-key", "DISABLED", "You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.", "If you wish to disable the VPN checker you can simply put 'DISABLED'.", "NOTE: If you wish to use custom rules with proxycheck.io, please make it return \"WaveACVPNCheckResult: REJECTED\" as an indicator for us to know that the player did not go through your custom rules"),
 
         PERMISSIONS("permissions", "", "Permissions used across Wave"),
         PERMISSIONS_ALERTS("permissions.wave-alerts-command", "Wave.commands.alerts", ""),

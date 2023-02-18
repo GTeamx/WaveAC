@@ -65,10 +65,10 @@ public class Checks implements Initializer {
     }
 
     public enum Setting {
-        SPEED("speed", "", "Speed Check"),
-        SPEED_A("speed.a", true, "Should we enable this module?"),
-        SPEED_MAX_VL("speed.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
-        SPEED_COMMANDS("speed.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        FLY("fly", "", "Fly Check"),
+        FLY_A("fly.a", true, "Should we enable this module?"),
+        FLY_MAX_VL("fly.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
+        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 
         private final String key;
         private final Object defaultValue;
