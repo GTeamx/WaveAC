@@ -44,8 +44,7 @@ public final class Wave extends JavaPlugin {
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
-                .checkForUpdates(false)
+        PacketEvents.getAPI().getSettings().checkForUpdates(false)
                 .bStats(false);
         PacketEvents.getAPI().load();
     }
