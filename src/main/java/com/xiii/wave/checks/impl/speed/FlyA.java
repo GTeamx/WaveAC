@@ -18,7 +18,7 @@ public class FlyA extends Check {
     @Override
     public void handle(Packet packet) {
 
-        final boolean exempt = profile.isExempt().fly();
+        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isLiquid();
 
         if (!packet.isMovement()) return;
 
