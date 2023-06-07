@@ -26,7 +26,7 @@ messages:
     - ''
     - '&fClick to teleport'
 
-vpn-checker-key: 5i311n-0a8784-536781-763242
+vpn-checker-key: XXXXXX-XXXXXX-XXXXXX-XXXXXX
 # You can put your proxycheck.io key here, if no key is inserted you will be limited to 100 requests/day.
 # If you wish to disable the VPN checker you can simply put 'DISABLED'.
 
