@@ -7,7 +7,7 @@ import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage;
 import com.github.retrooper.packetevents.protocol.chat.message.ChatMessageLegacy;
 import com.github.retrooper.packetevents.protocol.chat.message.ChatMessage_v1_16;
 import com.github.retrooper.packetevents.protocol.player.User;
-import com.github.retrooper.packetevents.util.AdventureSerializer;
+import com.github.retrooper.packetevents.util.adventure.AdventureSerializer;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSystemChatMessage;
