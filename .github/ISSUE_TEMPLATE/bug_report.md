@@ -23,16 +23,20 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+**Host Machine (if possible):**
+ - OS: [e.g. Linux, Windows]
+ - Java Version: [e.g. 1.8, SE 8]
+ - Hardware Specifications: [e.g. 16GB RAM, i9-13900KS]
+ - JVM Startup args: [e.g. -Xmx 8g]
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+**Minecraft Server (please complete the following information):**
+ - Minecraft Server Version: [e.g. 1.8.8]
+ - Plugin List: [e.g. WaveAC, EssentialsX, Luckperms, Vault]
+ - Mincraft Server Software: [e.g. spigot, paper, purpur]
+ - Mods (if any): [e.g. Bibliocraft, Dynamx]
+
+**Spark profiler report (if possible)**
+*Link of the spark report*
 
 **Additional context**
 Add any other context about the problem here.
