@@ -1,6 +1,5 @@
 package com.xiii.wave.checks.impl.speed;
 
-import com.xiii.wave.checks.annotations.Development;
 import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
@@ -18,7 +17,7 @@ public class FlyA extends Check {
     @Override
     public void handle(Packet packet) {
 
-        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isLiquid();
+        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isClimable(150L) || profile.isExempt().isCobweb(100L);
 
         if (!packet.isMovement()) return;
 
@@ -28,7 +27,7 @@ public class FlyA extends Check {
 
             final double prediction = data.getDeltaY() - PredictionEngine.getVerticalPrediction(data.getLastDeltaY());
 
-            if (prediction > 1.9262653090336062E-14 && increaseBuffer() > 1) fail("" + prediction);
+            if (prediction > 1.9262653090336062E-14 && increaseBuffer() > 1) fail("pred=" + prediction + " my=" + data.getDeltaY());
 
         } else decreaseBufferBy(1);
     }
