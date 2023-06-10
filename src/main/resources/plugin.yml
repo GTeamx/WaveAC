@@ -1,7 +1,7 @@
 name: Wave
 version: '${project.version}'
 main: com.xiii.wave.Wave
-api-version: 1.19
+api-version: 1.13
 prefix: Wave
 authors: [ XIII___ ]
 description: Wave Anti-Cheat solution
