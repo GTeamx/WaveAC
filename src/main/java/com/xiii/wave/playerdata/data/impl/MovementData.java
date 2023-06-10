@@ -40,7 +40,7 @@ public class MovementData implements Data {
 
     private List<Material> nearbyBlocks = new ArrayList<>();
 
-    private boolean onGround, lastOnGround, serverGround, lastServerGround;
+    private boolean onGround, lastOnGround, serverGround, lastServerGround, aboveBlocks;
 
     private int flyTicks, serverGroundTicks, lastServerGroundTicks, nearGroundTicks, lastNearGroundTicks,
             lastUnloadedChunkTicks = 100,
@@ -194,6 +194,10 @@ public class MovementData implements Data {
         NOTE: You should ALWAYS use NMS if you plan on supporting 1.9+
         For a production server, DO NOT use spigot's api. It's slow. (Especially for Blocks, Chunks, Materials)
          */
+        this.nearbyBlocks = nearbyBlocksResult.getBlockTypes();
+
+        this.aboveBlocks = nearbyBlocksResult.hasBlockAbove();
+
     }
 
     private void processPlayerData() {
@@ -432,5 +436,9 @@ public class MovementData implements Data {
 
     public List<Material> getNearbyBlocks() {
         return nearbyBlocks;
+    }
+
+    public boolean isAboveBlocks() {
+        return aboveBlocks;
     }
 }
