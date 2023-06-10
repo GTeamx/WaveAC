@@ -66,7 +66,7 @@ public class Profile {
 
         //Data
         this.actionData = new ActionData(this);
-        this.combatData = new CombatData();
+        this.combatData = new CombatData(this);
         this.connectionData = new ConnectionData();
         this.movementData = new MovementData(this);
         this.rotationData = new RotationData(this);
