@@ -5,6 +5,8 @@ import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 
 public class ServerPlayPacket {
@@ -21,6 +23,11 @@ public class ServerPlayPacket {
     Arm Animation cache
      */
     private WrapperPlayServerEntityAnimation entityAnimationWrapper;
+
+    /*
+    Entity Metadata cache
+     */
+    private WrapperPlayServerEntityMetadata entityMetadataWrapper;
 
     public ServerPlayPacket(final PacketType.Play.Server type, final PacketPlaySendEvent packet, final long timeStamp) {
         this.timeStamp = timeStamp;
@@ -39,6 +46,12 @@ public class ServerPlayPacket {
 
                 break;
 
+            case ENTITY_METADATA:
+
+                this.entityMetadataWrapper = new WrapperPlayServerEntityMetadata(packet);
+
+                break;
+
         }
     }
 
@@ -48,6 +61,10 @@ public class ServerPlayPacket {
 
     public WrapperPlayServerEntityAnimation getEntityAnimationWrapper() {
         return entityAnimationWrapper;
+    }
+
+    public WrapperPlayServerEntityMetadata getEntityMetadataWrapper() {
+        return entityMetadataWrapper;
     }
 
     public boolean is(PacketType.Play.Server type) {
