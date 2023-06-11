@@ -29,10 +29,8 @@ public abstract class AbstractCheck {
     private final boolean enabledSetback;
 
     private final String checkName, checkType, fullCheckName, description;
-    private final boolean experimental;
-    private final boolean testing;
+    private final boolean experimental, testing, development;
     private final CheckCategory checkCategory;
-    private final boolean development;
     private int vl;
     private final int maxVl;
     private float buffer;
