@@ -22,6 +22,7 @@ public enum CheckType {
     INTERACT("Interact", CheckCategory.WORLD),
     FASTCLIMB("FastClimb", CheckCategory.MOVEMENT),
     VPN("VPN/Proxy", CheckCategory.PACKET),
+    AUTOFISH("AutoFish", CheckCategory.WORLD),
     HITBOX("Hitbox", CheckCategory.COMBAT);
 
     private final String checkName;
