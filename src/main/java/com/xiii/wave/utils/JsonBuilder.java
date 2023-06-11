@@ -128,7 +128,7 @@ public class JsonBuilder {
 
         } else {
 
-            Object message;
+            ChatMessage message;
 
             if (version.isNewerThanOrEquals(ServerVersion.V_1_16)) {
 
@@ -140,7 +140,7 @@ public class JsonBuilder {
 
             }
 
-            chatPacket = new WrapperPlayServerChatMessage((ChatMessage)message);
+            chatPacket = new WrapperPlayServerChatMessage(message);
         }
 
         for (UUID uuid : players) {
