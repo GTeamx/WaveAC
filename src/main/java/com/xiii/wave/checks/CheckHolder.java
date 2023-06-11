@@ -1,10 +1,12 @@
 package com.xiii.wave.checks;
 
 import com.xiii.wave.checks.annotations.Testing;
+import com.xiii.wave.checks.impl.autofish.AutoFishA;
 import com.xiii.wave.checks.impl.fly.FlyA;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 
 import java.util.Arrays;
 
@@ -19,12 +21,20 @@ public class CheckHolder {
         this.profile = profile;
     }
 
-    public void runChecks(ClientPlayPacket clientPlayPacket) {
+    public void runChecks(final ClientPlayPacket clientPlayPacket) {
         /*
         Fastest way to loop through many objects, If you think this is stupid
         Then benchmark the long term perfomance yourself with many profilers and java articles.
          */
         for (int i = 0; i < this.checksSize; i++) this.checks[i].handle(clientPlayPacket);
+    }
+
+    public void runChecks(final ServerPlayPacket serverPlayPacket) {
+        /*
+        Fastest way to loop through many objects, If you think this is stupid
+        Then benchmark the long term perfomance yourself with many profilers and java articles.
+         */
+        for (int i = 0; i < this.checksSize; i++) this.checks[i].handle(serverPlayPacket);
     }
 
     public void registerAll() {
@@ -34,10 +44,8 @@ public class CheckHolder {
          */
         addChecks(
 
-                /*
-                Speed
-                 */
-                new FlyA(this.profile)
+                new FlyA(this.profile),
+                new AutoFishA(this.profile)
 
         );
 
