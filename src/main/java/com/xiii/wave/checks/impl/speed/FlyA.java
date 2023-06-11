@@ -5,9 +5,14 @@ import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.impl.MovementData;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.playerdata.data.impl.VehicleData;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.PredictionEngine;
 
+/*
+TODO: FALSES: Block glitching/ghost blocks, levitation potion effect, handle damage better, teleport, glitching in a boat
+TODO: BYPASSES: None known
+ */
 @Testing
 public class FlyA extends Check {
     public FlyA(Profile profile) {
@@ -15,19 +20,34 @@ public class FlyA extends Check {
     }
 
     @Override
-    public void handle(Packet packet) {
+    public void handle(ClientPlayPacket clientPlayPacket) {
 
-        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isClimable(150L) || profile.isExempt().isCobweb(100L);
+        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isTrapdoor_door() || profile.isExempt().isCobweb(50L) || profile.isExempt().isCake() || profile.getVehicleData().isRiding(150L);
 
-        if (!packet.isMovement()) return;
+        if (!clientPlayPacket.isMovement()) return;
 
-        MovementData data = profile.getMovementData();
+        final MovementData movementData = profile.getMovementData();
 
-        if (!data.isOnGround() && !exempt) {
+        final double deltaY = movementData.getDeltaY();
 
-            final double prediction = data.getDeltaY() - PredictionEngine.getVerticalPrediction(data.getLastDeltaY());
+        //Handle damage
+        int maxBuffer;
+        if (profile.isExempt().tookDamage(300L) || profile.isExempt().isClimable(50L)) maxBuffer = 3;
+        else maxBuffer = 1;
 
-            if (prediction > 1.9262653090336062E-14 && increaseBuffer() > 1) fail("pred=" + prediction + " my=" + data.getDeltaY());
+        if (!movementData.isOnGround()) {
+
+            final double prediction = deltaY - PredictionEngine.getVerticalPrediction(movementData.getLastDeltaY());
+
+            double prediction_limit = 1.9262653090336062E-14;
+
+            if (profile.isExempt().isClimable(50L)) {
+                if (deltaY >= 0) prediction_limit = 0.08075199932861336; //TODO: might have slightly changed in newer version
+                else prediction_limit = 0.07540000438690189;
+                if (deltaY == 0.1176000022888175 || deltaY == -0.1499999999999858) decreaseBufferBy(1);
+            }
+
+            if (!exempt && prediction > prediction_limit && increaseBuffer() > maxBuffer) fail("pred=" + prediction + " my=" + deltaY);
 
         } else decreaseBufferBy(1);
     }
