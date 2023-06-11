@@ -16,6 +16,7 @@ public final class MathUtils {
     //---------------------------------------------------------------------------------------
     public static final double EXPANDER = 1.6777216E7D;
     public static final long MINIMUM_ROTATION_DIVISOR = 131072L;
+    public static final double JUMP = 0.419999988697815;
     //---------------------------------------------------------------------------------------
 
     public static int millisToTicks(final long millis) {
