@@ -1,11 +1,10 @@
-package com.xiii.wave.checks.impl.speed;
+package com.xiii.wave.checks.impl.fly;
 
 import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.impl.MovementData;
-import com.xiii.wave.playerdata.data.impl.VehicleData;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.PredictionEngine;
 
