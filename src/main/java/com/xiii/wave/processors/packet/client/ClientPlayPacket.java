@@ -1,10 +1,10 @@
-package com.xiii.wave.processors;
+package com.xiii.wave.processors.packet.client;
 
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
 
-public class Packet {
+public class ClientPlayPacket {
 
     private final PacketType.Play.Client type;
     private final long timeStamp;
@@ -12,18 +12,18 @@ public class Packet {
     /*
     Use entity cache
      */
-    private WrapperPlayClientInteractEntity useEntityWrapper;
+    private WrapperPlayClientInteractEntity interactEntityWrapper;
     private boolean attack;
 
     /*
     Block Dig cache
      */
-    private WrapperPlayClientPlayerDigging blockDigWrapper;
+    private WrapperPlayClientPlayerDigging playerDiggingWrapper;
 
     /*
     Window Click cache
      */
-    private WrapperPlayClientClickWindow windowClickWrapper;
+    private WrapperPlayClientClickWindow clickWindowWrapper;
 
     /*
     Entity Action cache
@@ -43,28 +43,28 @@ public class Packet {
     private WrapperPlayClientPlayerRotation lookWrapper;
     private boolean movement, rotation, flying;
 
-    public Packet(PacketType.Play.Client type, PacketPlayReceiveEvent packet, long timeStamp) {
+    public ClientPlayPacket(final PacketType.Play.Client type, final PacketPlayReceiveEvent packet, final long timeStamp) {
         this.timeStamp = timeStamp;
 
         switch (this.type = type) {
 
             case INTERACT_ENTITY:
 
-                this.useEntityWrapper = new WrapperPlayClientInteractEntity(packet);
+                this.interactEntityWrapper = new WrapperPlayClientInteractEntity(packet);
 
-                this.attack = this.useEntityWrapper.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK;
+                this.attack = this.interactEntityWrapper.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK;
 
                 break;
 
             case PLAYER_DIGGING:
 
-                this.blockDigWrapper = new WrapperPlayClientPlayerDigging(packet);
+                this.playerDiggingWrapper = new WrapperPlayClientPlayerDigging(packet);
 
                 break;
 
             case CLICK_WINDOW:
 
-                this.windowClickWrapper = new WrapperPlayClientClickWindow(packet);
+                this.clickWindowWrapper = new WrapperPlayClientClickWindow(packet);
 
                 break;
 
@@ -123,16 +123,16 @@ public class Packet {
         return flying;
     }
 
-    public WrapperPlayClientInteractEntity getUseEntityWrapper() {
-        return useEntityWrapper;
+    public WrapperPlayClientInteractEntity getInteractEntityWrapper() {
+        return interactEntityWrapper;
     }
 
-    public WrapperPlayClientPlayerDigging getBlockDigWrapper() {
-        return blockDigWrapper;
+    public WrapperPlayClientPlayerDigging getPlayerDiggingWrapper() {
+        return playerDiggingWrapper;
     }
 
-    public WrapperPlayClientClickWindow getWindowClickWrapper() {
-        return windowClickWrapper;
+    public WrapperPlayClientClickWindow getClickWindowWrapper() {
+        return clickWindowWrapper;
     }
 
     public WrapperPlayClientEntityAction getEntityActionWrapper() {
