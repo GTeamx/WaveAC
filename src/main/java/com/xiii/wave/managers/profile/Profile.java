@@ -8,7 +8,8 @@ import com.xiii.wave.exempt.Exempt;
 import com.xiii.wave.files.Config;
 import com.xiii.wave.managers.threads.ProfileThread;
 import com.xiii.wave.playerdata.data.impl.*;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 import com.xiii.wave.utils.TaskUtils;
 import com.xiii.wave.utils.versionutils.VersionUtils;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class Profile {
     //--------------------------------------
     private final String version;
     private final ClientVersion clientVersion;
-    private String client = "Unknown";
+    private String clientBrand = "Unknown";
     private final boolean bypass;
     //--------------------------------------
 
@@ -49,7 +50,7 @@ public class Profile {
     private final Exempt exempt;
     //---------------------------
 
-    public Profile(Player player) {
+    public Profile(final Player player) {
 
         //Player Object
         this.player = player;
@@ -72,7 +73,7 @@ public class Profile {
         this.rotationData = new RotationData(this);
         this.teleportData = new TeleportData();
         this.velocityData = new VelocityData();
-        this.vehicleData = new VehicleData();
+        this.vehicleData = new VehicleData(this );
 
         //Check Holder
         this.checkHolder = new CheckHolder(this);
@@ -91,29 +92,49 @@ public class Profile {
         return bypass;
     }
 
-    public void handle(Packet packet) {
+    public void handle(final ClientPlayPacket clientPlayPacket) {
 
         if (this.player == null) return;
 
-        this.connectionData.process(packet);
-        this.actionData.process(packet);
-        this.combatData.process(packet);
-        this.movementData.process(packet);
-        this.rotationData.process(packet);
-        this.teleportData.process(packet);
-        this.velocityData.process(packet);
-        this.vehicleData.process(packet);
+        this.connectionData.process(clientPlayPacket);
+        this.actionData.process(clientPlayPacket);
+        this.combatData.process(clientPlayPacket);
+        this.movementData.process(clientPlayPacket);
+        this.rotationData.process(clientPlayPacket);
+        this.teleportData.process(clientPlayPacket);
+        this.velocityData.process(clientPlayPacket);
+        this.vehicleData.process(clientPlayPacket);
 
-        this.exempt.handleExempts(packet.getTimeStamp());
+        this.exempt.handleExempts(clientPlayPacket.getTimeStamp());
 
-        this.checkHolder.runChecks(packet);
+        this.checkHolder.runChecks(clientPlayPacket);
     }
 
-    public void kick(String reason) {
+    public void handle(final ServerPlayPacket serverPlayPacket) {
+
+        if (this.player == null) return;
+
+        this.connectionData.process(serverPlayPacket);
+        this.actionData.process(serverPlayPacket);
+        this.combatData.process(serverPlayPacket);
+        this.movementData.process(serverPlayPacket);
+        this.rotationData.process(serverPlayPacket);
+        this.teleportData.process(serverPlayPacket);
+        this.velocityData.process(serverPlayPacket);
+        this.vehicleData.process(serverPlayPacket);
+
+        this.exempt.handleExempts(serverPlayPacket.getTimeStamp());
+    }
+
+    public void kickPlayer(final String reason) {
 
         if (this.player == null) return;
 
         TaskUtils.task(() -> this.player.kickPlayer(reason));
+    }
+
+    public void handleTick(long currentTime) {
+        //Handle the tick here
     }
 
     public String getVersionAsString() {
@@ -124,12 +145,12 @@ public class Profile {
         return clientVersion;
     }
 
-    public String getClient() {
-        return client;
+    public String getClientBrand() {
+        return clientBrand;
     }
 
-    public void setClient(String client) {
-        this.client = client;
+    public void setClientBrand(final String clientBrand) {
+        this.clientBrand = clientBrand;
     }
 
     public Player getPlayer() {
@@ -142,10 +163,6 @@ public class Profile {
 
     public void reloadChecks() {
         this.checkHolder.registerAll();
-    }
-
-    public void handleTick(long currentTime) {
-        //Handle the tick here
     }
 
     public TeleportData getTeleportData() { return teleportData; }

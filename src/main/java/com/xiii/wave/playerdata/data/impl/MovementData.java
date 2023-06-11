@@ -8,7 +8,8 @@ import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.nms.NmsInstance;
 import com.xiii.wave.playerdata.data.Data;
 import com.xiii.wave.playerdata.processors.impl.SetbackProcessor;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 import com.xiii.wave.utils.CollisionUtils;
 import com.xiii.wave.utils.MoveUtils;
 import com.xiii.wave.utils.custom.CustomLocation;
@@ -48,7 +49,7 @@ public class MovementData implements Data {
             lastFrictionFactorUpdateTicks, lastNearEdgeTicks,
             lastFlyingAbility = 10000;
 
-    public MovementData(Profile profile) {
+    public MovementData(final Profile profile) {
         this.profile = profile;
 
         this.equipment = new Equipment();
@@ -61,17 +62,17 @@ public class MovementData implements Data {
     }
 
     @Override
-    public void process(Packet packet) {
+    public void process(final ClientPlayPacket clientPlayPacket) {
 
         final World world = profile.getPlayer().getWorld();
 
-        final long currentTime = packet.getTimeStamp();
+        final long currentTime = clientPlayPacket.getTimeStamp();
 
-        switch (packet.getType()) {
+        switch (clientPlayPacket.getType()) {
 
             case PLAYER_POSITION:
 
-                final WrapperPlayClientPlayerPosition move = packet.getPositionWrapper();
+                final WrapperPlayClientPlayerPosition move = clientPlayPacket.getPositionWrapper();
 
                 this.lastOnGround = this.onGround;
                 this.onGround = move.isOnGround();
@@ -96,7 +97,7 @@ public class MovementData implements Data {
                 //1.17+
                 if (profile.getActionData().getLastDuplicateOnePointSeventeenPacketTicks() == 0) break;
 
-                final WrapperPlayClientPlayerPositionAndRotation posLook = packet.getPositionLookWrapper();
+                final WrapperPlayClientPlayerPositionAndRotation posLook = clientPlayPacket.getPositionLookWrapper();
 
                 this.lastOnGround = this.onGround;
                 this.onGround = posLook.isOnGround();
@@ -118,7 +119,7 @@ public class MovementData implements Data {
 
             case PLAYER_ROTATION:
 
-                final WrapperPlayClientPlayerRotation look = packet.getLookWrapper();
+                final WrapperPlayClientPlayerRotation look = clientPlayPacket.getLookWrapper();
 
                 this.lastOnGround = this.onGround;
                 this.onGround = look.isOnGround();
@@ -138,6 +139,11 @@ public class MovementData implements Data {
 
                 break;
         }
+    }
+
+    @Override
+    public void process(final ServerPlayPacket serverPlayPacket) {
+
     }
 
     private void processLocationData() {

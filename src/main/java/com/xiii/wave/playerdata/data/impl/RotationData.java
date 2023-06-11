@@ -7,7 +7,8 @@ import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.Data;
 import com.xiii.wave.playerdata.processors.impl.CinematicProcessor;
 import com.xiii.wave.playerdata.processors.impl.SensitivityProcessor;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 import com.xiii.wave.tasks.TickTask;
 import com.xiii.wave.utils.ChatUtils;
 import com.xiii.wave.utils.MathUtils;
@@ -35,13 +36,13 @@ public class RotationData implements Data {
     private int invalidSnapThreshold;
 
     @Override
-    public void process(Packet packet) {
+    public void process(final ClientPlayPacket clientPlayPacket) {
 
-        switch (packet.getType()) {
+        switch (clientPlayPacket.getType()) {
 
             case PLAYER_POSITION_AND_ROTATION:
 
-                final WrapperPlayClientPlayerPositionAndRotation posLookWrapper = packet.getPositionLookWrapper();
+                final WrapperPlayClientPlayerPositionAndRotation posLookWrapper = clientPlayPacket.getPositionLookWrapper();
 
                 processRotation(posLookWrapper.getYaw(), posLookWrapper.getPitch());
 
@@ -49,7 +50,7 @@ public class RotationData implements Data {
 
             case PLAYER_ROTATION:
 
-                final WrapperPlayClientPlayerRotation lookWrapper = packet.getLookWrapper();
+                final WrapperPlayClientPlayerRotation lookWrapper = clientPlayPacket.getLookWrapper();
 
                 processRotation(lookWrapper.getYaw(), lookWrapper.getPitch());
 
@@ -61,6 +62,11 @@ public class RotationData implements Data {
 
                 break;
         }
+    }
+
+    @Override
+    public void process(final ServerPlayPacket serverPlayPacket) {
+
     }
 
     public int getRotationsAfterTeleport() {
@@ -145,7 +151,7 @@ public class RotationData implements Data {
 
                 ChatUtils.log(Level.SEVERE, "Kicking " + profile.getPlayer().getName() + " for triggering the snap bug.");
 
-                profile.kick("Invalid Rotation Packet");
+                profile.kickPlayer("Invalid Rotation Packet");
 
                 this.invalidSnapThreshold = 0;
             }

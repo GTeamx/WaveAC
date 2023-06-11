@@ -11,7 +11,8 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 import com.xiii.wave.Wave;
 import com.xiii.wave.managers.profile.Profile;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 import com.xiii.wave.utils.ChatUtils;
 import com.xiii.wave.utils.MoveUtils;
 import com.xiii.wave.utils.TaskUtils;
@@ -33,18 +34,18 @@ public class PacketListener extends SimplePacketListenerAbstract {
     }
 
     @Override
-    public void onPacketPlayReceive(PacketPlayReceiveEvent e) {
+    public void onPacketPlayReceive(final PacketPlayReceiveEvent e) {
         if (e.isCancelled() || e.getPlayer() == null) return;
 
         final Player player = (Player) e.getPlayer();
 
-        final Packet packet = new Packet(e.getPacketType(), e, System.currentTimeMillis());
+        final ClientPlayPacket clientPlayPacket = new ClientPlayPacket(e.getPacketType(), e, e.getTimestamp());
 
         /*
         Check for server crashers - exploit attempts
         We have to do this on the netty thread in order to cancel the packet
          */
-        final String crashAttempt = checkCrasher(packet);
+        final String crashAttempt = checkCrasher(clientPlayPacket);
 
         if (crashAttempt != null) {
 
@@ -62,24 +63,21 @@ public class PacketListener extends SimplePacketListenerAbstract {
 
         if (profile == null) return;
 
-        profile.getProfileThread().execute(() -> profile.handle(packet));
+        profile.getProfileThread().execute(() -> profile.handle(clientPlayPacket));
     }
 
     @Override
-    public void onPacketPlaySend(PacketPlaySendEvent e) {
+    public void onPacketPlaySend(final PacketPlaySendEvent e) {
         if (e.isCancelled() || e.getPlayer() == null) return;
 
         final Player player = (Player) e.getPlayer();
+
+        final ServerPlayPacket serverPlayPacket = new ServerPlayPacket(e.getPacketType(), e, e.getTimestamp());
 
         final Profile profile = this.plugin.getProfileManager().getProfile(player);
 
         if (profile == null) return;
 
-        /*
-        ---------------------------------------------------------------------------
-        Validate serverbound packets to make sure they're being sent to the player
-        ---------------------------------------------------------------------------
-         */
         final int playerId = player.getEntityId();
 
         switch (e.getPacketType()) {
@@ -91,28 +89,21 @@ public class PacketListener extends SimplePacketListenerAbstract {
                 if (velocity.getEntityId() != playerId) return;
 
                 break;
-
-                /*
-                Validate more
-                 */
         }
-        /*
-        ---------------------------------------------------------------------------
-         */
 
-        //profile.getProfileThread().execute(() -> profile.handle(packet));
+        profile.getProfileThread().execute(() -> profile.handle(serverPlayPacket));
     }
 
-    private String checkCrasher(Packet packet) {
+    private String checkCrasher(ClientPlayPacket clientPlayPacket) {
 
         double x = 0D, y = 0D, z = 0D;
         float yaw = 0F, pitch = 0F;
 
-        switch (packet.getType()) {
+        switch (clientPlayPacket.getType()) {
 
             case PLAYER_POSITION:
 
-                WrapperPlayClientPlayerPosition pos = packet.getPositionWrapper();
+                WrapperPlayClientPlayerPosition pos = clientPlayPacket.getPositionWrapper();
 
                 x = Math.abs(pos.getPosition().getX());
                 y = Math.abs(pos.getPosition().getY());
@@ -122,7 +113,7 @@ public class PacketListener extends SimplePacketListenerAbstract {
 
             case PLAYER_POSITION_AND_ROTATION:
 
-                WrapperPlayClientPlayerPositionAndRotation posLook = packet.getPositionLookWrapper();
+                WrapperPlayClientPlayerPositionAndRotation posLook = clientPlayPacket.getPositionLookWrapper();
 
                 x = Math.abs(posLook.getPosition().getX());
                 y = Math.abs(posLook.getPosition().getY());
@@ -134,7 +125,7 @@ public class PacketListener extends SimplePacketListenerAbstract {
 
             case PLAYER_ROTATION:
 
-                WrapperPlayClientPlayerRotation look = packet.getLookWrapper();
+                WrapperPlayClientPlayerRotation look = clientPlayPacket.getLookWrapper();
 
                 yaw = Math.abs(look.getYaw());
                 pitch = Math.abs(look.getPitch());
