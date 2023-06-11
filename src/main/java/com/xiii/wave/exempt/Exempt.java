@@ -1,9 +1,12 @@
 package com.xiii.wave.exempt;
 
 import com.xiii.wave.managers.profile.Profile;
+import com.xiii.wave.playerdata.data.impl.CombatData;
 import com.xiii.wave.playerdata.data.impl.MovementData;
 import com.xiii.wave.utils.BetterStream;
 import com.xiii.wave.utils.MathUtils;
+import com.xiii.wave.utils.TaskUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.util.List;
@@ -16,30 +19,42 @@ public class Exempt {
         this.profile = profile;
     }
 
-    private boolean fly, water, lava, climable, cobweb;
+    private boolean fly, water, lava, climable, cobweb, trapdoor_door, cake;
 
     private long lastWater, lastLava, lastClimable, lastCobweb;
 
     public void handleExempts(long timeStamp) {
 
-        MovementData movementData = profile.getMovementData();
+        final MovementData movementData = profile.getMovementData();
+        final CombatData combatData = profile.getCombatData();
 
         final List<Material> nearbyBlocks = movementData.getNearbyBlocks();
 
         //Fly
         this.fly = movementData.getLastFlyingAbility() < (20*5); //5s
 
+        /*
+        Easier to maintain using matchMaterial for future updates
+        matchMaterial only works if it starts with the specified string
+         */
+
         //Water Liquid
-        this.water = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.WATER  || mat == Material.BUBBLE_COLUMN || mat == Material.LEGACY_STATIONARY_WATER || mat == Material.LEGACY_WATER);
+        this.water = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.matchMaterial("WATER", true)  || mat == Material.BUBBLE_COLUMN);
 
         //Lava Liquid
-        this.lava = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.LAVA || mat == Material.LEGACY_LAVA || mat == Material.LEGACY_STATIONARY_LAVA);
+        this.lava = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.matchMaterial("LAVA", true));
 
         //Climables
-        this.climable = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.LADDER || mat == Material.VINE || mat == Material.TWISTING_VINES || mat == Material.TWISTING_VINES_PLANT || mat == Material.WEEPING_VINES || mat == Material.WEEPING_VINES_PLANT || mat == Material.LEGACY_VINE || mat == Material.LEGACY_LADDER);
+        this.climable = BetterStream.anyMatch(nearbyBlocks, mat -> mat.toString().contains("LADDER") || mat.toString().contains("VINE"));
 
         //Cobweb
         this.cobweb = BetterStream.anyMatch(nearbyBlocks, mat -> mat == Material.COBWEB);
+
+        //Trapdoors
+        this.trapdoor_door = BetterStream.anyMatch(nearbyBlocks, mat -> mat.toString().contains("DOOR"));
+
+        //Cakes
+        this.cake = BetterStream.anyMatch(nearbyBlocks, mat -> mat.toString().contains("CAKE"));
 
         if (this.water) this.lastWater = System.currentTimeMillis();
 
@@ -68,5 +83,21 @@ public class Exempt {
 
     public boolean isCobweb(final long delay) {
         return MathUtils.elapsed(lastCobweb) <= delay;
+    }
+
+    public boolean tookDamage(final long delay) {
+        return MathUtils.elapsed(profile.getCombatData().getLastDamageTaken()) <= delay;
+    }
+
+    public boolean tookHandDamage(final long delay) {
+        return MathUtils.elapsed(profile.getCombatData().getLastHandDamageTaken()) <= delay;
+    }
+
+    public boolean isTrapdoor_door() {
+        return trapdoor_door;
+    }
+
+    public boolean isCake() {
+        return cake;
     }
 }
