@@ -2,7 +2,7 @@ package com.xiii.wave.checks.types;
 
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.managers.profile.Profile;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 
 public abstract class Check extends AbstractCheck {
 
@@ -14,5 +14,5 @@ public abstract class Check extends AbstractCheck {
         super(profile, check, "", description);
     }
 
-    public abstract void handle(Packet packet);
+    public abstract void handle(ClientPlayPacket clientPlayPacket);
 }

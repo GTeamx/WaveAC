@@ -4,7 +4,7 @@ import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.impl.speed.FlyA;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 
 import java.util.Arrays;
 
@@ -19,12 +19,12 @@ public class CheckHolder {
         this.profile = profile;
     }
 
-    public void runChecks(Packet packet) {
+    public void runChecks(ClientPlayPacket clientPlayPacket) {
         /*
         Fastest way to loop through many objects, If you think this is stupid
         Then benchmark the long term perfomance yourself with many profilers and java articles.
          */
-        for (int i = 0; i < this.checksSize; i++) this.checks[i].handle(packet);
+        for (int i = 0; i < this.checksSize; i++) this.checks[i].handle(clientPlayPacket);
     }
 
     public void registerAll() {

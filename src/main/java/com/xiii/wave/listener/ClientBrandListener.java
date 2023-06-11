@@ -4,7 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
 import com.xiii.wave.Wave;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 
 public class ClientBrandListener extends SimplePacketListenerAbstract {
 
@@ -19,7 +19,7 @@ public class ClientBrandListener extends SimplePacketListenerAbstract {
 
     }
 
-    public void handle(Packet packet) {
+    public void handle(ClientPlayPacket clientPlayPacket) {
 
         /*
 

@@ -3,7 +3,8 @@ package com.xiii.wave.playerdata.data.impl;
 import com.xiii.wave.Wave;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.Data;
-import com.xiii.wave.processors.Packet;
+import com.xiii.wave.processors.packet.client.ClientPlayPacket;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 import com.xiii.wave.utils.MiscUtils;
 import com.xiii.wave.utils.custom.PlacedBlock;
 import com.xiii.wave.utils.custom.desync.Desync;
@@ -30,7 +31,7 @@ public class ActionData implements Data {
      */
     private int lastDuplicateOnePointSeventeenPacketTicks = 100;
 
-    public ActionData(Profile profile) {
+    public ActionData(final Profile profile) {
 
         this.desync = new Desync(profile);
 
@@ -46,10 +47,13 @@ public class ActionData implements Data {
     }
 
     @Override
-    public void process(Packet packet) {
-        /*
-        Handle the packet
-         */
+    public void process(final ClientPlayPacket clientPlayPacket) {
+
+    }
+
+    @Override
+    public void process(final ServerPlayPacket serverPlayPacket) {
+
     }
 
     public int getLastRidingTicks() {
