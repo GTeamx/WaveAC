@@ -1,25 +1,37 @@
 package com.xiii.wave.checks.impl.fly;
 
-import com.xiii.wave.checks.annotations.Testing;
+import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
+import com.xiii.wave.checks.annotations.Experimental;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.impl.MovementData;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.PredictionEngine;
+import com.xiii.wave.processors.packet.server.ServerPlayPacket;
+import com.xiii.wave.utils.TaskUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.metadata.MetadataValue;
+import org.bukkit.metadata.MetadataValueAdapter;
+
+import java.util.List;
 
 /*
 TODO: FALSES: Block glitching/ghost blocks, levitation potion effect, handle damage better, teleport, glitching in a boat
 TODO: BYPASSES: None known
  */
-@Testing
+
+@Experimental
 public class FlyA extends Check {
     public FlyA(Profile profile) {
         super(profile, CheckType.FLY, "A", "Checks for gravity modifications");
     }
 
     @Override
-    public void handle(ClientPlayPacket clientPlayPacket) {
+    public void handle(final ClientPlayPacket clientPlayPacket) {
 
         final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isTrapdoor_door() || profile.isExempt().isCobweb(50L) || profile.isExempt().isCake() || profile.getVehicleData().isRiding(150L);
 
@@ -50,4 +62,7 @@ public class FlyA extends Check {
 
         } else decreaseBufferBy(1);
     }
+
+    @Override
+    public void handle(final ServerPlayPacket serverPlayPacket) {}
 }
