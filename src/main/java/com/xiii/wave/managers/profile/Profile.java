@@ -22,6 +22,7 @@ public class Profile {
     private final ActionData actionData;
     private final CombatData combatData;
     private final ConnectionData connectionData;
+    private final FishingData fishingData;
     private final MovementData movementData;
     private final RotationData rotationData;
     private final TeleportData teleportData;
@@ -70,10 +71,11 @@ public class Profile {
         this.combatData = new CombatData(this);
         this.connectionData = new ConnectionData();
         this.movementData = new MovementData(this);
+        this.fishingData = new FishingData(this);
         this.rotationData = new RotationData(this);
         this.teleportData = new TeleportData();
         this.velocityData = new VelocityData();
-        this.vehicleData = new VehicleData(this );
+        this.vehicleData = new VehicleData(this);
 
         //Check Holder
         this.checkHolder = new CheckHolder(this);
@@ -99,6 +101,7 @@ public class Profile {
         this.connectionData.process(clientPlayPacket);
         this.actionData.process(clientPlayPacket);
         this.combatData.process(clientPlayPacket);
+        this.fishingData.process(clientPlayPacket);
         this.movementData.process(clientPlayPacket);
         this.rotationData.process(clientPlayPacket);
         this.teleportData.process(clientPlayPacket);
@@ -117,6 +120,7 @@ public class Profile {
         this.connectionData.process(serverPlayPacket);
         this.actionData.process(serverPlayPacket);
         this.combatData.process(serverPlayPacket);
+        this.fishingData.process(serverPlayPacket);
         this.movementData.process(serverPlayPacket);
         this.rotationData.process(serverPlayPacket);
         this.teleportData.process(serverPlayPacket);
@@ -124,6 +128,8 @@ public class Profile {
         this.vehicleData.process(serverPlayPacket);
 
         this.exempt.handleExempts(serverPlayPacket.getTimeStamp());
+
+        this.checkHolder.runChecks(serverPlayPacket);
     }
 
     public void kickPlayer(final String reason) {
@@ -177,6 +183,10 @@ public class Profile {
 
     public ConnectionData getConnectionData() {
         return connectionData;
+    }
+
+    public FishingData getFishingData() {
+        return fishingData;
     }
 
     public MovementData getMovementData() {
