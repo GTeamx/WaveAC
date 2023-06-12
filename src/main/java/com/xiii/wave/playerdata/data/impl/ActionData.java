@@ -1,5 +1,7 @@
 package com.xiii.wave.playerdata.data.impl;
 
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientEntityAction;
 import com.xiii.wave.Wave;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.playerdata.data.Data;
@@ -16,7 +18,7 @@ public class ActionData implements Data {
 
     private GameMode gameMode;
 
-    private boolean allowFlight, sneaking;
+    private boolean allowFlight, sneaking, sprinting;
 
     private final Desync desync;
 
@@ -48,7 +50,21 @@ public class ActionData implements Data {
 
     @Override
     public void process(final ClientPlayPacket clientPlayPacket) {
-
+        if (clientPlayPacket.is(PacketType.Play.Client.ENTITY_ACTION)) {
+            final WrapperPlayClientEntityAction action = clientPlayPacket.getEntityActionWrapper();
+            if(action.getAction() == WrapperPlayClientEntityAction.Action.START_SPRINTING) {
+                this.sprinting = true;
+            }
+            if(action.getAction() == WrapperPlayClientEntityAction.Action.STOP_SPRINTING) {
+                this.sprinting = false;
+            }
+            if(action.getAction() == WrapperPlayClientEntityAction.Action.START_SNEAKING) {
+                this.sneaking = true;
+            }
+            if(action.getAction() == WrapperPlayClientEntityAction.Action.STOP_SNEAKING) {
+                this.sneaking = false;
+            }
+        }
     }
 
     @Override
@@ -66,6 +82,10 @@ public class ActionData implements Data {
 
     public boolean isSneaking() {
         return sneaking;
+    }
+
+    public boolean isSprinting() {
+        return sprinting;
     }
 
     public ItemStack getItemInMainHand() {
