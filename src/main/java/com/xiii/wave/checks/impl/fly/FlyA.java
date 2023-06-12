@@ -9,12 +9,12 @@ import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 
 /*
-TODO: FALSES: Block glitching/ghost blocks, levitation potion effect, handle damage better, teleport, glitching in a boat
-TODO: BYPASSES: Ground spoof
+FALSES: Block glitching/ghost blocks, levitation potion effect, handle damage better, teleport, glitching in a boat/block, slime standing still, block placing below you
+BYPASSES: Ground spoof
  */
 
 public class FlyA extends Check {
-    public FlyA(Profile profile) {
+    public FlyA(final Profile profile) {
         super(profile, CheckType.FLY, "A", "Checks for gravity modifications");
     }
 
