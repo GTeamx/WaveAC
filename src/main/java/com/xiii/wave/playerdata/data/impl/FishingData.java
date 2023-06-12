@@ -8,8 +8,7 @@ import com.xiii.wave.playerdata.data.Data;
 import com.xiii.wave.playerdata.data.enums.FishingState;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.packet.server.ServerPlayPacket;
-
-import java.util.Optional;
+import com.xiii.wave.utils.TaskUtils;
 
 public class FishingData implements Data {
 
@@ -30,7 +29,7 @@ public class FishingData implements Data {
     @Override
     public void process(final ServerPlayPacket serverPlayPacket) {
 
-        if (serverPlayPacket.getType() == PacketType.Play.Server.ENTITY_METADATA && serverPlayPacket.getEntityStatusWrapper() != null && serverPlayPacket.getEntityStatusWrapper().getStatus() == 31) {
+        if (serverPlayPacket.getType() == PacketType.Play.Server.ENTITY_METADATA) {
 
             final WrapperPlayServerEntityMetadata wrapperPlayServerEntityMetadata = serverPlayPacket.getEntityMetadataWrapper();
 
@@ -42,26 +41,28 @@ public class FishingData implements Data {
                 //Bite successful
                 if (value.equals(true) && index.equals(9)) {
                     this.fishingState = FishingState.BITE;
-                    this.lastBite = System.currentTimeMillis();
+                    this.lastBite = serverPlayPacket.getTimeStamp();
                 }
 
                 //Bite fail
                 if (value.equals(false) && index.equals(9)) {
                     this.fishingState = FishingState.BITE_FAIL;
-                    this.lastBiteFail = System.currentTimeMillis();
+                    this.lastBiteFail = serverPlayPacket.getTimeStamp();
                 }
 
                 //Caught
                 if (index.equals(16)) {
                     this.fishingState = FishingState.CAUGHT;
-                    this.lastCaught = System.currentTimeMillis();
+                    this.lastCaught = serverPlayPacket.getTimeStamp();
                 }
             }
         }
     }
 
     public FishingState getFishingState() {
-        return fishingState;
+        final FishingState tempFishingState = this.fishingState;
+        this.fishingState = FishingState.UNKNOWN;
+        return tempFishingState;
     }
 
     public long getLastBite() {
