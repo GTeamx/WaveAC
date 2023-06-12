@@ -13,6 +13,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.Objects;
+
 public class ProfileListener implements Listener {
 
     private final Wave plugin;
@@ -29,24 +31,21 @@ public class ProfileListener implements Listener {
         this.plugin.getProfileManager().createProfile(player);
 
         final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
-        if (!vpnKey.equalsIgnoreCase("DISABLED")) {
+        if (vpnKey != null && !vpnKey.equalsIgnoreCase("DISABLED")) {
 
-            final String httpResponse = HTTPUtils.readUrl("https://proxycheck.io/v2/" + e.getPlayer().getAddress().getHostName() + "?key=" + vpnKey + "&vpn=3");
-            //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
-            final String riskLevel = "Unknown";
-            // TODO: Fix riskLevel
+            final String httpResponse = HTTPUtils.readUrl("https://proxycheck.io/v2/" + Objects.requireNonNull(e.getPlayer().getAddress()).getHostName() + "?key=" + vpnKey + "&vpn=3");
 
             if (httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("\"vpn\": \"yes\"") || httpResponse.contains("\"WaveACVPNCheckResult\": \"REJECTED\"") || httpResponse.contains("blacklist") || httpResponse.contains("compromised")) {
 
                 TaskUtils.task(() -> e.getPlayer().kickPlayer(MsgType.PREFIX.getMessage() + " §cVPN/Proxy"));
 
             }
+        }
 
-            if (Config.Setting.TOGGLE_ALERTS_ON_JOIN.getBoolean() && player.hasPermission(Permissions.AUTO_ALERTS.getPermission())) {
+        if (Config.Setting.TOGGLE_ALERTS_ON_JOIN.getBoolean() && player.hasPermission(Permissions.AUTO_ALERTS.getPermission())) {
 
-                this.plugin.getAlertManager().addPlayerToAlerts(player.getUniqueId());
-                player.sendMessage(MsgType.PREFIX.getMessage() + " Alerts outptut §aenabled");
-            }
+            this.plugin.getAlertManager().addPlayerToAlerts(player.getUniqueId());
+            player.sendMessage(MsgType.PREFIX.getMessage() + " Alerts output §aenabled §7(Automatic)");
         }
     }
 
