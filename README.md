@@ -1,9 +1,10 @@
 # 🌊 WaveAC
 
 Wave is a free open source Minecraft anticheat solution, supporting bedrock players (Geyser) and versions from 1.8 all the way to 1.20!
+
 If you wish to get support, test or have any questions about Wave, make sure to join our [Discord server](https://discord.gg/rxV89DZHEd)!
 
-### 📎 Special credits
+### 📎 Special Credits
 
 Special credits to Nik and his [anticheat base](https://github.com/NikV2/AnticheatBase) that we are using! Thanks to retrooper too for making [packetevents](https://github.com/retrooper/packetevents) (that we are also using)! Thank you so much for your amazing work and dedication!
 
@@ -20,7 +21,7 @@ To report a false or bypass you may either use the issues section and following 
 
 To test Wave on our official test server you may open a ticket on our Discord server with your in-game username and reason(s) of your testing. You may also ask how long you would like your test session to last, be realist and only ask for the time you actually need. If your test session expires or you are running out of time, reopen a ticket and ask for a time extension.
 
-### 🎯 Isuees/Feature request
+### 🎯 Issues/Feature request
 
 Before opening an issue or feature request make sure you follow our templates! If your issue/feature request goes unotice, you can open a ticket on our Discord server or bump it!
 
