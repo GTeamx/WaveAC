@@ -12,7 +12,8 @@ import com.xiii.wave.utils.TaskUtils;
 import org.bukkit.Bukkit;
 
 public class AutoFishA extends Check {
-    public AutoFishA(final Profile profile) {
+
+    public AutoFishA(Profile profile) {
         super(profile, CheckType.AUTOFISH, "A", "Fishing in similar reaction time");
     }
 

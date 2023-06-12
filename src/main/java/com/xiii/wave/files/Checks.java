@@ -68,7 +68,11 @@ public class Checks implements Initializer {
         FLY("fly", "", "Fly Check"),
         FLY_A("fly.a", true, "Should we enable this module?"),
         FLY_MAX_VL("fly.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
-        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+        AUTOFISH("autofish", "", "AutoFish Check"),
+        AUTOFISH_A("autofish.a", true, "Should we enable this module?"),
+        AUTOFISH_MAX_VL("autofish.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
+        AUTOFISH_COMMANDS("autofish.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 
         private final String key;
         private final Object defaultValue;
