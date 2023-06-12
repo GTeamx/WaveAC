@@ -3,6 +3,7 @@ package com.xiii.wave.checks;
 import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.impl.autofish.AutoFishA;
 import com.xiii.wave.checks.impl.fly.FlyA;
+import com.xiii.wave.checks.impl.speed.SpeedA;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
@@ -45,7 +46,8 @@ public class CheckHolder {
         addChecks(
 
                 new FlyA(this.profile),
-                new AutoFishA(this.profile)
+                new AutoFishA(this.profile),
+                new SpeedA(this.profile)
 
         );
 
