@@ -8,9 +8,11 @@ If you wish to get support, test or have any questions about Wave, make sure to 
 
 Special credits to Nik and his [anticheat base](https://github.com/NikV2/AnticheatBase) that we are using! Thanks to retrooper too for making [packetevents](https://github.com/retrooper/packetevents) (that we are also using)! Thank you so much for your amazing work and dedication!
 
-### 💸 Donations
+### 🔔 Releases/Updates
 
-Since Wave is completly free to use we do not make any profits off of it, you can support us and our work you can make a donation [here](https://paypal.me/waveac)! You'll receive the Donator role on our Discord server but also a permanent whitelist on our official test server!
+Wave has a built-in update checker, however it will not automatically install nor download the update, it will only send a message telling you if you are up to date or not. **Wave updates are ONLY RELEASED [HERE](https://github.com/XIII-MC/WaveAC)!**.
+
+If you wish to compile Wave by yourself, know that you will most likely face issues, bugs, falses or even bypasses. Please only use **released** versions of Wave.
 
 ### 🚷 Falses/Bypasses
 
@@ -21,6 +23,10 @@ To report a false or bypass you may either use the issues section and following 
 
 To test Wave on our official test server you may open a ticket on our Discord server with your in-game username and reason(s) of your testing. You may also ask how long you would like your test session to last, be realist and only ask for the time you actually need. If your test session expires or you are running out of time, reopen a ticket and ask for a time extension.
 
+### 💸 Donations
+
+Since Wave is completly free to use we do not make any profits off of it, you can support us and our work you can make a donation [here](https://paypal.me/waveac)! You'll receive the Donator role on our Discord server but also a permanent whitelist on our official test server!
+
 ### 🎯 Issues/Feature request
 
 Before opening an issue or feature request make sure you follow our templates! If your issue/feature request goes unotice, you can open a ticket on our Discord server or bump it!
@@ -28,9 +34,3 @@ Before opening an issue or feature request make sure you follow our templates! I
 ### 🔃 Contributing
 
 Before contributing, please make sure that you follow our conventions (naming scheme, indentation) and that your code works! Make sure to also precice on what server software and version your test was ran, with other plugins/mods installed (if applicable)
-
-### 🔔 Releases/Updates
-
-Wave has a built-in update checker, however it will not automatically install nor download the update, it will only send a message telling you if you are up to date or not. **Wave updates are ONLY RELEASED [HERE](https://github.com/XIII-MC/WaveAC)!**.
-
-If you wish to compile Wave by yourself, know that you will most likely face issues, bugs, falses or even bypasses. Please only use **released** versions of Wave.
