@@ -29,6 +29,11 @@ public class ServerPlayPacket {
      */
     private WrapperPlayServerEntityMetadata entityMetadataWrapper;
 
+    /*
+    Entity status cache
+     */
+    private WrapperPlayServerEntityStatus entityStatusWrapper;
+
     public ServerPlayPacket(final PacketType.Play.Server type, final PacketPlaySendEvent packet, final long timeStamp) {
         this.timeStamp = timeStamp;
 
@@ -52,6 +57,12 @@ public class ServerPlayPacket {
 
                 break;
 
+            case ENTITY_STATUS:
+
+                this.entityStatusWrapper = new WrapperPlayServerEntityStatus(packet);
+
+                break;
+
         }
     }
 
@@ -65,6 +76,10 @@ public class ServerPlayPacket {
 
     public WrapperPlayServerEntityMetadata getEntityMetadataWrapper() {
         return entityMetadataWrapper;
+    }
+
+    public WrapperPlayServerEntityStatus getEntityStatusWrapper() {
+        return entityStatusWrapper;
     }
 
     public boolean is(PacketType.Play.Server type) {

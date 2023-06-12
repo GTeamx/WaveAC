@@ -9,6 +9,8 @@ import com.xiii.wave.playerdata.data.enums.FishingState;
 import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 
+import java.util.Optional;
+
 public class FishingData implements Data {
 
     private final Profile profile;
@@ -28,7 +30,7 @@ public class FishingData implements Data {
     @Override
     public void process(final ServerPlayPacket serverPlayPacket) {
 
-        if (serverPlayPacket.getType() == PacketType.Play.Server.ENTITY_METADATA) {
+        if (serverPlayPacket.getType() == PacketType.Play.Server.ENTITY_METADATA && serverPlayPacket.getEntityStatusWrapper() != null && serverPlayPacket.getEntityStatusWrapper().getStatus() == 31) {
 
             final WrapperPlayServerEntityMetadata wrapperPlayServerEntityMetadata = serverPlayPacket.getEntityMetadataWrapper();
 
@@ -40,19 +42,19 @@ public class FishingData implements Data {
                 //Bite successful
                 if (value.equals(true) && index.equals(9)) {
                     this.fishingState = FishingState.BITE;
-                    this.lastBite = serverPlayPacket.getTimeStamp();
+                    this.lastBite = System.currentTimeMillis();
                 }
 
                 //Bite fail
                 if (value.equals(false) && index.equals(9)) {
                     this.fishingState = FishingState.BITE_FAIL;
-                    this.lastBiteFail = serverPlayPacket.getTimeStamp();
+                    this.lastBiteFail = System.currentTimeMillis();
                 }
 
                 //Caught
                 if (index.equals(16)) {
                     this.fishingState = FishingState.CAUGHT;
-                    this.lastCaught = serverPlayPacket.getTimeStamp();
+                    this.lastCaught = System.currentTimeMillis();
                 }
             }
         }
