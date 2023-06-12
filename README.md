@@ -25,7 +25,7 @@ To test Wave on our official test server you may open a ticket on our Discord se
 
 ### 💸 Donations
 
-Since Wave is completly free to use we do not make any profits off of it, you can support us and our work you can make a donation [here](https://paypal.me/waveac)! You'll receive the Donator role on our Discord server but also a permanent whitelist on our official test server!
+Since Wave is completly free to use we do not make any profits off of it, you can support us and our work by making a donation [here](https://paypal.me/waveac)! You'll receive the Donator role on our Discord server but also a permanent whitelist on our official test server (if you donated a total of 10€ or more)!
 
 ### 🎯 Issues/Feature request
 
