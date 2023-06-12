@@ -19,7 +19,7 @@ public class Exempt {
         this.profile = profile;
     }
 
-    private boolean fly, water, lava, climable, cobweb, trapdoor_door, cake, wall;
+    private boolean fly, water, lava, climable, cobweb, trapdoor_door, cake;
 
     private long lastWater, lastLava, lastClimable, lastCobweb;
 
@@ -56,8 +56,6 @@ public class Exempt {
         //Cakes
         this.cake = BetterStream.anyMatch(nearbyBlocks, mat -> mat.toString().contains("CAKE"));
 
-        this.wall = movementData.getLastNearWallTicks() < (5); // 0.25s
-
         if (this.water) this.lastWater = System.currentTimeMillis();
 
         if (this.lava) this.lastLava = System.currentTimeMillis();
@@ -65,7 +63,6 @@ public class Exempt {
         if (this.climable) this.lastClimable = System.currentTimeMillis();
 
         if (this.cobweb) this.lastCobweb = System.currentTimeMillis();
-
     }
 
     public boolean isFly() {
@@ -76,8 +73,8 @@ public class Exempt {
         return MathUtils.elapsed(lastWater) <= delay;
     }
 
-    public boolean isWall() {
-        return wall;
+    public boolean isWall(final long delay) {
+        return profile.getMovementData().getLastNearWallTicks() <= delay; // 0.25s | in ticks 1t=0.05s (5*0.05=0.25)
     }
 
     public boolean isLava(final long delay) {
