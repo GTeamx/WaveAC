@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public class VPNCommand extends SubCommand {
 
     private final Wave plugin;
@@ -54,22 +56,24 @@ public class VPNCommand extends SubCommand {
 
             Player target = Bukkit.getPlayer(args[1]);
 
-            final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
-            if(!vpnKey.equalsIgnoreCase("DISABLED")) {
+            if (target != null) {
 
-                final String httpResponse =  HTTPUtils.readUrl("https://proxycheck.io/v2/" + target.getAddress().getHostName() + "?key=" + vpnKey + "&vpn=3");
-                //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
-                final String riskLevel = "Unknown";
-                // TODO: Fix riskLevel
+                final String vpnKey = Wave.getInstance().getConfiguration().getString("vpn-checker-key");
 
-                if(httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("\"vpn\": \"yes\"") || httpResponse.contains("\"WaveACVPNCheckResult\": \"REJECTED\"") || httpResponse.contains("blacklist") || httpResponse.contains("compromised")) {
+                if (vpnKey != null && !vpnKey.equalsIgnoreCase("DISABLED")) {
 
-                    sender.sendMessage(MsgType.PREFIX.getMessage() + " §cVPN/Proxy detected for §3" + target.getName() + " §crisk level is §9" + riskLevel);
+                    final String httpResponse = HTTPUtils.readUrl("https://proxycheck.io/v2/" + Objects.requireNonNull(target.getAddress()).getHostName() + "?key=" + vpnKey + "&vpn=3");
+                    //final String riskLevel = httpResponse.substring(httpResponse.indexOf("\"risk\":"));
+                    final String riskLevel = "Unknown";
+                    // TODO: Fix riskLevel
 
-                } else sender.sendMessage(MsgType.PREFIX.getMessage() + " §aNo VPN/Proxy were detected for §3" + target.getName() + " §arisk level is §9" + riskLevel);
+                    if (httpResponse.contains("\"proxy\": \"yes\"") || httpResponse.contains("\"vpn\": \"yes\"") || httpResponse.contains("\"WaveACVPNCheckResult\": \"REJECTED\"") || httpResponse.contains("blacklist") || httpResponse.contains("compromised")) {
 
-            } else sender.sendMessage(MsgType.PREFIX.getMessage() + " §cError! VPN checker is disabled.");
-
+                        sender.sendMessage(MsgType.PREFIX.getMessage() + " §cVPN/Proxy detected for §3" + target.getName() + " §crisk level is §9" + riskLevel);
+                    } else
+                        sender.sendMessage(MsgType.PREFIX.getMessage() + " §aNo VPN/Proxy were detected for §3" + target.getName() + " §arisk level is §9" + riskLevel);
+                } else sender.sendMessage(MsgType.PREFIX.getMessage() + " §cError! VPN checker is disabled.");
+            } else sender.sendMessage(MsgType.PREFIX.getMessage() + " §cError! Player isn't valid.");
         } else sender.sendMessage(MsgType.PREFIX.getMessage() + " §cError! Player isn't valid.");
     }
 }
