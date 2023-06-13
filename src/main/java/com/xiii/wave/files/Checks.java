@@ -69,10 +69,13 @@ public class Checks implements Initializer {
         FLY_A("fly.a", true, "Should we enable this module?"),
         FLY_MAX_VL("fly.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
         FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
         AUTOFISH("autofish", "", "AutoFish Check"),
         AUTOFISH_A("autofish.a", true, "Should we enable this module?"),
+        AUTOFISH_B("autofish.b", true, "Should we enable this module?"),
         AUTOFISH_MAX_VL("autofish.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),
         AUTOFISH_COMMANDS("autofish.commands", Collections.singletonList("kick %player% " + MsgType.PREFIX.getMessage() +  " Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
         SPEED("speed", "", "Speed Check"),
         SPEED_A("speed.a", true, "Should we enable this module?"),
         SPEED_MAX_VL("speed.max_vl", 30, "The maximum violation amount a player needs to reach in order to get punished"),

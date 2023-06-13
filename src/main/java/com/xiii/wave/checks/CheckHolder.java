@@ -2,6 +2,7 @@ package com.xiii.wave.checks;
 
 import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.impl.autofish.AutoFishA;
+import com.xiii.wave.checks.impl.autofish.AutoFishB;
 import com.xiii.wave.checks.impl.fly.FlyA;
 import com.xiii.wave.checks.impl.speed.SpeedA;
 import com.xiii.wave.checks.types.Check;
@@ -47,6 +48,7 @@ public class CheckHolder {
 
                 new FlyA(this.profile),
                 new AutoFishA(this.profile),
+                new AutoFishB(this.profile),
                 new SpeedA(this.profile)
 
         );
