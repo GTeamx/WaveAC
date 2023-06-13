@@ -47,7 +47,7 @@ public class CheckHolder {
         addChecks(
 
                 new FlyA(this.profile),
-                new AutoFishA(this.profile),
+                //new AutoFishA(this.profile),
                 new AutoFishB(this.profile),
                 new SpeedA(this.profile)
 
