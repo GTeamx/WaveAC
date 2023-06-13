@@ -1,6 +1,5 @@
 package com.xiii.wave.checks.impl.autofish;
 
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.xiii.wave.checks.annotations.Experimental;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
@@ -16,8 +15,7 @@ BYPASSES:
  */
 
 public class AutoFishA extends Check {
-
-    public AutoFishA(Profile profile) {
+    public AutoFishA(final Profile profile) {
         super(profile, CheckType.AUTOFISH, "A", "Impossible reaction time pattern");
     }
 
@@ -29,21 +27,17 @@ public class AutoFishA extends Check {
     @Override
     public void handle(final ServerPlayPacket serverPlayPacket) {
 
-        if (serverPlayPacket.getType() == PacketType.Play.Server.ENTITY_METADATA) {
+        final FishingData fishingData = profile.getFishingData();
 
-            final FishingData fishingData = profile.getFishingData();
+        if (fishingData.getFishingState().equals(FishingState.CAUGHT)) {
 
-            if (fishingData.getFishingState().equals(FishingState.CAUGHT)) {
+            final long reactionTime = Math.abs(this.lastReactionTime - (System.currentTimeMillis() - fishingData.getLastBite()));
 
-                final long reactionTime =  Math.abs(this.lastReactionTime - (serverPlayPacket.getTimeStamp() - fishingData.getLastBite()));
+            if (reactionTime <= 100) {
+                if(increaseBuffer() > 4) fail("delay=" + reactionTime);
+            } else decreaseBufferBy(1);
 
-                if (reactionTime == 0) fail("delay=" + reactionTime);
-
-                if (reactionTime <= 99 && increaseBuffer() > 2) fail("delay=" + reactionTime);
-                else decreaseBufferBy(1);
-
-                this.lastReactionTime = (serverPlayPacket.getTimeStamp() - fishingData.getLastBite());
-            }
+            this.lastReactionTime = (System.currentTimeMillis() - fishingData.getLastBite());
         }
     }
 }
