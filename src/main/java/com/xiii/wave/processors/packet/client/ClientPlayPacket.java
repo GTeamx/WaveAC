@@ -16,9 +16,10 @@ public class ClientPlayPacket {
     private boolean attack;
 
     /*
-    Block Dig cache
+    Block Dig/Place cache
      */
     private WrapperPlayClientPlayerDigging playerDiggingWrapper;
+    private WrapperPlayClientPlayerBlockPlacement playerBlockPlacementWrapper;
 
     /*
     Window Click cache
@@ -59,6 +60,12 @@ public class ClientPlayPacket {
             case PLAYER_DIGGING:
 
                 this.playerDiggingWrapper = new WrapperPlayClientPlayerDigging(packet);
+
+                break;
+
+            case PLAYER_BLOCK_PLACEMENT:
+
+                this.playerBlockPlacementWrapper = new WrapperPlayClientPlayerBlockPlacement(packet);
 
                 break;
 
@@ -129,6 +136,10 @@ public class ClientPlayPacket {
 
     public WrapperPlayClientPlayerDigging getPlayerDiggingWrapper() {
         return playerDiggingWrapper;
+    }
+
+    public WrapperPlayClientPlayerBlockPlacement getPlayerBlockPlacementWrapper() {
+        return playerBlockPlacementWrapper;
     }
 
     public WrapperPlayClientClickWindow getClickWindowWrapper() {
