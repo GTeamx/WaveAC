@@ -8,6 +8,7 @@ public enum CheckType {
     KILLAURA("KillAura", CheckCategory.COMBAT),
     SCAFFOLD("Scaffold", CheckCategory.WORLD),
     SPEED("Speed", CheckCategory.MOVEMENT),
+    GROUND("Ground", CheckCategory.MOVEMENT),
     MOTION("Motion", CheckCategory.MOVEMENT),
     NOFALL("NoFall", CheckCategory.MOVEMENT),
     JESUS("Jesus", CheckCategory.MOVEMENT),
