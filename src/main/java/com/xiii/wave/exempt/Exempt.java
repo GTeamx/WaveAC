@@ -21,7 +21,7 @@ public class Exempt {
 
     private boolean fly, water, lava, climable, cobweb, trapdoor_door, cake;
 
-    private long lastWater, lastLava, lastClimable, lastCobweb;
+    private long lastWater, lastLava, lastClimable, lastCobweb, joined = System.currentTimeMillis();
 
     public void handleExempts(long timeStamp) {
 
@@ -79,6 +79,10 @@ public class Exempt {
 
     public boolean isLava(final long delay) {
         return MathUtils.elapsed(lastLava) <= delay;
+    }
+
+    public boolean isJoined(final long delay) {
+        return MathUtils.elapsed(joined) <= delay;
     }
 
     public boolean isClimable(final long delay) {
