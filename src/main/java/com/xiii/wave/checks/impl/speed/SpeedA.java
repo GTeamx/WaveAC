@@ -10,7 +10,7 @@ import com.xiii.wave.processors.packet.client.ClientPlayPacket;
 import com.xiii.wave.processors.packet.server.ServerPlayPacket;
 
 /*
-FALSES:
+FALSES: Teleporting
 BYPASSES:
  */
 
@@ -31,7 +31,7 @@ public class SpeedA extends Check {
 
         final double[] predictions = PredictionEngine.getHorizontalPrediction(profile);
 
-        if (!exempt && data.getDeltaXZ() >= predictions[0] && predictions[1] > 7.0E-5 && data.getDeltaX() != 0 && predictions[0] != 0) {
+        if (!exempt && data.getDeltaXZ() >= predictions[0] && predictions[1] > 7.0E-5 && data.getDeltaX() != 0 && predictions[0] != 0 && data.getDeltaX() > 0.04) {
 
             if (increaseBuffer() > 4 || predictions[1] > 1) fail("xz=" + Math.abs(data.getDeltaXZ() - predictions[0]) + " s=" + predictions[1]);
         } else decreaseBufferBy(1);
