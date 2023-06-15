@@ -21,7 +21,7 @@ public class FlyA extends Check {
     @Override
     public void handle(final ClientPlayPacket clientPlayPacket) {
 
-        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isTrapdoor_door() || profile.isExempt().isCobweb(50L) || profile.isExempt().isCake() || profile.getVehicleData().isRiding(150L);
+        final boolean exempt = profile.isExempt().isFly() || profile.isExempt().isWater(150L) || profile.isExempt().isLava(150L) || profile.isExempt().isTrapdoor_door() || profile.isExempt().isCobweb(50L) || profile.isExempt().isCake() || profile.getVehicleData().isRiding(150L) || profile.isExempt().isJoined(5000L);
 
         if (!clientPlayPacket.isMovement()) return;
 
