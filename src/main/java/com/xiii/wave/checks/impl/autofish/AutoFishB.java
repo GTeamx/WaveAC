@@ -1,7 +1,5 @@
 package com.xiii.wave.checks.impl.autofish;
 
-import com.xiii.wave.checks.annotations.Experimental;
-import com.xiii.wave.checks.annotations.Testing;
 import com.xiii.wave.checks.enums.CheckType;
 import com.xiii.wave.checks.types.Check;
 import com.xiii.wave.managers.profile.Profile;
