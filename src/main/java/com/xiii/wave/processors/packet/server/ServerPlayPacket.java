@@ -4,10 +4,7 @@ import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.*;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
 
 public class ServerPlayPacket {
 
@@ -33,6 +30,11 @@ public class ServerPlayPacket {
     Entity status cache
      */
     private WrapperPlayServerEntityStatus entityStatusWrapper;
+
+    /*
+    Block action ache
+     */
+    private WrapperPlayServerBlockAction blockActionWrapper;
 
     public ServerPlayPacket(final PacketType.Play.Server type, final PacketPlaySendEvent packet, final long timeStamp) {
         this.timeStamp = timeStamp;
@@ -63,6 +65,11 @@ public class ServerPlayPacket {
 
                 break;
 
+            case BLOCK_ACTION:
+
+                this.blockActionWrapper = new WrapperPlayServerBlockAction(packet);
+
+                break;
         }
     }
 
@@ -80,6 +87,10 @@ public class ServerPlayPacket {
 
     public WrapperPlayServerEntityStatus getEntityStatusWrapper() {
         return entityStatusWrapper;
+    }
+
+    public WrapperPlayServerBlockAction getBlockActionWrapper() {
+        return blockActionWrapper;
     }
 
     public boolean is(PacketType.Play.Server type) {
