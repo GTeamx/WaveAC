@@ -33,4 +33,4 @@ Before opening an issue or feature request make sure you follow our templates! I
 
 ## 🔃 Contributing
 
-Before contributing, please make sure that you follow our conventions (naming scheme, indentation) and that your code works! Make sure to also precice on what server software and version your test was ran, with other plugins/mods installed (if applicable)
+Before contributing, please make sure that you follow our conventions (naming scheme, indentation) and that your code works! Make sure to also precise on what server software and version your test was ran, with other plugins/mods installed (if applicable)
