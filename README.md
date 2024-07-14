@@ -31,6 +31,6 @@ Since Wave is completly free to use we do not make any profits off of it, you ca
 
 Before opening an issue or feature request make sure you follow our templates! If your issue/feature request goes unotice, you can open a ticket on our Discord server or bump it!
 
-### 🔃 Contributing
+## 🔃 Contributing
 
 Before contributing, please make sure that you follow our conventions (naming scheme, indentation) and that your code works! Make sure to also precice on what server software and version your test was ran, with other plugins/mods installed (if applicable)
