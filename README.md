@@ -1,6 +1,6 @@
 # 🌊 WaveAC
 
-Wave is a free open source Minecraft anticheat solution, supporting bedrock players (Geyser) and versions from 1.8 all the way to 1.20!
+Wave is a free open source Minecraft anticheat solution, supporting bedrock players (Geyser) and versions from 1.8 all the way to 1.21!
 
 If you wish to get support, test or have any questions about Wave, make sure to join our [Discord server](https://discord.gg/rxV89DZHEd)!
 
