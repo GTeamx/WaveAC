@@ -25,7 +25,7 @@ import java.util.logging.Level;
 public final class Wave extends JavaPlugin {
 
     private static Wave instance;
-    // Test
+    // Test2
 
     private Config configuration;
     private Checks checks;
