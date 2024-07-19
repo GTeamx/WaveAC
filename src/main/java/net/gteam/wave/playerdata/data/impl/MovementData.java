@@ -210,6 +210,8 @@ public class MovementData implements Data {
         this.lastHalfBlocksTicks = this.halfBlocksTicks;
 
         // TODO: Code half block
+        this.halfBlocksTicks = BetterStream.filter(nearbyBlocksResult.getBlockTypes(), material -> MaterialType.isMaterial(material.name(), MaterialType.HALF_BLOCK) || MaterialType.isMaterial(material.name(), MaterialType.STAIRS)).isEmpty() ? this.halfBlocksTicks + 1 : 0;
+
     }
 
     private void processPlayerData() {
