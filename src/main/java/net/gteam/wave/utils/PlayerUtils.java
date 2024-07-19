@@ -52,7 +52,7 @@ public final class PlayerUtils {
 
             vertical -= .08F; //Falling acceleration
 
-            vertical *= MoveUtils.MOTION_Y_FRICTION; //Vertical Friction
+            vertical *= (float) MoveUtils.MOTION_Y_FRICTION; //Vertical Friction
 
             if (ticks++ > 60) break;
 
