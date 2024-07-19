@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.xiii.wave</groupId>
+    <groupId>net.gteam.wave</groupId>
     <artifactId>Wave</artifactId>
-    <version>b0001</version>
+    <version>0001</version>
     <packaging>jar</packaging>
 
     <name>Wave</name>
@@ -35,24 +35,15 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.github.retrooper</pattern>
-                                    <shadedPattern>com.xiii.wave
-                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <shadedPattern>net.gteam.wave.libs.com.github.retrooper</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>io.github.retrooper</pattern>
-                                    <shadedPattern>com.xiii.wave
-                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <shadedPattern>net.gteam.wave.libs.io.github.retrooper</shadedPattern>
                                 </relocation>
                                 <relocation>
                                     <pattern>net.kyori</pattern>
-                                    <shadedPattern>com.xiii.wave.libs.net.kyori
-                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
-                                </relocation>
-
-                                <relocation>
-                                    <pattern>com.google.gson</pattern>
-                                    <shadedPattern>com.xiii.wave.libs.com.google.gson
-                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <shadedPattern>net.gteam.wave.libs.net.kyori</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -78,24 +69,12 @@
 
     <repositories>
         <repository>
+            <id>codemc-releases</id>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
+        </repository>
+        <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>codemc-snapshots</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>jitpack-repo</id>
-            <url>https://jitpack.io/</url>
-        </repository>
-        <repository>
-            <id>sonatype-oss-snapshots1</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
     </repositories>
 
@@ -103,45 +82,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <version>1.21-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.retrooper.packetevents</groupId>
-            <artifactId>spigot</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents-spigot</artifactId>
+            <version>2.4.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpasyncclient</artifactId>
-            <version>4.1.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>4.4.15</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore-nio</artifactId>
-            <version>4.4.15</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpmime</artifactId>
-            <version>4.5.14</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>

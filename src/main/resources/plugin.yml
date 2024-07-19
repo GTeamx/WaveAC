@@ -1,9 +1,9 @@
 name: Wave
 version: '${project.version}'
-main: com.xiii.wave.Wave
-api-version: 1.13
+main: net.gteam.wave.Wave
+api-version: 1.21
 prefix: Wave
-authors: [ XIII___ ]
+authors: [ XIII___, Vagdedes2 ]
 description: Wave Anti-Cheat solution
 commands:
   wave:
