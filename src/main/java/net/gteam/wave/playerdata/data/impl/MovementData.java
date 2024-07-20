@@ -24,10 +24,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MovementData implements Data {
 
@@ -48,10 +45,11 @@ public class MovementData implements Data {
     private CustomLocation location, lastLocation;
 
     private final List<Material> nearbyBlocks = new ArrayList<>();
-
+    private final HashMap<MaterialType, Integer> materialTypeTicks = new HashMap<>();
+    private final HashMap<MaterialType, Integer> lastMaterialTypeTicks = new HashMap<>();
     private boolean onGround, lastOnGround, serverGround, lastServerGround;
 
-    private int flyTicks, serverGroundTicks, lastServerGroundTicks, nearGroundTicks, lastNearGroundTicks, blocksAboveTicks, lastBlocksAboveTicks, halfBlocksTicks, lastHalfBlocksTicks,
+    private int flyTicks, serverGroundTicks, lastServerGroundTicks, nearGroundTicks, lastNearGroundTicks, blocksAboveTicks, lastBlocksAboveTicks,
             lastUnloadedChunkTicks = 100,
             clientGroundTicks, lastNearWallTicks,
             lastFrictionFactorUpdateTicks, lastNearEdgeTicks;
@@ -205,13 +203,13 @@ public class MovementData implements Data {
 
         this.blocksAboveTicks = nearbyBlocksResult.hasBlockAbove() ? 0 : this.blocksAboveTicks + 1;
 
-        // Half Block
-
-        this.lastHalfBlocksTicks = this.halfBlocksTicks;
-
-        // TODO: Code half block
-        this.halfBlocksTicks = BetterStream.filter(nearbyBlocksResult.getBlockTypes(), material -> MaterialType.isMaterial(material.name(), MaterialType.HALF_BLOCK) || MaterialType.isMaterial(material.name(), MaterialType.STAIRS)).isEmpty() ? this.halfBlocksTicks + 1 : 0;
-
+        // MaterialType ticks
+        this.lastMaterialTypeTicks.putAll(this.materialTypeTicks);
+        for (MaterialType e : MaterialType.values()) {
+            this.materialTypeTicks.putIfAbsent(e, 0);
+            if (BetterStream.filter(nearbyBlocksResult.getBlockTypes(), material -> MaterialType.isMaterial(material.name(), e)).isEmpty()) this.materialTypeTicks.put(e, this.materialTypeTicks.get(e) + 1);
+            else this.materialTypeTicks.put(e, 0);
+        }
     }
 
     private void processPlayerData() {
@@ -440,11 +438,163 @@ public class MovementData implements Data {
     }
 
     public int getHalfBlocksTicks() {
-        return halfBlocksTicks;
+        return materialTypeTicks.getOrDefault(MaterialType.HALF_BLOCK, -1);
     }
 
     public int getLastHalfBlocksTicks() {
-        return lastHalfBlocksTicks;
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.HALF_BLOCK, -1);
+    }
+
+    public int getBedTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.BED, -1);
+    }
+
+    public int getLastBedTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.BED, -1);
+    }
+
+    public int getSlimeTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.SLIME, -1);
+    }
+
+    public int getLastSlimeTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.SLIME, -1);
+    }
+
+    public int getClimbableTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.CLIMBABLE, -1);
+    }
+
+    public int getLastClimbableTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.CLIMBABLE, -1);
+    }
+
+    public int getAirTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.AIR, -1);
+    }
+
+    public int getLastAirTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.AIR, -1);
+    }
+
+    public int getFenceTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.FENCE, -1);
+    }
+
+    public int getLastFenceTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.FENCE, -1);
+    }
+
+    public int getSnowTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.SNOW, -1);
+    }
+
+    public int getLastSnowTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.SNOW, -1);
+    }
+
+    public int getShulkerTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.SHULKER, -1);
+    }
+
+    public int getLastShulkerTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.SHULKER, -1);
+    }
+
+    public int getPistonTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.PISTON, -1);
+    }
+
+    public int getLastPistonTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.PISTON, -1);
+    }
+
+    public int getTrapDoorTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.TRAPDOOR, -1);
+    }
+
+    public int getLastTrapDoorTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.TRAPDOOR, -1);
+    }
+
+    public int getStairsTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.STAIRS, -1);
+    }
+
+    public int getLastStairsTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.STAIRS, -1);
+    }
+
+    public int getIceTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.ICE, -1);
+    }
+
+    public int getLastIceTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.ICE, -1);
+    }
+
+    public int getWebTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.WEB, -1);
+    }
+
+    public int getLastWebTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.WEB, -1);
+    }
+
+    public int getSoulBlockTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.SOUL_BLOCK, -1);
+    }
+
+    public int getLastSoulBlockTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.SOUL_BLOCK, -1);
+    }
+
+    public int getHoneyTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.HONEY, -1);
+    }
+
+    public int getLastHoneyTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.HONEY, -1);
+    }
+
+    public int getBerriesTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.BERRIES, -1);
+    }
+
+    public int getLastBerriesTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.BERRIES, -1);
+    }
+
+    public int getScaffoldingTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.SCAFFOLDING, -1);
+    }
+
+    public int getLastScaffoldingTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.SCAFFOLDING, -1);
+    }
+
+    public int getBubbleTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.BUBBLE, -1);
+    }
+
+    public int getLastBubbleTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.BUBBLE, -1);
+    }
+
+    public int getLiquidTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.LIQUID, -1);
+    }
+
+    public int getLastLiquidTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.LIQUID, -1);
+    }
+
+    public int getWaterPlantTicks() {
+        return materialTypeTicks.getOrDefault(MaterialType.WATER_PLANT, -1);
+    }
+
+    public int getLastWaterPlantTicks() {
+        return lastMaterialTypeTicks.getOrDefault(MaterialType.WATER_PLANT, -1);
     }
 
     public List<Material> getNearbyBlocks() {
