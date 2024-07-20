@@ -160,8 +160,8 @@ public abstract class AbstractCheck {
         this.vl = vl;
     }
 
-    protected float increaseBuffer() {
-        return this.buffer++;
+    protected float increaseBuffer(int maxBuffer) {
+        return this.buffer = Math.min(maxBuffer, this.buffer + 1);
     }
 
     protected float increaseBufferBy(final double amount) {
