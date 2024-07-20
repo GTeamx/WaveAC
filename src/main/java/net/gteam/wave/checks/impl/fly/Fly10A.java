@@ -5,6 +5,7 @@ import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.MovementData;
+import net.gteam.wave.playerdata.processors.impl.PredictionProcessor;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
@@ -21,12 +22,13 @@ public class Fly10A extends Check {
 
         final MovementData movementData = this.profile.getMovementData();
 
-        if (movementData.getNearGroundTicks() <= 0 && movementData.getBlocksAboveTicks() > 0 && movementData.getHalfBlocksTicks() > 0) {
+        final double predictedDeltaY = movementData.getPredictionProcessor().getPredictedDeltaY();
+        final double math = Math.abs(predictedDeltaY - movementData.getDeltaY());
+        final boolean invalid = math > 1E-10;
 
-            final double predictionDifference = movementData.getPredictionProcessor().getPredictedDeltaY() - movementData.getDeltaY();
-
-            if (predictionDifference > 9.71445146547012E-12) fail("predDiff=" + predictionDifference);
-        } else decreaseBuffer();
+        if (!movementData.isOnGround() && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+            if (invalid && increaseBuffer(2) > 1) fail("math=" + math);
+        } else decreaseBufferBy(0.2);
     }
 
     @Override
