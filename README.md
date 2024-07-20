@@ -1,4 +1,5 @@
  [![HitCount](https://hits.dwyl.com/XIII-MC/WaveAC.svg?style=flat-square)](http://hits.dwyl.com/XIII-MC/WaveAC)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/total)
 
 # 🌊 WaveAC
 
