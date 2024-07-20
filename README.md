@@ -1,23 +1,33 @@
-![GitHub Release](https://img.shields.io/github/v/release/XIII-MC/WaveAC?display_name=release&style=for-the-badge)
-![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/latest/total?sort=date&style=for-the-badge&label=Latest%20downloads)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/total?style=for-the-badge)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
-![GitHub License](https://img.shields.io/github/license/XIII-MC/WaveAC?style=for-the-badge)
-![GitHub Repo stars](https://img.shields.io/github/stars/XIII-MC/WaveAC?style=for-the-badge)
-![GitHub watchers](https://img.shields.io/github/watchers/XIII-MC/WaveAC?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/XIII-MC/WaveAC?style=for-the-badge)
-![Discord](https://img.shields.io/discord/1046001788106575912?style=for-the-badge&label=Discord)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
-[![HitCount](https://hits.dwyl.com/XIII-MC/WaveAC.svg?style=flat-square)](http://hits.dwyl.com/XIII-MC/WaveAC)
-![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/XIII-MC/WaveAC/main?style=for-the-badge&label='main'%20branch%20commits)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/main?style=for-the-badge&label='main'%20branch%20checks)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20commits)
-![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20checks)
-![GitHub commits difference between two branches/tags/commits](https://img.shields.io/github/commits-difference/XIII-MC/WaveAC?base=main&head=dev&style=for-the-badge&label='dev'%20ahead%20of%20main%20in%20commits)
-![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/XIII-MC/WaveAC?style=for-the-badge)
+[//]: # (Main image, centered)
+<p align="center">
+  <img width="300" src="https://em-content.zobj.net/source/twitter/53/water-wave_1f30a.png">
+</p>
 
-# 🌊 WaveAC
+[//]: # (Main title, centered)
+<h1 align="center">🌊 WaveAC 🌊</h1>
+
+[//]: # (Shield.io badges, main basic stuff, centered)
+<div align="center">
+
+  <a href="">![GitHub Release](https://img.shields.io/github/v/release/XIII-MC/WaveAC?sort=date&display_name=tag&style=for-the-badge&label=Latest%20Release&color=55FFFF)</a>
+  <a href="">![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/latest/total?sort=date&style=for-the-badge&label=Latest%20Downloads)</a>
+  <a href="">![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/total?style=for-the-badge&label=Total%20Downloads)</a>
+  <a href="">![GitHub License](https://img.shields.io/github/license/XIII-MC/WaveAC?style=for-the-badge)</a>
+  <br>
+  <a href="">![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)</a>
+  <a href="">![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20commits)</a>
+  <a href="">![GitHub commits difference between two branches/tags/commits](https://img.shields.io/github/commits-difference/XIII-MC/WaveAC?base=main&head=dev&style=for-the-badge&label='dev'%20ahead%20of%20'main'%20in%20commits)</a>
+  <br>
+  <a href="">![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/main?style=for-the-badge&label='main'%20branch%20checks)</a>
+  <a href="">![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20checks)</a>
+  <a href="">![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/XIII-MC/WaveAC?style=for-the-badge)</a>
+  <br>
+  <a href="">![GitHub Repo stars](https://img.shields.io/github/stars/XIII-MC/WaveAC?style=for-the-badge)</a>
+  <a href="">![GitHub watchers](https://img.shields.io/github/watchers/XIII-MC/WaveAC?style=for-the-badge)</a>
+  <a href="">![GitHub forks](https://img.shields.io/github/forks/XIII-MC/WaveAC?style=for-the-badge)</a>
+  <a href="">![Discord](https://img.shields.io/discord/1046001788106575912?style=for-the-badge&label=Discord)</a>
+
+</div>
 
 Wave is a free open source Minecraft anticheat solution, supporting bedrock players (Geyser) and versions from 1.8 all the way to 1.21!
 
