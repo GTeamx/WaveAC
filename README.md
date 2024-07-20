@@ -1,5 +1,21 @@
- [![HitCount](https://hits.dwyl.com/XIII-MC/WaveAC.svg?style=flat-square)](http://hits.dwyl.com/XIII-MC/WaveAC)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/total)
+![GitHub Release](https://img.shields.io/github/v/release/XIII-MC/WaveAC?display_name=release&style=for-the-badge)
+![GitHub Downloads (all assets, latest release)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/latest/total?sort=date&style=for-the-badge&label=Latest%20downloads)
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/XIII-MC/WaveAC/total?style=for-the-badge)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
+![GitHub License](https://img.shields.io/github/license/XIII-MC/WaveAC?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/XIII-MC/WaveAC?style=for-the-badge)
+![GitHub watchers](https://img.shields.io/github/watchers/XIII-MC/WaveAC?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/XIII-MC/WaveAC?style=for-the-badge)
+![Discord](https://img.shields.io/discord/1046001788106575912?style=for-the-badge&label=Discord)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
+[![HitCount](https://hits.dwyl.com/XIII-MC/WaveAC.svg?style=flat-square)](http://hits.dwyl.com/XIII-MC/WaveAC)
+![GitHub commits since latest release](https://img.shields.io/github/commits-since/XIII-MC/WaveAC/latest?sort=date&style=for-the-badge&label=commits%20since%20release)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/XIII-MC/WaveAC/main?style=for-the-badge&label='main'%20branch%20commits)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/main?style=for-the-badge&label='main'%20branch%20checks)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/m/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20commits)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/XIII-MC/WaveAC/dev?style=for-the-badge&label='dev'%20branch%20checks)
+![GitHub commits difference between two branches/tags/commits](https://img.shields.io/github/commits-difference/XIII-MC/WaveAC?base=main&head=dev&style=for-the-badge&label='dev'%20ahead%20of%20main%20in%20commits)
+![Libraries.io dependency status for GitHub repo](https://img.shields.io/librariesio/github/XIII-MC/WaveAC?style=for-the-badge)
 
 # 🌊 WaveAC
 
