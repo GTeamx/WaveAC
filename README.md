@@ -1,3 +1,5 @@
+ [![HitCount](https://hits.dwyl.com/XIII-MC/WaveAC.svg?style=flat-square)](http://hits.dwyl.com/XIII-MC/WaveAC)
+
 # 🌊 WaveAC
 
 Wave is a free open source Minecraft anticheat solution, supporting bedrock players (Geyser) and versions from 1.8 all the way to 1.21!
