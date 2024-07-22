@@ -9,10 +9,13 @@ import net.gteam.wave.playerdata.processors.impl.PredictionProcessor;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 import net.gteam.wave.utils.CollisionUtils;
+import net.gteam.wave.utils.MathUtils;
 
 @Development
 public class Fly10A extends Check {
-    double airTicks;
+
+    int illegalZeroDotZeroZeroThree = 0; // 0 = not happend, 1 = Exempt for this move, 2 = done
+
     public Fly10A(final Profile profile) {
         super(profile, CheckType.FLY, "FL10A", "Checks for gravity modifications");
     }
@@ -33,14 +36,13 @@ public class Fly10A extends Check {
         final double expectedJumpMotion = 0.42F;
         if (jumped && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
             if (motionY != expectedJumpMotion) {
-                fail("math2=" + Math.abs(motionY - expectedJumpMotion));
+                fail("jumpDiff=" + Math.abs(motionY - expectedJumpMotion));
             }
         }
 
-        airTicks = movementData.isOnGround() ? 0 : airTicks + 1;
-        if (!movementData.isOnGround() && airTicks > 1 && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+        if (!movementData.isOnGround() && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
 
-            if (invalid && increaseBuffer(2) > 1) fail("math=" + math);
+            if (invalid && increaseBuffer(2) > 1) fail("predDiff=" + math + System.lineSeparator() + "dY=" + motionY + System.lineSeparator() + "pY=" + predictedDeltaY);
         } else decreaseBufferBy(0.2);
     }
 
