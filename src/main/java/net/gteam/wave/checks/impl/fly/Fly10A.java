@@ -8,9 +8,11 @@ import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.playerdata.processors.impl.PredictionProcessor;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
+import net.gteam.wave.utils.CollisionUtils;
 
 @Development
 public class Fly10A extends Check {
+    double airTicks;
     public Fly10A(final Profile profile) {
         super(profile, CheckType.FLY, "FL10A", "Checks for gravity modifications");
     }
@@ -21,12 +23,23 @@ public class Fly10A extends Check {
         if (!clientPlayPacket.isMovement()) return;
 
         final MovementData movementData = this.profile.getMovementData();
+        final double motionY = movementData.getDeltaY();
+        boolean step = CollisionUtils.isServerGround(motionY) && CollisionUtils.isServerGround(movementData.getLastLocation().getY());
+        boolean jumped = motionY > 0 && movementData.getLastLocation().getY() % (1D/64) == 0 && !movementData.isOnGround() && !step;
 
         final double predictedDeltaY = movementData.getPredictionProcessor().getPredictedDeltaY();
         final double math = Math.abs(predictedDeltaY - movementData.getDeltaY());
         final boolean invalid = math > 1E-10;
+        final double expectedJumpMotion = 0.42F;
+        if (jumped && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+            if (motionY != expectedJumpMotion) {
+                fail("math2=" + Math.abs(motionY - expectedJumpMotion));
+            }
+        }
 
-        if (!movementData.isOnGround() && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+        airTicks = movementData.isOnGround() ? 0 : airTicks + 1;
+        if (!movementData.isOnGround() && airTicks > 1 && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+
             if (invalid && increaseBuffer(2) > 1) fail("math=" + math);
         } else decreaseBufferBy(0.2);
     }
