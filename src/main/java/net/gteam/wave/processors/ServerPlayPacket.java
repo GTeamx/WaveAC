@@ -21,8 +21,17 @@ public class ServerPlayPacket {
     // Entity status cache
     private WrapperPlayServerEntityStatus entityStatusWrapper;
 
-    // Block action ache
+    // Block action cache
     private WrapperPlayServerBlockAction blockActionWrapper;
+
+    // Position and Look cache
+    private WrapperPlayServerPlayerPositionAndLook playerPositionAndLookWrapper;
+
+    // Entity Effect cache
+    private WrapperPlayServerEntityEffect entityEffectWrapper;
+
+    // Remove Entity Effect cache
+    private WrapperPlayServerRemoveEntityEffect removeEntityEffectWrapper;
 
     public ServerPlayPacket(final PacketType.Play.Server type, final PacketPlaySendEvent packet, final long timeStamp) {
         this.timeStamp = timeStamp;
@@ -58,6 +67,24 @@ public class ServerPlayPacket {
                 this.blockActionWrapper = new WrapperPlayServerBlockAction(packet);
 
                 break;
+
+            case PLAYER_POSITION_AND_LOOK:
+
+                this.playerPositionAndLookWrapper = new WrapperPlayServerPlayerPositionAndLook(packet);
+
+                break;
+
+            case ENTITY_EFFECT:
+
+                this.entityEffectWrapper = new WrapperPlayServerEntityEffect(packet);
+
+                break;
+
+            case REMOVE_ENTITY_EFFECT:
+
+                this.removeEntityEffectWrapper = new WrapperPlayServerRemoveEntityEffect(packet);
+
+                break;
         }
     }
 
@@ -79,6 +106,18 @@ public class ServerPlayPacket {
 
     public WrapperPlayServerBlockAction getBlockActionWrapper() {
         return blockActionWrapper;
+    }
+
+    public WrapperPlayServerPlayerPositionAndLook getPlayerPositionAndLookWrapper() {
+        return playerPositionAndLookWrapper;
+    }
+
+    public WrapperPlayServerEntityEffect getEntityEffectWrapper() {
+        return entityEffectWrapper;
+    }
+
+    public WrapperPlayServerRemoveEntityEffect getRemoveEntityEffectWrapper() {
+        return removeEntityEffectWrapper;
     }
 
     public boolean is(final PacketType.Play.Server type) {

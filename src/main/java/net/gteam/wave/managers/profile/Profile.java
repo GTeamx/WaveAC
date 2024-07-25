@@ -28,6 +28,7 @@ public class Profile {
     private final TeleportData teleportData;
     private final VelocityData velocityData;
     private final VehicleData vehicleData;
+    private final EffectData effectData;
     //-------------------------------------------
 
     //--------------------------------------
@@ -70,9 +71,10 @@ public class Profile {
         this.connectionData = new ConnectionData();
         this.movementData = new MovementData(this);
         this.rotationData = new RotationData(this);
-        this.teleportData = new TeleportData();
+        this.teleportData = new TeleportData(this);
         this.velocityData = new VelocityData();
         this.vehicleData = new VehicleData();
+        this.effectData = new EffectData(this);
 
         //Check Holder
         this.checkHolder = new CheckHolder(this);
@@ -103,6 +105,7 @@ public class Profile {
         this.teleportData.process(packet);
         this.velocityData.process(packet);
         this.vehicleData.process(packet);
+        this.effectData.process(packet);
 
         if (skip(packet.getTimeStamp())) return;
 
@@ -123,6 +126,7 @@ public class Profile {
         this.teleportData.process(packet);
         this.velocityData.process(packet);
         this.vehicleData.process(packet);
+        this.effectData.process(packet);
 
         if (skip(packet.getTimeStamp())) return;
 
@@ -199,6 +203,10 @@ public class Profile {
 
     public VehicleData getVehicleData() {
         return vehicleData;
+    }
+
+    public EffectData getEffectData() {
+        return effectData;
     }
 
     public CheckHolder getCheckHolder() {
