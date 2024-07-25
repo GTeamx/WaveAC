@@ -61,6 +61,7 @@ public class Checks implements Initializer {
     public enum Setting {
         FLY("fly", "", "Fly Check"),
         FLY_F10A("fly.f10a", true, "Should we enable this module?"),
+        FLY_F10B("fly.f10b", true, "Should we enable this module?"),
         FLY_MAX_VL("fly.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
         FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 

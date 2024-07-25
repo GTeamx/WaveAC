@@ -14,8 +14,6 @@ import net.gteam.wave.utils.MathUtils;
 @Development
 public class Fly10A extends Check {
 
-    int illegalZeroDotZeroZeroThree = 0; // 0 = not happend, 1 = Exempt for this move, 2 = done
-
     public Fly10A(final Profile profile) {
         super(profile, CheckType.FLY, "FL10A", "Checks for gravity modifications");
     }
@@ -26,23 +24,14 @@ public class Fly10A extends Check {
         if (!clientPlayPacket.isMovement()) return;
 
         final MovementData movementData = this.profile.getMovementData();
-        final double motionY = movementData.getDeltaY();
-        boolean step = CollisionUtils.isServerGround(motionY) && CollisionUtils.isServerGround(movementData.getLastLocation().getY());
-        boolean jumped = motionY > 0 && movementData.getLastLocation().getY() % (1D/64) == 0 && !movementData.isOnGround() && !step;
-
         final double predictedDeltaY = movementData.getPredictionProcessor().getPredictedDeltaY();
         final double math = Math.abs(predictedDeltaY - movementData.getDeltaY());
         final boolean invalid = math > 1E-10;
-        final double expectedJumpMotion = 0.42F;
-        if (jumped && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
-            if (motionY != expectedJumpMotion) {
-                fail("jumpDiff=" + Math.abs(motionY - expectedJumpMotion));
-            }
-        }
 
-        if (!movementData.isOnGround() && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+        if (!movementData.isOnGround() && profile.getTeleportData().getTeleportTicks() > 2 && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
 
-            if (invalid && increaseBuffer(2) > 1) fail("predDiff=" + math + System.lineSeparator() + "dY=" + motionY + System.lineSeparator() + "pY=" + predictedDeltaY);
+            if (invalid && increaseBuffer(2) > 1) fail("predDiff=" + math + System.lineSeparator() + "dY=" + movementData.getDeltaY() + System.lineSeparator() + "pY=" + predictedDeltaY);
+
         } else decreaseBufferBy(0.2);
     }
 
