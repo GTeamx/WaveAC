@@ -5,11 +5,8 @@ import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.MovementData;
-import net.gteam.wave.playerdata.processors.impl.PredictionProcessor;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
-import net.gteam.wave.utils.CollisionUtils;
-import net.gteam.wave.utils.MathUtils;
 
 @Development
 public class Fly10A extends Check {
