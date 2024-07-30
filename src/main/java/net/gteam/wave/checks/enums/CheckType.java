@@ -2,6 +2,7 @@ package net.gteam.wave.checks.enums;
 
 public enum CheckType {
     FLY("Fly", "Vert. Movement", CheckCategory.MOVEMENT),
+    JUMP("Jump", "Vert. Movement", CheckCategory.MOVEMENT),
     SPEED( "Speed", "Hori. Movement", CheckCategory.MOVEMENT),
     MOTION("Motion","Gene. Movement", CheckCategory.MOVEMENT);
 

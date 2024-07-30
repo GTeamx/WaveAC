@@ -61,9 +61,13 @@ public class Checks implements Initializer {
     public enum Setting {
         FLY("fly", "", "Fly Check"),
         FLY_F10A("fly.f10a", true, "Should we enable this module?"),
-        FLY_F10B("fly.f10b", true, "Should we enable this module?"),
         FLY_MAX_VL("fly.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
-        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
+        JUMP("jump", "", "Jump Check"),
+        JUMP_F10A("jump.j10a", true, "Should we enable this module?"),
+        JUMP_MAX_VL("jump.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        JUMP_COMMANDS("jump.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 
         private final String key;
         private final Object defaultValue;

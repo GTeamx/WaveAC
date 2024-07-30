@@ -2,7 +2,7 @@ package net.gteam.wave.checks;
 
 import net.gteam.wave.checks.annotations.Disabled;
 import net.gteam.wave.checks.impl.fly.Fly10A;
-import net.gteam.wave.checks.impl.fly.Fly10B;
+import net.gteam.wave.checks.impl.jump.Jump10A;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.processors.ClientPlayPacket;
@@ -34,7 +34,7 @@ public class CheckHolder {
         addChecks(
 
                 new Fly10A(this.profile),
-                new Fly10B(this.profile)
+                new Jump10A(this.profile)
 
         );
 
