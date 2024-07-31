@@ -27,6 +27,7 @@ import java.util.logging.Level;
 
 public class Wave extends JavaPlugin {
 
+    // Test
     private static Wave INSTANCE;
 
     private ProfileManager profileManager;
