@@ -1,5 +1,6 @@
 package net.gteam.wave.checks.impl.motion;
 
+import net.gteam.wave.checks.annotations.Development;
 import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
@@ -7,6 +8,7 @@ import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
+@Development
 public class Speed10A extends Check {
 
     public Speed10A(final Profile profile) {

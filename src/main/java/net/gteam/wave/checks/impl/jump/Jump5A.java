@@ -11,6 +11,7 @@ import net.gteam.wave.utils.CollisionUtils;
 import net.gteam.wave.utils.custom.CustomEffect;
 import net.gteam.wave.utils.custom.EffectType;
 
+@Development
 public class Jump5A extends Check {
 
     public Jump5A(final Profile profile) {
