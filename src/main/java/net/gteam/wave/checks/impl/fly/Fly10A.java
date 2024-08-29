@@ -25,7 +25,7 @@ public class Fly10A extends Check {
         final double math = Math.abs(predictedDeltaY - movementData.getDeltaY());
         final boolean invalid = math > 1E-10;
 
-        if (!movementData.isOnGround() && profile.getTeleportData().getTeleportTicks() > 2 && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+        if (!movementData.isOnGround() && profile.getTeleportData().getTeleportTicks() > 2 && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 2 && movementData.getBubbleTicks() > 2) {
 
             if (invalid && increaseBuffer(2) > 1) fail("predDiff=" + math + System.lineSeparator() + "dY=" + movementData.getDeltaY() + System.lineSeparator() + "pY=" + predictedDeltaY);
 

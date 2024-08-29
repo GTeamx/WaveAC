@@ -12,9 +12,9 @@ import net.gteam.wave.utils.custom.CustomEffect;
 import net.gteam.wave.utils.custom.EffectType;
 
 @Development
-public class Jump10A extends Check {
+public class Jump5A extends Check {
 
-    public Jump10A(final Profile profile) {
+    public Jump5A(final Profile profile) {
         super(profile, CheckType.JUMP, "JU5A", "Checks for jump modifications");
     }
 

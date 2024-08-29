@@ -60,14 +60,19 @@ public class Checks implements Initializer {
 
     public enum Setting {
         FLY("fly", "", "Fly Check"),
-        FLY_F10A("fly.f10a", true, "Should we enable this module?"),
+        FLY_FL10A("fly.fl10a", true, "Should we enable this module?"),
         FLY_MAX_VL("fly.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
         FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
         JUMP("jump", "", "Jump Check"),
-        JUMP_F10A("jump.j10a", true, "Should we enable this module?"),
-        JUMP_MAX_VL("jump.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
-        JUMP_COMMANDS("jump.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        JUMP_JU5A("jump.ju5a", true, "Should we enable this module?"),
+        JUMP_MAX_VL("jump.max_vl", 5, "The maximum violation amount a player needs to reach in order to get punished"),
+        JUMP_COMMANDS("jump.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
+        SPEED("speed", "", "Speed Check"),
+        SPEED_SP10A("speed.sp10a", true, "Should we enable this module?"),
+        SPEED_MAX_VL("speed.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        SPEED_COMMANDS("speed.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
 
         private final String key;
         private final Object defaultValue;
