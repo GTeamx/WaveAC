@@ -107,7 +107,7 @@ public abstract class AbstractCheck {
         if (this.disabled) return;
 
         //Just to make sure
-        if (this.vl < 0) this.vl = 0;
+        if (this.vl < 0) this.vl = 1;
 
         final Player player = profile.getPlayer();
 
@@ -135,7 +135,7 @@ public abstract class AbstractCheck {
 
         if (this.enabledSetback) profile.getMovementData().getSetbackProcessor().setback(true);
 
-        if (this.vl >= this.maxVl && !development) {
+        if (this.vl > this.maxVl && !development) {
 
             MiscUtils.consoleCommand(this.commands);
 
