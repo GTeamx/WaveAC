@@ -149,7 +149,7 @@ public abstract class AbstractCheck {
     }
 
     public void resetVl() {
-        this.vl = 0;
+        this.vl = 1;
     }
 
     public int getVl() {
