@@ -7,10 +7,10 @@ import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
-public class Speed5A extends Check {
+public class Speed10A extends Check {
 
-    public Speed5A(final Profile profile) {
-        super(profile, CheckType.SPEED, "SP5A", "Impossible XZ speed");
+    public Speed10A(final Profile profile) {
+        super(profile, CheckType.SPEED, "SP10A", "Impossible XZ speed");
     }
 
     @Override

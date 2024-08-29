@@ -59,20 +59,24 @@ public class Checks implements Initializer {
     }
 
     public enum Setting {
-        FLY("fly", "", "Fly Check"),
-        FLY_FL10A("fly.fl10a", true, "Should we enable this module?"),
-        FLY_MAX_VL("fly.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
-        FLY_COMMANDS("fly.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+        FLY("fly", "", "Fly Checks"),
+        FLY_FL10A("fly.fl10a", true, "Should we enable this check ?"),
+        FLY_FL10A_MAX_VL("fly.fl10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        FLY_FL10A_COMMANDS("fly.fl10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
-        JUMP("jump", "", "Jump Check"),
-        JUMP_JU5A("jump.ju5a", true, "Should we enable this module?"),
-        JUMP_MAX_VL("jump.max_vl", 5, "The maximum violation amount a player needs to reach in order to get punished"),
-        JUMP_COMMANDS("jump.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+        JUMP("jump", "", "Jump Checks"),
+        JUMP_JU5A("jump.ju5a", true, "Should we enable this check ?"),
+        JUMP_JU5A_MAX_VL("jump.ju5a.max_vl", 5, "The maximum violation amount a player needs to reach in order to get punished"),
+        JUMP_JU5A_COMMANDS("jump.ju5a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
-        SPEED("speed", "", "Speed Check"),
-        SPEED_SP10A("speed.sp10a", true, "Should we enable this module?"),
-        SPEED_MAX_VL("speed.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
-        SPEED_COMMANDS("speed.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount");
+        SPEED("speed", "", "Jump Checks"),
+        SPEED_SP10A("speed.sp10a", true, "Should we enable this check ?"),
+        SPEED_SP10A_MAX_VL("speed.sp10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        SPEED_SP10A_COMMANDS("speed.sp10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
+        // Next check
+
+        ;
 
         private final String key;
         private final Object defaultValue;

@@ -8,7 +8,6 @@ import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
-@Development
 public class Fly10A extends Check {
 
     public Fly10A(final Profile profile) {

@@ -35,7 +35,7 @@ public abstract class AbstractCheck {
     private final boolean development, disabled, experimental;
     private final CheckCategory checkCategory;
     private final CheckType check;
-    private int vl;
+    private int vl = 1;
     private final int maxVl;
     private float buffer;
     private String verbose = "";
@@ -57,13 +57,13 @@ public abstract class AbstractCheck {
 
         this.enabled = type.isEmpty()
                 ? config.getBoolean(codeName + ".enabled")
-                : config.getBoolean(codeName + "." + checkType + ".enabled", config.getBoolean(codeName + "." + checkType));
+                : config.getBoolean(codeName + "." + checkType + ".enabled", config.getBoolean(codeName + "." + checkType + ".enabled"));
 
-        this.maxVl = config.getInt(codeName + ".max_vl");
+        this.maxVl = config.getInt(codeName + "." + checkType + ".max_vl");
 
         if (profile != null) {
             this.commands.addAll(
-                    BetterStream.applyAndGet(config.getStringList(codeName + ".commands"),
+                    BetterStream.applyAndGet(config.getStringList(codeName + "." + checkType + ".commands"),
                             command -> command.replace("%player%", profile.getPlayer().getName())
                     )
             );
