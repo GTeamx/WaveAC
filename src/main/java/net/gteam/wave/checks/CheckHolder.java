@@ -1,6 +1,7 @@
 package net.gteam.wave.checks;
 
 import net.gteam.wave.checks.annotations.Disabled;
+import net.gteam.wave.checks.impl.aimassist.AimAssist10A;
 import net.gteam.wave.checks.impl.fly.Fly10A;
 import net.gteam.wave.checks.impl.jump.Jump5A;
 import net.gteam.wave.checks.impl.motion.Speed10A;
@@ -36,7 +37,8 @@ public class CheckHolder {
 
                 new Fly10A(this.profile),
                 new Jump5A(this.profile),
-                new Speed10A(this.profile)
+                new Speed10A(this.profile),
+                new AimAssist10A(this.profile)
 
         );
 
