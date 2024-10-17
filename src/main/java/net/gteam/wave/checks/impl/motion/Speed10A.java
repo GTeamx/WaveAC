@@ -20,12 +20,26 @@ public class Speed10A extends Check {
 
         final MovementData movementData = profile.getMovementData();
 
+        final double[] predictionValues = movementData.getPredictionProcessor().getHorizontalPredictionOld(profile);
+
         final double diffXZ = movementData.getDeltaXZ();
 
-        if (diffXZ > 0.62) fail("diffXZ=" + diffXZ);
+        if (predictionValues[1] > 1E-7 && predictionValues[0] >= movementData.getDeltaXZ()) {
 
+            if (increaseBufferBy(1) > 2) {
+
+                fail("diffXZ=" + diffXZ);
+
+                debug("\nxz=" + predictionValues[0] + "\nd=" + predictionValues[1]);
+            }
+
+        } else {
+
+            decreaseBuffer();
+
+        }
     }
 
     @Override
-    public void handle(final ServerPlayPacket clientPlayPacket) {}
+    public void handle(final ServerPlayPacket ignored) {}
 }
