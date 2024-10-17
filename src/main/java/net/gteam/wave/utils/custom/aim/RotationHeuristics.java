@@ -78,7 +78,7 @@ public class RotationHeuristics {
         this.distinctRotations.clear();
     }
 
-    private boolean isFinished() {
+    public boolean isFinished() {
         return this.size == 0;
     }
 
