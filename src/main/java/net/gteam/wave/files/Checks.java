@@ -69,10 +69,16 @@ public class Checks implements Initializer {
         JUMP_JU5A_MAX_VL("jump.ju5a.max_vl", 5, "The maximum violation amount a player needs to reach in order to get punished"),
         JUMP_JU5A_COMMANDS("jump.ju5a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
-        SPEED("speed", "", "Jump Checks"),
+        SPEED("speed", "", "Speed Checks"),
         SPEED_SP10A("speed.sp10a", true, "Should we enable this check ?"),
         SPEED_SP10A_MAX_VL("speed.sp10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
         SPEED_SP10A_COMMANDS("speed.sp10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
+        AIMASSIST("aimassist", "", "AimAssist Checks"),
+        AIMASSIST_AA10A("aimassist.aa10a", true, "Should we enable this check ?"),
+        AIMASSIST_AA10A_MAX_VL("aimassist.aa10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        AIMASSIST_AA10A_COMMANDS("aimassist.aa10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
+
 
         // Next check
 
