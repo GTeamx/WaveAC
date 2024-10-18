@@ -5,7 +5,7 @@ public enum CheckType {
     JUMP("Jump", "Vert. Movement", CheckCategory.MOVEMENT),
     SPEED( "Speed", "Hori. Movement", CheckCategory.MOVEMENT),
     MOTION("Motion","Gene. Movement", CheckCategory.MOVEMENT),
-    AIMASSIST("AimAssist","Aim Movement", CheckCategory.COMBAT);
+    AIMASSIST("AimAssist","Head Movement", CheckCategory.COMBAT);
 
     private final String checkCodeName;
     private final String checkDisplayName;
