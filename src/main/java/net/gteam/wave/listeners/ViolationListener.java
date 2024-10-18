@@ -41,7 +41,7 @@ public class ViolationListener implements Listener {
 
             final String checkDisplayName = e.getCheck().getCheckDisplayName();
 
-            final String check = (checkType.isEmpty() ? checkDisplayName : checkDisplayName + " (" + checkType + ")")
+            final String check = (checkType.isEmpty() ? checkDisplayName : checkDisplayName + " §8§o(" + checkType + ")§r")
                     + (e.isExperimental() ? " (Experimental)" : "");
 
             final String description = e.getDescription();
