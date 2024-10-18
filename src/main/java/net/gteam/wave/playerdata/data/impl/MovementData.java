@@ -14,12 +14,10 @@ import net.gteam.wave.processors.ServerPlayPacket;
 import net.gteam.wave.utils.BetterStream;
 import net.gteam.wave.utils.CollisionUtils;
 import net.gteam.wave.utils.MoveUtils;
-import net.gteam.wave.utils.TaskUtils;
 import net.gteam.wave.utils.custom.CustomLocation;
 import net.gteam.wave.utils.custom.Equipment;
 import net.gteam.wave.utils.custom.MaterialType;
 import net.gteam.wave.utils.fastmath.FastMath;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -44,15 +42,14 @@ public class MovementData implements Data {
 
     private CustomLocation location, lastLocation;
 
-    private final List<Material> nearbyBlocks = new ArrayList<>();
+    private List<Material> nearbyBlocks = null, nearbyBlocksBellow = null;
     private final HashMap<MaterialType, Integer> materialTypeTicks = new HashMap<>();
     private final HashMap<MaterialType, Integer> lastMaterialTypeTicks = new HashMap<>();
     private boolean onGround, lastOnGround, serverGround, lastServerGround;
 
-    private int flyTicks, serverGroundTicks, lastServerGroundTicks, nearGroundTicks, lastNearGroundTicks, blocksAboveTicks, lastBlocksAboveTicks,
+    private int offGroundTicks, clientGroundTicks, serverGroundTicks, lastServerGroundTicks, flyingTicks,
             lastUnloadedChunkTicks = 100,
-            clientGroundTicks, lastNearWallTicks,
-            lastFrictionFactorUpdateTicks, lastNearEdgeTicks;
+            lastFrictionFactorUpdateTicks, lastNearEdgeTicks, lastNearWallTicks, nearGroundTicks, lastNearGroundTicks, blocksAboveTicks, lastBlocksAboveTicks;
 
     public MovementData(final Profile profile) {
         this.profile = profile;
@@ -80,7 +77,7 @@ public class MovementData implements Data {
                 this.lastOnGround = this.onGround;
                 this.onGround = move.isOnGround();
 
-                this.flyTicks = this.onGround ? 0 : this.flyTicks + 1;
+                this.offGroundTicks = this.onGround ? 0 : this.offGroundTicks + 1;
                 this.clientGroundTicks = this.onGround ? this.clientGroundTicks + 1 : 0;
 
                 this.lastLocation = this.location;
@@ -102,7 +99,7 @@ public class MovementData implements Data {
                 this.lastOnGround = this.onGround;
                 this.onGround = posLook.isOnGround();
 
-                this.flyTicks = this.onGround ? 0 : this.flyTicks + 1;
+                this.offGroundTicks = this.onGround ? 0 : this.offGroundTicks + 1;
                 this.clientGroundTicks = this.onGround ? this.clientGroundTicks + 1 : 0;
 
                 this.lastLocation = this.location;
@@ -124,7 +121,7 @@ public class MovementData implements Data {
                 this.lastOnGround = this.onGround;
                 this.onGround = look.isOnGround();
 
-                this.flyTicks = this.onGround ? 0 : this.flyTicks + 1;
+                this.offGroundTicks = this.onGround ? 0 : this.offGroundTicks + 1;
                 this.clientGroundTicks = this.onGround ? this.clientGroundTicks + 1 : 0;
 
                 this.lastLocation = this.location;
@@ -142,8 +139,7 @@ public class MovementData implements Data {
     }
 
     @Override
-    public void process(final ServerPlayPacket packet) {
-    }
+    public void process(final ServerPlayPacket packet) {}
 
     private void processLocationData() {
 
@@ -203,10 +199,17 @@ public class MovementData implements Data {
 
         this.blocksAboveTicks = nearbyBlocksResult.hasBlockAbove() ? 0 : this.blocksAboveTicks + 1;
 
+        // Block Bellow
+
+        this.nearbyBlocksBellow = nearbyBlocksResult.getBlockBelowTypes();
+
         // MaterialType ticks
         this.lastMaterialTypeTicks.putAll(this.materialTypeTicks);
-        for (MaterialType e : MaterialType.values()) {
+
+        for (final MaterialType e : MaterialType.values()) {
+
             this.materialTypeTicks.putIfAbsent(e, 0);
+
             if (BetterStream.filter(nearbyBlocksResult.getBlockTypes(), material -> MaterialType.isMaterial(material.name(), e)).isEmpty()) this.materialTypeTicks.put(e, this.materialTypeTicks.get(e) + 1);
             else this.materialTypeTicks.put(e, 0);
         }
@@ -280,6 +283,10 @@ public class MovementData implements Data {
         this.baseGroundSpeed = MoveUtils.getBaseGroundSpeed(profile);
 
         this.baseAirSpeed = MoveUtils.getBaseAirSpeed(profile);
+
+        // Flying/Gamemode
+
+        this.flyingTicks = player.isFlying() ? 0 : this.flyingTicks + 1;
 
         // Prediction Processor
         this.predictionProcessor.process();
@@ -401,8 +408,8 @@ public class MovementData implements Data {
         return serverGround;
     }
 
-    public int getFlyTicks() {
-        return flyTicks;
+    public int getOffGroundTicks() {
+        return offGroundTicks;
     }
 
     public int getLastServerGroundTicks() {
@@ -435,6 +442,10 @@ public class MovementData implements Data {
 
     public int getLastBlocksAboveTicks() {
         return lastBlocksAboveTicks;
+    }
+
+    public List<Material> getNearbyBlocksBellow() {
+        return nearbyBlocksBellow;
     }
 
     public int getHalfBlocksTicks() {
@@ -595,6 +606,10 @@ public class MovementData implements Data {
 
     public int getLastWaterPlantTicks() {
         return lastMaterialTypeTicks.getOrDefault(MaterialType.WATER_PLANT, -1);
+    }
+
+    public int getFlyingTicks() {
+        return flyingTicks;
     }
 
     public List<Material> getNearbyBlocks() {
