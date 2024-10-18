@@ -7,6 +7,7 @@ import net.gteam.wave.Wave;
 import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.nms.NMSInstance;
 import net.gteam.wave.playerdata.data.Data;
+import net.gteam.wave.playerdata.processors.impl.GhostBlockProcessor;
 import net.gteam.wave.playerdata.processors.impl.PredictionProcessor;
 import net.gteam.wave.playerdata.processors.impl.SetbackProcessor;
 import net.gteam.wave.processors.ClientPlayPacket;
@@ -32,6 +33,7 @@ public class MovementData implements Data {
 
     private final SetbackProcessor setbackProcessor;
     private final PredictionProcessor predictionProcessor;
+    private final GhostBlockProcessor ghostBlockProcessor;
 
     private double deltaX, lastDeltaX, deltaZ, lastDeltaZ, deltaY, lastDeltaY, deltaXZ, lastDeltaXZ,
             accelXZ, lastAccelXZ, accelY, lastAccelY;
@@ -57,6 +59,7 @@ public class MovementData implements Data {
         this.equipment = new Equipment();
         this.setbackProcessor = new SetbackProcessor(profile);
         this.predictionProcessor = new PredictionProcessor(profile);
+        this.ghostBlockProcessor = new GhostBlockProcessor(profile);
 
         this.location = this.lastLocation = new CustomLocation(profile.getPlayer().getLocation());
     }
@@ -241,6 +244,10 @@ public class MovementData implements Data {
 
             this.lastFrictionFactor = this.frictionFactor;
         }
+
+        // Ghost blocks
+
+        this.ghostBlockProcessor.process();
 
         // Setbacks
 
