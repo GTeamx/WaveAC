@@ -291,11 +291,16 @@ public final class CollisionUtils {
 
         private final List<Material> blockTypes = new ArrayList<>();
 
+        private final List<Material> blockAboveTypes = new ArrayList<>();
+        private final List<Material> blockMiddleTypes = new ArrayList<>();
+        private final List<Material> blockBelowTypes = new ArrayList<>();
+        private final List<Material> blockUnderTypes = new ArrayList<>();
+
         private boolean nearGround, blockAbove, nearWaterLogged;
 
         private void handle(final Block block, final BlockPosition blockPosition, final NMSInstance nms) {
 
-            Material type = nms.getType(block);
+            final Material type = nms.getType(block);
 
             if (type == null) return;
 
@@ -307,11 +312,35 @@ public final class CollisionUtils {
 
                         if (!this.blockAbove) this.blockAbove = true;
 
+                        if (this.blockAboveTypes.contains(type)) return;
+
+                        this.blockAboveTypes.add(type);
+
+                        break;
+
+                    case MIDDLE:
+
+                        if (this.blockMiddleTypes.contains(type)) return;
+
+                        this.blockMiddleTypes.add(type);
+
                         break;
 
                     case UNDER:
 
                         if (!this.nearGround) this.nearGround = true;
+
+                        if (this.blockUnderTypes.contains(type)) return;
+
+                        this.blockUnderTypes.add(type);
+
+                        break;
+
+                    case BELOW:
+
+                        if (this.blockBelowTypes.contains(type)) return;
+
+                        this.blockBelowTypes.add(type);
 
                         break;
                 }
@@ -327,6 +356,22 @@ public final class CollisionUtils {
 
         public List<Material> getBlockTypes() {
             return blockTypes;
+        }
+
+        public List<Material> getBlockAboveTypes() {
+            return blockAboveTypes;
+        }
+
+        public List<Material> getBlockMiddleTypes() {
+            return blockMiddleTypes;
+        }
+
+        public List<Material> getBlockBelowTypes() {
+            return blockBelowTypes;
+        }
+
+        public List<Material> getBlockUnderTypes() {
+            return blockUnderTypes;
         }
 
         public boolean isNearGround() {
