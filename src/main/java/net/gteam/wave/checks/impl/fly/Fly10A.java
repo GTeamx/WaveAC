@@ -7,6 +7,8 @@ import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
+import net.gteam.wave.utils.MathUtils;
+import net.gteam.wave.utils.MoveUtils;
 
 @Development
 public class Fly10A extends Check {
@@ -21,15 +23,94 @@ public class Fly10A extends Check {
         if (!clientPlayPacket.isMovement()) return;
 
         final MovementData movementData = this.profile.getMovementData();
+
+        if (movementData.isOnGround()) return;
+
+        final double deltaY = movementData.getDeltaY();
         final double predictedDeltaY = movementData.getPredictionProcessor().getPredictedDeltaY();
-        final double math = Math.abs(predictedDeltaY - movementData.getDeltaY());
-        final boolean invalid = math > 1E-10;
+        final double maximumOffset = 1.9262653090336062E-14;
 
-        if (!movementData.isOnGround() && profile.getTeleportData().getTeleportTicks() > 2 && movementData.getFlyTicks() > 5 && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 2 && movementData.getBubbleTicks() > 2) {
+        final boolean nearGround = movementData.getNearGroundTicks() <= 4
+                && MathUtils.decimalRound(deltaY, 8) == -0.07840000;
 
-            if (invalid && increaseBuffer(2) > 1) fail("predDiff=" + math + System.lineSeparator() + "dY=" + movementData.getDeltaY() + System.lineSeparator() + "pY=" + predictedDeltaY);
+        final boolean jumpBlockAbove = (movementData.getBlocksAboveTicks() <= 1 || movementData.getLastBlocksAboveTicks() <= 1)
+                && Math.abs(0.2000000476837 - MathUtils.decimalRound(deltaY, 13)) < maximumOffset;
 
-        } else decreaseBufferBy(0.2);
+        //final boolean jumpGlitch = ((movementData.getClientGroundTicks() <= 1 || ((movementData.getClientGroundTicks() <= 3 || movementData.getServerGroundTicks() == 8 || movementData.getServerGroundTicks() == 9 || movementData.getServerGroundTicks() == 10 || movementData.getServerGroundTicks() == 14 || movementData.getServerGroundTicks() == 15) && (movementData.getNearGroundTicks() <= 1))) && movementData.getLastNearWallTicks() <= 10 && (MathUtils.decimalRound(deltaY, 2) == 0.40 || MathUtils.decimalRound(deltaY, 2) == 0.33 || MathUtils.decimalRound(deltaY, 2) == -0.09 || MathUtils.decimalRound(deltaY, 2) == -0.15));
+
+        final boolean jumpLowBlock = movementData.getHalfBlocksTicks() <= 2
+                || (movementData.getOffGroundTicks() == 1 && deltaY == 0.5);
+
+        final boolean jumped = movementData.isLastOnGround()
+                && deltaY == MoveUtils.JUMP_MOTION;
+
+        //final boolean fix = !(((movementData.getNearbyBlocksBellow().size() > 1 || !BetterStream.anyMatch(movementData.getNearbyBlocksBellow(), material -> material.toString().equalsIgnoreCase("AIR"))) && !movementData.getNearbyBlocksBellow().isEmpty()));
+
+        final boolean exempt = jumped
+                || jumpLowBlock
+                || nearGround
+                || profile.getTeleportData().getTeleportTicks() <= 2
+                || movementData.getFlyingTicks() <= 5
+                || movementData.getSlimeTicks() <= 3
+                || movementData.getHoneyTicks() <= 3
+                || movementData.getClimbableTicks() <= 0
+                || movementData.getLiquidTicks() <= 3
+                || movementData.getBubbleTicks() <= 2
+                || movementData.getWebTicks() <= 3
+                || movementData.getBedTicks() <= 2
+                || movementData.getShulkerTicks() <= 2
+                || profile.getVelocityData().getTicks() <= 300; // TODO: make better damage handler
+
+        final double math = deltaY -
+                (jumpBlockAbove
+                ? deltaY // if jump block above
+                : predictedDeltaY); // else
+        final boolean invalid = math > 1.9262653090336062E-14;
+
+        if (invalid && !exempt) {
+
+            fail("§a" + "deltaY=" + deltaY + "\n"
+                    + "predictedDeltaY=" + predictedDeltaY + "\n"
+                    + "maximumOffset=" + maximumOffset + "\n" // GREEN (§a) till here
+                    + "§e" + "nearGround=" + nearGround + "\n"
+                    + "  -- nearGroundTicks=" + movementData.getNearGroundTicks() + "\n"
+                    + "  && decimalRound(8)=" + MathUtils.decimalRound(deltaY, 8) + "\n"
+                    + "jumpBlockAbove=" + jumpBlockAbove + "\n"
+                    + "  || blockAboveTicks=" + movementData.getBlocksAboveTicks() + "\n"
+                    + "  || lastBlocksAboveTicks=" + movementData.getLastBlocksAboveTicks() + "\n"
+                    + "  && decimalRound(13)=" + Math.abs(0.2000000476837 - MathUtils.decimalRound(deltaY, 13)) + "\n"
+                    + "jumpLowBlock=" + jumpLowBlock + "\n"
+                    + "  -- halfBlocksTicks=" + movementData.getHalfBlocksTicks() + "\n"
+                    + "  || offGroundTicks=" + movementData.getOffGroundTicks() + "\n"
+                    + "  || deltaY=" + deltaY + "\n"
+                    + "jumped=" + jumped + "\n"
+                    + "  -- lastOnGround=" + movementData.isLastOnGround() + "\n"
+                    + "  && deltaY=" + deltaY + "\n" // YELLOW (§e) till here
+                    + "§6" + "exempt=" + false + "\n"
+                    + "  || jumped=" + jumped + "\n"
+                    + "  || jumpedLowBlock=" + jumpLowBlock + "\n"
+                    + "  || nearGround=" + nearGround + "\n"
+                    + "  || teleportTicks=" + profile.getTeleportData().getTeleportTicks() + "\n"
+                    + "  || flyTicks=" + movementData.getFlyingTicks() + "\n"
+                    + "  || slimeTicks=" + movementData.getSlimeTicks() + "\n"
+                    + "  || honeyTicks=" + movementData.getHoneyTicks() + "\n"
+                    + "  || climableTicks=" + movementData.getClimbableTicks() + "\n"
+                    + "  || liquidTicks=" + movementData.getLiquidTicks() + "\n"
+                    + "  || bubbleTicks=" + movementData.getBubbleTicks() + "\n"
+                    + "  || webTicks=" + movementData.getWebTicks() + "\n"
+                    + "  || bedTicks=" + movementData.getBedTicks() + "\n"
+                    + "  || shulkerTicks=" + movementData.getShulkerTicks() + "\n"
+                    + "  || velocityTicks=" + profile.getVelocityData().getTicks() + "\n" // ORANGE (§6) till here
+                    + "§c" + "math=" + math + "\n"
+                    + "  -- deltaY=" + deltaY + "\n"
+                    + "  -- jumpBlockAbove=" + jumpBlockAbove + "\n"
+                    + "  ?? deltaY=" + deltaY + "\n"
+                    + "  :: predictedDeltaY=" + predictedDeltaY + "\n"
+                    + "invalid=" + true + "\n"
+                    + "  -- math=" + math + "\n"
+                    + "  >> maximumOffset=" + maximumOffset + "\n"); // RED (§c) till here
+
+        }
     }
 
     @Override
