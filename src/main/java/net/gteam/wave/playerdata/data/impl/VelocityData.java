@@ -9,10 +9,11 @@ import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
 public class VelocityData implements Data {
+
     private final Profile profile;
 
     private Vector3d velocity = new Vector3d(0, 0, 0);
-    private long timestamp;
+    private long timestamp = System.currentTimeMillis();
 
     public VelocityData(Profile profile) {
         this.profile = profile;
@@ -26,10 +27,14 @@ public class VelocityData implements Data {
     public void process(final ServerPlayPacket packet) {
 
         if (packet.is(PacketType.Play.Server.ENTITY_VELOCITY)) {
-            WrapperPlayServerEntityVelocity velocity = packet.getEntityVelocityWrapper();
+
+            final WrapperPlayServerEntityVelocity velocity = packet.getEntityVelocityWrapper();
+
             if (velocity.getEntityId() == profile.getPlayer().getEntityId()) {
+
                 this.velocity = velocity.getVelocity();
                 timestamp = System.currentTimeMillis();
+
             }
         }
     }
@@ -40,5 +45,9 @@ public class VelocityData implements Data {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public int getTicks() {
+        return (int) (System.currentTimeMillis() - this.timestamp);
     }
 }
