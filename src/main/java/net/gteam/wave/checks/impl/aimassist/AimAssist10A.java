@@ -7,15 +7,18 @@ import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.RotationData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
-import net.gteam.wave.utils.custom.aim.RotationHeuristics;
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 @Development
 public class AimAssist10A extends Check {
 
-    private final RotationHeuristics heuristics = new RotationHeuristics(30, 1.25F, 7.5F);
+    private final ArrayList<Float> yaw = new ArrayList<>();
+    private final ArrayList<Float> pitch = new ArrayList<>();
 
     public AimAssist10A(final Profile profile) {
-        super(profile, CheckType.AIMASSIST, "AA10A", "Test");
+        super(profile, CheckType.AIMASSIST, "AA10A", "Duplicated Rotations");
     }
 
     @Override
@@ -24,31 +27,28 @@ public class AimAssist10A extends Check {
         if (!clientPlayPacket.isRotation()) return;
 
         RotationData data = profile.getRotationData();
-        this.heuristics.process(data.getDeltaYaw());
 
-        if (!this.heuristics.isFinished()) return;
+        if (yaw.size() > 4) yaw.remove(0);
+        yaw.add(data.getYaw());
 
-        final RotationHeuristics.HeuristicsResult result = this.heuristics.getResult();
+        if (pitch.size() > 4) pitch.remove(0);
+        pitch.add(data.getPitch());
 
-        final float average = result.getAverage();
-        final float min = result.getMin();
-        final float max = result.getMax();
-        final int lowCount = result.getLowCount();
-        final int highCount = result.getHighCount();
-        final int duplicates = result.getDuplicates();
-        final int roundedCount = result.getRoundedCount();
+        if (pitch.size() > 3 && yaw.size() > 3) {
+            if (Objects.equals(pitch.get(0), pitch.get(2)) && !Objects.equals(pitch.get(0), pitch.get(1)) && Math.abs(pitch.get(0) - pitch.get(1)) > 2 && Math.abs(pitch.get(0)) != 90 && Math.abs(pitch.get(1)) != 90) {
+                if (increaseBufferBy(1) > 2) {
+                    fail("Duplicate Pitch\n" + pitch.get(0) + "\n" + pitch.get(1) + "\n" + pitch.get(2));
+                }
 
-        if (String.valueOf(min).contains("000") && String.valueOf(max).contains("000")) {
-            debug("avg=" + average);
-            debug("min=" + min + " " + String.valueOf(min).contains("000"));
-            debug("max=" + max + " " + String.valueOf(max).contains("000"));
-            debug("lowCount=" + lowCount);
-            debug("highCount=" + highCount);
-            debug("duplicates=" + duplicates);
-            debug("roundedCount=" + roundedCount);
+            } else decreaseBufferBy(0.01);
+
+            if (Objects.equals(yaw.get(0), yaw.get(2)) && !Objects.equals(yaw.get(0), yaw.get(1)) && Math.abs(yaw.get(0) - yaw.get(1)) > 2) {
+                if (increaseBufferBy(1) > 2) {
+                    fail("Duplicate Yaw\n" + yaw.get(0) + "\n" + yaw.get(1) + "\n" + yaw.get(2));
+                }
+            }  else decreaseBufferBy(0.01);
         }
 
-        heuristics.reset();
     }
 
     @Override
