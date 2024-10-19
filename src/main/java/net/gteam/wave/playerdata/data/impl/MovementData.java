@@ -247,7 +247,7 @@ public class MovementData implements Data {
 
         // Ghost blocks
 
-        this.ghostBlockProcessor.process();
+        //this.ghostBlockProcessor.process(); //TODO: fix
 
         // Setbacks
 
