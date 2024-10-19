@@ -31,7 +31,9 @@ public class Fly10A extends Check {
         final double maximumOffset = 1.9262653090336062E-14;
 
         final boolean nearGround = movementData.getNearGroundTicks() <= 4
-                && MathUtils.decimalRound(deltaY, 8) == -0.07840000;
+                && (MathUtils.decimalRound(deltaY, 8) == -0.07840000
+                    || MathUtils.decimalRound(deltaY, 8) == 0.01250005 // Hit head with a trapdoor above
+                    || MathUtils.decimalRound(deltaY, 8) == 0.20000005); // Weird hit head spam
 
         final boolean jumpBlockAbove = (movementData.getBlocksAboveTicks() <= 1 || movementData.getLastBlocksAboveTicks() <= 1)
                 && Math.abs(0.2000000476837 - MathUtils.decimalRound(deltaY, 13)) < maximumOffset;
@@ -49,23 +51,25 @@ public class Fly10A extends Check {
         final boolean exempt = jumped
                 || jumpLowBlock
                 || nearGround
-                || profile.getTeleportData().getTeleportTicks() <= 2
-                || movementData.getFlyingTicks() <= 5
-                || movementData.getSlimeTicks() <= 3
-                || movementData.getHoneyTicks() <= 3
-                || movementData.getClimbableTicks() <= 0
-                || movementData.getLiquidTicks() <= 3
-                || movementData.getBubbleTicks() <= 2
-                || movementData.getWebTicks() <= 3
-                || movementData.getBedTicks() <= 2
-                || movementData.getShulkerTicks() <= 2
-                || profile.getVelocityData().getTicks() <= 300; // TODO: make better damage handler
+                || profile.getTeleportData().getTeleportTicks() <= 2 // 2: validated
+                || movementData.getFlyingTicks() <= 1 // 1: validated
+                || movementData.getSlimeTicks() <= 1 // 1: validated
+                || movementData.getHoneyTicks() <= 1 // 1: validated
+                || movementData.getClimbableTicks() <= 0 // 0: validated
+                || movementData.getLiquidTicks() <= 3 // 3: validated
+                || movementData.getBubbleTicks() <= 2 // 2: validated
+                || movementData.getWebTicks() <= 2 // 2: validated
+                || movementData.getBedTicks() <= 2 // 2: validated
+                || movementData.getShulkerTicks() <= 5 // 5: validated
+                || movementData.getGlidingTicks() <= 6 // 6: validated
+                || movementData.getBerriesTicks() <= 1 // 1: validated
+                || profile.getVelocityData().getTicks() <= 300; // 300: validated // TODO: make better damage handler
 
         final double math = deltaY -
                 (jumpBlockAbove
                 ? deltaY // if jump block above
                 : predictedDeltaY); // else
-        final boolean invalid = math > 1.9262653090336062E-14;
+        final boolean invalid = math > maximumOffset;
 
         if (invalid && !exempt) {
 
@@ -100,9 +104,12 @@ public class Fly10A extends Check {
                     + "  || webTicks=" + movementData.getWebTicks() + "\n"
                     + "  || bedTicks=" + movementData.getBedTicks() + "\n"
                     + "  || shulkerTicks=" + movementData.getShulkerTicks() + "\n"
+                    + "  || glidingTicks=" + movementData.getGlidingTicks() + "\n"
+                    + "  || berriesTicks=" + movementData.getBerriesTicks() + "\n"
                     + "  || velocityTicks=" + profile.getVelocityData().getTicks() + "\n" // ORANGE (§6) till here
                     + "§c" + "math=" + math + "\n"
                     + "  -- deltaY=" + deltaY + "\n"
+                    + "  -- lastDeltaY=" + movementData.getLastDeltaY() + "\n"
                     + "  -- jumpBlockAbove=" + jumpBlockAbove + "\n"
                     + "  ?? deltaY=" + deltaY + "\n"
                     + "  :: predictedDeltaY=" + predictedDeltaY + "\n"
