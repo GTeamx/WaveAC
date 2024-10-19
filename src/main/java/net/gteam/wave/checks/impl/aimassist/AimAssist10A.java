@@ -1,6 +1,7 @@
 package net.gteam.wave.checks.impl.aimassist;
 
 import net.gteam.wave.checks.annotations.Development;
+import net.gteam.wave.checks.annotations.Experimental;
 import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
@@ -11,7 +12,7 @@ import net.gteam.wave.processors.ServerPlayPacket;
 import java.util.ArrayList;
 import java.util.Objects;
 
-@Development
+@Experimental
 public class AimAssist10A extends Check {
 
     private final ArrayList<Float> yaw = new ArrayList<>();
