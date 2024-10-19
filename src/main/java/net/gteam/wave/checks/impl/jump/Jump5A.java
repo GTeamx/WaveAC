@@ -25,12 +25,13 @@ public class Jump5A extends Check {
         final MovementData movementData = this.profile.getMovementData();
         final double motionY = movementData.getDeltaY();
         final boolean step = CollisionUtils.isServerGround(motionY) && CollisionUtils.isServerGround(movementData.getLastLocation().getY());
-        final boolean jumped = motionY > 0 && movementData.getLastLocation().getY() % (1D/64) == 0 && !movementData.isOnGround() && !step;
+        final boolean jumped = motionY > 0 && movementData.getLastLocation().getY() % (1D/64) == 0 && !movementData.isOnGround() && !step && movementData.isLastOnGround();
         final CustomEffect jumpEffect = profile.getEffectData().getEffects().get(EffectType.JUMP_BOOST);
         final boolean blockAbove = movementData.getBlocksAboveTicks() <= 2;
         final double expectedJumpMotion = blockAbove ? motionY : 0.42F + (double)(jumpEffect != null ? (jumpEffect.getAmplifier() + 1) * 0.1F : 0);
         final boolean isExemptByVelocity = System.currentTimeMillis() - this.profile.getVelocityData().getTimestamp() <= 150L; // && this.profile.getVelocityData().getVelocity().getY() + motionY > 0.005;
-        if (jumped && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0) {
+
+        if (jumped && movementData.getSlimeTicks() > 3 && movementData.getHoneyTicks() > 3 && movementData.getClimbableTicks() > 0 && movementData.getLiquidTicks() > 0 && movementData.getBubbleTicks() > 0 && movementData.getWebTicks() > 2) {
             if (Math.abs(expectedJumpMotion - motionY) > 1E-7 && !isExemptByVelocity) {
                 //debug("math=" + Math.abs(expectedJumpMotion - motionY) + " dY=" + movementData.getDeltaY() + " v=" + );
                 fail("jumpDiff=" + Math.abs(motionY - expectedJumpMotion) + System.lineSeparator() + "dY=" + motionY + System.lineSeparator() + "eY=" + expectedJumpMotion);
