@@ -17,7 +17,6 @@ public class CheckHolder {
     private final Profile profile;
     private Check[] checks;
     private int checksSize;
-    private boolean testing; //Used for testing new checks
 
     public CheckHolder(final Profile profile) {
         this.profile = profile;
@@ -53,7 +52,7 @@ public class CheckHolder {
 
         for (final Check check : checks) {
 
-            //if (this.profile != null && (!check.isEnabled() || isDisabled(check))) continue; // TODO: fix (it just doesn't register any checks if enabled)
+            if (this.profile != null && isDisabled(check)) continue;
 
             this.checks = Arrays.copyOf(this.checks, this.checksSize + 1);
 
@@ -65,9 +64,7 @@ public class CheckHolder {
 
     private boolean isDisabled(final Check check) {
 
-        if (this.testing) return true;
-
-        if (check.getClass().isAnnotationPresent(Disabled.class)) this.testing = true;
+        if (check.getClass().isAnnotationPresent(Disabled.class)) return true;
 
         return false;
     }
