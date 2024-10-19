@@ -69,12 +69,6 @@ public class Fly10A extends Check {
 
         if (invalid && !exempt) {
 
-            // GREEN (§a) till here
-            // YELLOW (§e) till here
-            // ORANGE (§6) till here
-            // GREEN (§a) till here
-            // YELLOW (§e) till here
-            // ORANGE (§6) till here
             fail("§a" + "deltaY=" + deltaY + "\n"
                     + "predictedDeltaY=" + predictedDeltaY + "\n"
                     + "maximumOffset=" + maximumOffset + "\n" // GREEN (§a) till here

@@ -97,6 +97,9 @@ public class MovementData implements Data {
 
             case PLAYER_POSITION_AND_ROTATION:
 
+                //1.17+
+                if (profile.getActionData().getLastDuplicateOnePointSeventeenPacketTicks() == 0) break; // TODO: sus?
+
                 final WrapperPlayClientPlayerPositionAndRotation posLook = packet.getPositionLookWrapper();
 
                 this.lastOnGround = this.onGround;

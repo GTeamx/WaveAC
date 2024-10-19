@@ -27,6 +27,11 @@ public class ActionData implements Data {
 
     private int lastAllowFlightTicks, lastSleepingTicks, lastRidingTicks;
 
+    /*
+     * 1.9+
+     */
+    private int lastDuplicateOnePointSeventeenPacketTicks = 100;
+
     public ActionData(final Profile profile) {
 
         this.desync = new Desync(profile);
@@ -80,5 +85,9 @@ public class ActionData implements Data {
 
     public GameMode getGameMode() {
         return gameMode;
+    }
+
+    public int getLastDuplicateOnePointSeventeenPacketTicks() {
+        return lastDuplicateOnePointSeventeenPacketTicks;
     }
 }
