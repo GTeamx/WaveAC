@@ -38,15 +38,11 @@ public class Fly10A extends Check {
         final boolean jumpBlockAbove = (movementData.getBlocksAboveTicks() <= 1 || movementData.getLastBlocksAboveTicks() <= 1)
                 && Math.abs(0.2000000476837 - MathUtils.decimalRound(deltaY, 13)) < maximumOffset;
 
-        //final boolean jumpGlitch = ((movementData.getClientGroundTicks() <= 1 || ((movementData.getClientGroundTicks() <= 3 || movementData.getServerGroundTicks() == 8 || movementData.getServerGroundTicks() == 9 || movementData.getServerGroundTicks() == 10 || movementData.getServerGroundTicks() == 14 || movementData.getServerGroundTicks() == 15) && (movementData.getNearGroundTicks() <= 1))) && movementData.getLastNearWallTicks() <= 10 && (MathUtils.decimalRound(deltaY, 2) == 0.40 || MathUtils.decimalRound(deltaY, 2) == 0.33 || MathUtils.decimalRound(deltaY, 2) == -0.09 || MathUtils.decimalRound(deltaY, 2) == -0.15));
-
         final boolean jumpLowBlock = movementData.getHalfBlocksTicks() <= 2
                 || (movementData.getOffGroundTicks() == 1 && deltaY == 0.5);
 
         final boolean jumped = movementData.isLastOnGround()
                 && deltaY == MoveUtils.JUMP_MOTION;
-
-        //final boolean fix = !(((movementData.getNearbyBlocksBellow().size() > 1 || !BetterStream.anyMatch(movementData.getNearbyBlocksBellow(), material -> material.toString().equalsIgnoreCase("AIR"))) && !movementData.getNearbyBlocksBellow().isEmpty()));
 
         final boolean exempt = jumped
                 || jumpLowBlock
