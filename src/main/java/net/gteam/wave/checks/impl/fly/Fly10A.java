@@ -69,6 +69,12 @@ public class Fly10A extends Check {
 
         if (invalid && !exempt) {
 
+            // GREEN (§a) till here
+            // YELLOW (§e) till here
+            // ORANGE (§6) till here
+            // GREEN (§a) till here
+            // YELLOW (§e) till here
+            // ORANGE (§6) till here
             fail("§a" + "deltaY=" + deltaY + "\n"
                     + "predictedDeltaY=" + predictedDeltaY + "\n"
                     + "maximumOffset=" + maximumOffset + "\n" // GREEN (§a) till here
@@ -83,11 +89,11 @@ public class Fly10A extends Check {
                     + "  -- halfBlocksTicks=" + movementData.getHalfBlocksTicks() + "\n"
                     + "  || offGroundTicks=" + movementData.getOffGroundTicks() + "\n"
                     + "  || deltaY=" + deltaY + "\n"
-                    + "jumped=" + jumped + "\n"
+                    + "jumped=" + false + "\n"
                     + "  -- lastOnGround=" + movementData.isLastOnGround() + "\n"
                     + "  && deltaY=" + deltaY + "\n" // YELLOW (§e) till here
                     + "§6" + "exempt=" + false + "\n"
-                    + "  || jumped=" + jumped + "\n"
+                    + "  || jumped=" + false + "\n"
                     + "  || jumpedLowBlock=" + jumpLowBlock + "\n"
                     + "  || nearGround=" + nearGround + "\n"
                     + "  || teleportTicks=" + profile.getTeleportData().getTeleportTicks() + "\n"
