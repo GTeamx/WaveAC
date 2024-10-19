@@ -49,7 +49,7 @@ public class MovementData implements Data {
     private final HashMap<MaterialType, Integer> lastMaterialTypeTicks = new HashMap<>();
     private boolean onGround, lastOnGround, serverGround, lastServerGround;
 
-    private int offGroundTicks, clientGroundTicks, serverGroundTicks, lastServerGroundTicks, flyingTicks,
+    private int offGroundTicks, clientGroundTicks, serverGroundTicks, lastServerGroundTicks, flyingTicks, glidingTicks,
             lastUnloadedChunkTicks = 100,
             lastFrictionFactorUpdateTicks, lastNearEdgeTicks, lastNearWallTicks, nearGroundTicks, lastNearGroundTicks, blocksAboveTicks, lastBlocksAboveTicks;
 
@@ -294,6 +294,10 @@ public class MovementData implements Data {
         // Flying/Gamemode
 
         this.flyingTicks = player.isFlying() ? 0 : this.flyingTicks + 1;
+
+        // Gliding/Elytra
+
+        this.glidingTicks = player.isGliding() ? 0 : this.glidingTicks + 1;
 
         // Prediction Processor
         this.predictionProcessor.process();
@@ -617,6 +621,10 @@ public class MovementData implements Data {
 
     public int getFlyingTicks() {
         return flyingTicks;
+    }
+
+    public int getGlidingTicks() {
+        return glidingTicks;
     }
 
     public List<Material> getNearbyBlocks() {
