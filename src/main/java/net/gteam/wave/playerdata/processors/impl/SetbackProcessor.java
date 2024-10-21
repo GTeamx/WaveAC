@@ -69,6 +69,6 @@ public class SetbackProcessor implements Processor {
     }
 
     public Location getSetbackLocation() {
-        return this.locations.isEmpty() ? null : this.locations.getLast().toBukkit();
+        return locations.isEmpty() ? null : locations.getLast().toBukkit();
     }
 }
