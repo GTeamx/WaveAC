@@ -44,7 +44,7 @@ public class MovementData implements Data {
 
     private CustomLocation location, lastLocation;
 
-    private List<Material> nearbyBlocks = null, nearbyBlocksBellow = null;
+    private List<Material> nearbyBlocks = null, nearbyBlocksBellow = null, nearbyBlocksUnder = null;
     private final HashMap<MaterialType, Integer> materialTypeTicks = new HashMap<>();
     private final HashMap<MaterialType, Integer> lastMaterialTypeTicks = new HashMap<>();
     private boolean onGround, lastOnGround, serverGround, lastServerGround;
@@ -208,6 +208,10 @@ public class MovementData implements Data {
         // Block Bellow
 
         this.nearbyBlocksBellow = nearbyBlocksResult.getBlockBelowTypes();
+
+        // Block Under
+
+        this.nearbyBlocksUnder = nearbyBlocksResult.getBlockUnderTypes();
 
         // MaterialType ticks
         this.lastMaterialTypeTicks.putAll(this.materialTypeTicks);
@@ -632,5 +636,9 @@ public class MovementData implements Data {
 
     public List<Material> getNearbyBlocks() {
         return nearbyBlocks;
+    }
+
+    public List<Material> getNearbyBlocksUnder() {
+        return nearbyBlocksUnder;
     }
 }
