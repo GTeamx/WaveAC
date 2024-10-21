@@ -9,6 +9,10 @@ import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 import net.gteam.wave.utils.MathUtils;
 import net.gteam.wave.utils.MoveUtils;
+import net.gteam.wave.utils.custom.CustomEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 @Development
 public class Fly10A extends Check {
@@ -25,6 +29,8 @@ public class Fly10A extends Check {
         final MovementData movementData = this.profile.getMovementData();
 
         if (movementData.isOnGround()) return;
+
+        final ConcurrentHashMap<PotionEffectType, CustomEffect> effects = this.profile.getEffectData().getEffects();
 
         final double deltaY = movementData.getDeltaY();
         final double predictedDeltaY = movementData.getPredictionProcessor().getPredictedDeltaY();
@@ -60,9 +66,11 @@ public class Fly10A extends Check {
                 || movementData.getShulkerTicks() <= 5 // 5: validated
                 || movementData.getGlidingTicks() <= 6 // 6: validated
                 || movementData.getBerriesTicks() <= 1 // 1: validated
-                || movementData.getPistonTicks() <= 1
+                || movementData.getPistonTicks() <= 1 // 1: validated
+                || effects.getOrDefault(PotionEffectType.LEVITATION, null) != null // true: validated
+                || effects.getOrDefault(PotionEffectType.SLOW_FALLING, null) != null // true: validated
+                || effects.getOrDefault(PotionEffectType.JUMP_BOOST, null) != null // true: validated
                 || profile.getVelocityData().getTicks() <= 300; // 300: validated // TODO: make better damage handler
-        // TODO: exempt levitation & slow fall effects
 
         final double math = deltaY -
                 (jumpBlockAbove
@@ -107,6 +115,9 @@ public class Fly10A extends Check {
                     + "  || glidingTicks=" + movementData.getGlidingTicks() + "\n"
                     + "  || berriesTicks=" + movementData.getBerriesTicks() + "\n"
                     + "  || pistonTicks=" + movementData.getPistonTicks() + "\n"
+                    + "  || levitationEffect=" + (effects.getOrDefault(PotionEffectType.LEVITATION, null) != null) + "\n"
+                    + "  || slowFallingEffect=" + (effects.getOrDefault(PotionEffectType.SLOW_FALLING, null) != null) + "\n"
+                    + "  || jumpBoostEffect=" + (effects.getOrDefault(PotionEffectType.JUMP_BOOST, null) != null) + "\n"
                     + "  || velocityTicks=" + profile.getVelocityData().getTicks() + "\n" // ORANGE (§6) till here
                     + "§c" + "math=" + math + "\n"
                     + "  -- deltaY=" + deltaY + "\n"
