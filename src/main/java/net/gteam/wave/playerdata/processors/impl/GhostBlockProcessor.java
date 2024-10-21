@@ -4,41 +4,59 @@ import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.playerdata.processors.Processor;
 import net.gteam.wave.utils.TaskUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class GhostBlockProcessor implements Processor {
 
     private final Profile profile;
 
+    private Location setbackLocation;
+
     public GhostBlockProcessor(final Profile profile) {
         this.profile = profile;
     }
 
     @Override
-    public void process() {
+    public void process() { // TODO: improve overall ghost block handler
 
         final MovementData movementData = profile.getMovementData();
 
-        if (movementData.isOnGround() && movementData.isServerGround()) {
+        final Player player = profile.getPlayer();
 
-            if (movementData.getNearGroundTicks() >= 2) {
+        TaskUtils.task(() -> { // Don't ask why I have to do all the bool stuff inside of it, only Java knows why
 
-                final Player player = profile.getPlayer();
+            if (movementData.isOnGround() && movementData.isServerGround() && movementData.getNearGroundTicks() >= 2) {
 
-                TaskUtils.task(() -> {
+                final SetbackProcessor setbackProcessor = profile.getMovementData().getSetbackProcessor();
 
-                player.getLocation().subtract(0, 1, 0).getBlock().setType(Material.STONE);
+                if (setbackProcessor.getSetbackLocation() != null && setbackProcessor.getSetbackLocation().distance(player.getLocation()) <= 5) { // Prevent abuses
 
-                player.sendBlockChange(player.getLocation().subtract(0, 1, 0), player.getLocation().subtract(0, 1, 0).getBlock().getBlockData());
+                    setbackProcessor.setback(false); // TODO: Update block instead of lagback?
 
-                Bukkit.broadcastMessage("Ghost block processed for " + player.getName());
+                } else {
 
-                });
+                    if (setbackLocation.subtract(0, 0.5, 0).getBlock().getType().equals(Material.AIR)) {
+
+                        setbackLocation.subtract(0, 0.5, 0);
+
+                        player.teleport(setbackLocation);
+
+                    } else {
+
+                        player.teleport(player.getLocation());
+
+                    }
+
+                }
+
+            } else {
+
+                setbackLocation = player.getLocation();
+
             }
-        }
+
+        });
     }
 }
