@@ -250,11 +250,11 @@ public class MovementData implements Data {
 
         // Ghost blocks
 
-        //this.ghostBlockProcessor.process(); //TODO: fix
+        this.ghostBlockProcessor.process();
 
         // Setbacks
 
-        if (this.nearGroundTicks > 1) this.setbackProcessor.process();
+        if (this.nearGroundTicks <= 1) this.setbackProcessor.process();
 
         // Near Wall
 
