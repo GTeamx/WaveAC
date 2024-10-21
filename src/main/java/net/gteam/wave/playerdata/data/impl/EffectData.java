@@ -52,4 +52,12 @@ public class EffectData implements Data {
     public ConcurrentHashMap<PotionEffectType, CustomEffect> getEffects() {
         return effects;
     }
+
+    public boolean hasPotionEffect(final PotionEffectType type) {
+        return effects.containsKey(type);
+    }
+
+    public CustomEffect getEffect(final PotionEffectType type) {
+        return effects.get(type);
+    }
 }
