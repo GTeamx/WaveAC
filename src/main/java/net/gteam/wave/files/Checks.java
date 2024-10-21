@@ -79,6 +79,10 @@ public class Checks implements Initializer {
         AIMASSIST_AA10A_MAX_VL("aimassist.aa10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
         AIMASSIST_AA10A_COMMANDS("aimassist.aa10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
+        GROUND("ground", "", "Ground Checks"),
+        GROUND_GR10A("ground.gr10a", true, "Should we enable this check ?"),
+        GROUND_GR10A_MAX_VL("ground.gr10a.max_vl", 10, "The maximum violation amount a player needs to reach in order to get punished"),
+        GROUND_GR10A_COMMANDS("ground.gr10a.commands", Collections.singletonList("kick %player% Unfair Advantage"), "The commands that will get executed once a player reaches the maximum violation amount"),
 
         // Next check
 
