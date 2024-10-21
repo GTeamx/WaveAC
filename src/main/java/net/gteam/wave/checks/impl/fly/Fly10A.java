@@ -49,7 +49,8 @@ public class Fly10A extends Check {
                 || nearGround
                 || profile.getTeleportData().getTeleportTicks() <= 2 // 2: validated
                 || movementData.getFlyingTicks() <= 1 // 1: validated
-                || movementData.getSlimeTicks() <= 1 // 1: validated
+                || profile.getPlayer().getAllowFlight() // true: validated
+                || movementData.getSlimeTicks() <= 2 // 2: validated
                 || movementData.getHoneyTicks() <= 1 // 1: validated
                 || movementData.getClimbableTicks() <= 0 // 0: validated
                 || movementData.getLiquidTicks() <= 3 // 3: validated
@@ -59,7 +60,9 @@ public class Fly10A extends Check {
                 || movementData.getShulkerTicks() <= 5 // 5: validated
                 || movementData.getGlidingTicks() <= 6 // 6: validated
                 || movementData.getBerriesTicks() <= 1 // 1: validated
+                || movementData.getPistonTicks() <= 1
                 || profile.getVelocityData().getTicks() <= 300; // 300: validated // TODO: make better damage handler
+        // TODO: exempt levitation & slow fall effects
 
         final double math = deltaY -
                 (jumpBlockAbove
@@ -92,6 +95,7 @@ public class Fly10A extends Check {
                     + "  || nearGround=" + nearGround + "\n"
                     + "  || teleportTicks=" + profile.getTeleportData().getTeleportTicks() + "\n"
                     + "  || flyTicks=" + movementData.getFlyingTicks() + "\n"
+                    + "  || allowFlight=" + profile.getPlayer().getAllowFlight() + "\n"
                     + "  || slimeTicks=" + movementData.getSlimeTicks() + "\n"
                     + "  || honeyTicks=" + movementData.getHoneyTicks() + "\n"
                     + "  || climableTicks=" + movementData.getClimbableTicks() + "\n"
@@ -102,6 +106,7 @@ public class Fly10A extends Check {
                     + "  || shulkerTicks=" + movementData.getShulkerTicks() + "\n"
                     + "  || glidingTicks=" + movementData.getGlidingTicks() + "\n"
                     + "  || berriesTicks=" + movementData.getBerriesTicks() + "\n"
+                    + "  || pistonTicks=" + movementData.getPistonTicks() + "\n"
                     + "  || velocityTicks=" + profile.getVelocityData().getTicks() + "\n" // ORANGE (§6) till here
                     + "§c" + "math=" + math + "\n"
                     + "  -- deltaY=" + deltaY + "\n"
