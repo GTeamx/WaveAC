@@ -67,4 +67,8 @@ public class SetbackProcessor implements Processor {
 
         TaskUtils.task(() -> player.teleport(setbackLocation, PlayerTeleportEvent.TeleportCause.PLUGIN));
     }
+
+    public Location getSetbackLocation() {
+        return this.locations.isEmpty() ? null : this.locations.getLast().toBukkit();
+    }
 }
