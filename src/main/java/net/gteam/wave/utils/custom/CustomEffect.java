@@ -6,7 +6,6 @@ public class CustomEffect {
     private final int amplifier;
     private final int duration;
 
-
     public CustomEffect(int id, int amplifier, int duration) {
         this.id = id;
         this.amplifier = amplifier;
