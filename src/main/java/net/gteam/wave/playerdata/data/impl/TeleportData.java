@@ -9,13 +9,14 @@ import net.gteam.wave.processors.ServerPlayPacket;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayDeque;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class TeleportData implements Data {
 
 
     private int teleportTicks = 0;
     private final Profile profile;
-    private final ArrayDeque<Vector> teleports = new ArrayDeque<>();
+    private final ConcurrentLinkedDeque<Vector> teleports = new ConcurrentLinkedDeque<>();
 
     public TeleportData(Profile profile) {
         this.profile = profile;
