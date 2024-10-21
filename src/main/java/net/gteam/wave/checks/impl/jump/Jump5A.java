@@ -9,7 +9,7 @@ import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 import net.gteam.wave.utils.CollisionUtils;
 import net.gteam.wave.utils.custom.CustomEffect;
-import net.gteam.wave.utils.custom.EffectType;
+import org.bukkit.potion.PotionEffectType;
 
 @Development
 public class Jump5A extends Check {
@@ -26,7 +26,7 @@ public class Jump5A extends Check {
         final double motionY = movementData.getDeltaY();
         final boolean step = CollisionUtils.isServerGround(motionY) && CollisionUtils.isServerGround(movementData.getLastLocation().getY());
         final boolean jumped = motionY > 0 && movementData.getLastLocation().getY() % (1D/64) == 0 && !movementData.isOnGround() && !step && movementData.isLastOnGround();
-        final CustomEffect jumpEffect = profile.getEffectData().getEffects().get(EffectType.JUMP_BOOST);
+        final CustomEffect jumpEffect = profile.getEffectData().getEffects().getOrDefault(PotionEffectType.JUMP_BOOST, null);
         final boolean blockAbove = movementData.getBlocksAboveTicks() <= 2;
         final double expectedJumpMotion = blockAbove ? motionY : 0.42F + (double)(jumpEffect != null ? (jumpEffect.getAmplifier() + 1) * 0.1F : 0);
         final boolean isExemptByVelocity = System.currentTimeMillis() - this.profile.getVelocityData().getTimestamp() <= 150L; // && this.profile.getVelocityData().getVelocity().getY() + motionY > 0.005;
