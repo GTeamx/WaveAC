@@ -48,7 +48,11 @@ public class Fly10A extends Check {
                 || (movementData.getOffGroundTicks() == 1 && deltaY == 0.5);
 
         final boolean jumped = movementData.isLastOnGround()
-                && deltaY == MoveUtils.JUMP_MOTION;
+                && Math.abs(deltaY - ((double)0.42F + (double)(profile.getEffectData().hasPotionEffect(PotionEffectType.JUMP_BOOST) ? (profile.getEffectData().getEffect(PotionEffectType.JUMP_BOOST).getAmplifier() + 1) * 0.1F : 0))) < 0.00004;
+
+        if (profile.getEffectData().hasPotionEffect(PotionEffectType.LEVITATION)) {
+            debug(profile.getPlayer().getName() + " " + (deltaY - ((movementData.getLastDeltaY() + (0.05 * (double)(profile.getEffectData().getEffect(PotionEffectType.LEVITATION).getAmplifier() + 1) - movementData.getLastDeltaY()) * 0.2)) * 0.9800000190734863) );
+        }
 
         final boolean exempt = jumped
                 || jumpLowBlock
@@ -69,7 +73,7 @@ public class Fly10A extends Check {
                 || movementData.getPistonTicks() <= 1 // 1: validated
                 || effects.getOrDefault(PotionEffectType.LEVITATION, null) != null // true: validated
                 || effects.getOrDefault(PotionEffectType.SLOW_FALLING, null) != null // true: validated
-                || effects.getOrDefault(PotionEffectType.JUMP_BOOST, null) != null // true: validated
+                //|| effects.getOrDefault(PotionEffectType.JUMP_BOOST, null) != null // true: validated
                 || profile.getVelocityData().getTicks() <= 300; // 300: validated // TODO: make better damage handler
 
         final double math = deltaY -
