@@ -1,6 +1,7 @@
 package net.gteam.wave.checks.impl.ground;
 
 import net.gteam.wave.checks.annotations.Development;
+import net.gteam.wave.checks.annotations.Disabled;
 import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
@@ -10,7 +11,7 @@ import net.gteam.wave.processors.ServerPlayPacket;
 import net.gteam.wave.utils.BetterStream;
 import org.bukkit.Material;
 
-@Development
+@Disabled
 public class Ground10A extends Check {
 
 
@@ -28,7 +29,7 @@ public class Ground10A extends Check {
 
         final boolean serverGroundFix = !BetterStream.anyMatch(data.getNearbyBlocksUnder(), material -> material.toString().equalsIgnoreCase("AIR"));
 
-        final boolean serverGround = data.isServerGround();
+        final boolean serverGround = data.isServerGround() && data.getNearGroundTicks() < 1;
 
         final boolean clientGround = data.isOnGround();
 
