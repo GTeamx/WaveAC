@@ -1,6 +1,6 @@
 package net.gteam.wave.checks.impl.motion;
 
-import net.gteam.wave.checks.annotations.Disabled;
+import net.gteam.wave.checks.annotations.Development;
 import net.gteam.wave.checks.enums.CheckType;
 import net.gteam.wave.checks.types.Check;
 import net.gteam.wave.managers.profile.Profile;
@@ -8,7 +8,7 @@ import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.processors.ClientPlayPacket;
 import net.gteam.wave.processors.ServerPlayPacket;
 
-@Disabled
+@Development
 public class Speed10A extends Check {
 
     public Speed10A(final Profile profile) {
@@ -24,7 +24,7 @@ public class Speed10A extends Check {
 
         final double diffXZ = movementData.getDeltaXZ();
 
-        if (predictionValues[1] > 1E-7 && predictionValues[0] >= movementData.getDeltaXZ()) {
+        if (predictionValues[1] > 0.000001 && movementData.getDeltaXZ() >= predictionValues[0] && movementData.getDeltaXZ() > 0 && movementData.getLastNearWallTicks() > 2 && movementData.getLastClimbableTicks() > 2 && this.profile.getTeleportData().getTeleportTicks() > 2) {
 
             if (increaseBufferBy(1) > 2) {
 
