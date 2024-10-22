@@ -50,10 +50,6 @@ public class Fly10A extends Check {
         final boolean jumped = movementData.isLastOnGround()
                 && Math.abs(deltaY - ((double)0.42F + (double)(profile.getEffectData().hasPotionEffect(PotionEffectType.JUMP_BOOST) ? (profile.getEffectData().getEffect(PotionEffectType.JUMP_BOOST).getAmplifier() + 1) * 0.1F : 0))) < 0.00004;
 
-        if (profile.getEffectData().hasPotionEffect(PotionEffectType.LEVITATION)) {
-            debug(profile.getPlayer().getName() + " " + (deltaY - ((movementData.getLastDeltaY() + (0.05 * (double)(profile.getEffectData().getEffect(PotionEffectType.LEVITATION).getAmplifier() + 1) - movementData.getLastDeltaY()) * 0.2)) * 0.9800000190734863) );
-        }
-
         final boolean exempt = jumped
                 || jumpLowBlock
                 || nearGround
@@ -71,8 +67,8 @@ public class Fly10A extends Check {
                 || movementData.getGlidingTicks() <= 6 // 6: validated
                 || movementData.getBerriesTicks() <= 1 // 1: validated
                 || movementData.getPistonTicks() <= 1 // 1: validated
-                || effects.getOrDefault(PotionEffectType.LEVITATION, null) != null // true: validated
-                || effects.getOrDefault(PotionEffectType.SLOW_FALLING, null) != null // true: validated
+                //|| effects.getOrDefault(PotionEffectType.LEVITATION, null) != null // true: validated
+                //|| effects.getOrDefault(PotionEffectType.SLOW_FALLING, null) != null // true: validated
                 //|| effects.getOrDefault(PotionEffectType.JUMP_BOOST, null) != null // true: validated
                 || profile.getVelocityData().getTicks() <= 300; // 300: validated // TODO: make better damage handler
 
@@ -80,7 +76,7 @@ public class Fly10A extends Check {
                 (jumpBlockAbove
                 ? deltaY // if jump block above
                 : predictedDeltaY); // else
-        final boolean invalid = math > maximumOffset;
+        final boolean invalid = Math.abs(math) > maximumOffset;
 
         if (invalid && !exempt) {
 
