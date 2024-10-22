@@ -3,6 +3,7 @@ package net.gteam.wave.playerdata.processors.impl;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import net.gteam.wave.managers.profile.Profile;
 import net.gteam.wave.playerdata.data.impl.ActionData;
+import net.gteam.wave.playerdata.data.impl.EffectData;
 import net.gteam.wave.playerdata.data.impl.MovementData;
 import net.gteam.wave.playerdata.data.impl.RotationData;
 import net.gteam.wave.playerdata.processors.Processor;
@@ -12,6 +13,7 @@ import net.gteam.wave.utils.custom.EffectType;
 import net.gteam.wave.utils.fastmath.FastMath;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Optional;
 
@@ -29,8 +31,20 @@ public final class PredictionProcessor implements Processor {
     public void process() {
 
         final MovementData movementData = profile.getMovementData();
+        final EffectData effectData = profile.getEffectData();
 
-        this.predictedDeltaY = (movementData.getLastDeltaY() - 0.08) * 0.9800000190734863;
+        if (effectData.hasPotionEffect(PotionEffectType.LEVITATION)) {
+            this.predictedDeltaY = ((movementData.getLastDeltaY() + (0.05 * (double)(effectData.getEffect(PotionEffectType.LEVITATION).getAmplifier() + 1) - movementData.getLastDeltaY()) * 0.2)) * 0.9800000190734863;
+        } else if (effectData.hasPotionEffect(PotionEffectType.SLOW_FALLING)) {
+            if (movementData.getLastDeltaY() <= 0 && !movementData.isLastOnGround()) {
+                this.predictedDeltaY = (movementData.getLastDeltaY() - 0.08 + 0.07) * 0.9800000190734863;
+            } else {
+                this.predictedDeltaY = (movementData.getLastDeltaY() - 0.08) * 0.9800000190734863;
+            }
+        } else {
+            this.predictedDeltaY = (movementData.getLastDeltaY() - 0.08) * 0.9800000190734863;
+        }
+
     }
 
     public double getPredictedDeltaY() {
